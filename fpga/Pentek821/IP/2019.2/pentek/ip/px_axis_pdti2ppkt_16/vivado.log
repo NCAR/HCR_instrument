@@ -1,0 +1,77 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2700185 on Thu Oct 24 18:46:05 MDT 2019
+# IP Build 2699827 on Thu Oct 24 21:16:38 MDT 2019
+# Start of session at: Thu May  7 05:58:45 2020
+# Process ID: 9680
+# Current directory: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11832 C:\Pentek\IP\2019.2\pentek\ip\px_axis_pdti2ppkt_16\px_axis_pdti2ppkt_16.xpr
+# Log file: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/vivado.log
+# Journal file: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16\vivado.jou
+#-----------------------------------------------------------
+INFO: [Common 17-1460] Use of init.tcl in C:/Users/Rich/AppData/Roaming/Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl 
+Sourcing tcl script 'C:/Users/Rich/AppData/Roaming/Xilinx/Vivado/init.tcl'
+72 Beta devices matching pattern found, 72 enabled.
+start_gui
+open_project C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.xpr
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-3] IPUserFilesDir: Could not find the directory 'C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2019.2/pentek/ip'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Pentek/IP/2019.2/pentek/ip' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.2/data/ip'.
+update_compile_order -fileset sources_1
+launch_runs synth_1 -jobs 16
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'px_axis_pdti2ppkt_16_wc'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'px_axil_csr_flw_16'...
+[Thu May  7 06:05:06 2020] Launched px_axis_pdti2ppkt_16_wc_synth_1, px_axil_csr_flw_16_synth_1...
+Run output will be captured here:
+px_axis_pdti2ppkt_16_wc_synth_1: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.runs/px_axis_pdti2ppkt_16_wc_synth_1/runme.log
+px_axil_csr_flw_16_synth_1: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.runs/px_axil_csr_flw_16_synth_1/runme.log
+[Thu May  7 06:05:06 2020] Launched synth_1...
+Run output will be captured here: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.runs/synth_1/runme.log
+reset_run synth_1
+launch_runs synth_1 -jobs 16
+[Thu May  7 06:06:40 2020] Launched synth_1...
+Run output will be captured here: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.runs/synth_1/runme.log
+ipx::open_ipxact_file {C:\Pentek\IP\2019.2\pentek\ip\px_axis_pdti2ppkt_16\component.xml}
+WARNING: [IP_Flow 19-5226] Project source file 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/component.xml' ignored by IP packager.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/new/px_axis_pdti2ppkt_16_8bit.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/new/px_axis_pdti2ppkt_16_csr.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/imports/new/px_axis_pdti2ppkt_bs.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axis_pdti2ppkt_16_wc/px_axis_pdti2ppkt_16_wc.xci' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axil_csr_flw_16/px_axil_csr_flw_16.xci' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/new/px_axis_pdti2ppkt_16.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/new/px_axis_pdti2ppkt_16_8bit.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/new/px_axis_pdti2ppkt_16_csr.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/imports/new/px_axis_pdti2ppkt_bs.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axis_pdti2ppkt_16_wc/px_axis_pdti2ppkt_16_wc.xci' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axil_csr_flw_16/px_axil_csr_flw_16.xci' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/new/px_axis_pdti2ppkt_16.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_testbench (Test Bench)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sim_1/new/tb_px_axis_pdti2ppkt_16.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_testbench (Test Bench)': File 'c:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/tb_px_axis_pdti2ppkt_16_behav.wcfg' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+set_property core_revision 13 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.2/pentek/ip
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Pentek/IP/2019.2/pentek/ip'
+set_property core_revision 14 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.2/pentek/ip
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Pentek/IP/2019.2/pentek/ip'
+reset_run synth_1
+launch_runs synth_1 -jobs 16
+[Thu May  7 06:23:45 2020] Launched synth_1...
+Run output will be captured here: C:/Pentek/IP/2019.2/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.runs/synth_1/runme.log
+set_property core_revision 15 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.2/pentek/ip
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Pentek/IP/2019.2/pentek/ip'
+exit
+INFO: [Common 17-206] Exiting Vivado at Thu May  7 06:26:58 2020...

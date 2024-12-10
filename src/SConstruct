@@ -12,19 +12,17 @@ options = eol_scons.GlobalVariables()
 
 def HcrSetup(env):
     env.AppendUnique(CCFLAGS = ['-g'])
+    env.AppendUnique(QT_VERSION = 5)
     # Headers which apply system-wide to HCR can be kept here in the
     # top-level directory
     env.AppendUnique(CPPPATH = topDir)
-
-    # We use Qt4
-    env['QT_VERSION']=4
 
 ## The next two lines will build with profiling
 #    env.AppendUnique(CCFLAGS = ['-pg'])
 #    env.AppendUnique(LINKFLAGS = ['-pg'])
     env.AppendUnique(CCFLAGS=['-Wall','-Wno-char-subscripts'])
     env.AppendUnique(CXXFLAGS=['-Wno-non-virtual-dtor'])  
-    env.AppendUnique(CXXFLAGS=['-std=c++11'])
+    env.AppendUnique(CXXFLAGS=['-std=c++14'])
     env['DOXYFILE_DICT'] = dict()
     env['DOXYFILE_DICT'].update({ 'HTML_HEADER' : env.File("#header.html") })
     return env

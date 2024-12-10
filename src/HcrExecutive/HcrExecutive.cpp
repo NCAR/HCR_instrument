@@ -46,16 +46,16 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-#include <HcrPmc730StatusThread.h>
+#include <HcrPmc730StatusWorker.h>
 #include <logx/Logging.h>
-#include <MotionControlStatusThread.h>
+#include <MotionControlStatusWorker.h>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <xmlrpc-c/client_simple.hpp>
 #include <xmlrpc-c/registry.hpp>
 
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 #include "ApsControl.h"
 #include "HcrExecutiveStatus.h"
 #include "MaxPowerFmqClient.h"
@@ -164,24 +164,36 @@ public:
     }
 };
 
-/// @brief xmlrpc_c::method to set HMC mode
-class SetRequestedHmcModeMethod : public xmlrpc_c::method {
+/// @brief xmlrpc_c::method to set Operation mode
+class SetRequestedOperationModeMethod : public xmlrpc_c::method {
 public:
-    SetRequestedHmcModeMethod() {
+    SetRequestedOperationModeMethod() {
         this->_signature = "n:i";
-        this->_help = "This method sets the requested HMC mode.";
+        this->_help = "This method sets the requested Operation mode.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        XmlrpcSerializable<OperationMode> mode(paramList[0]);
         paramList.verifyEnd(1);
-        // Get the requested mode
-        const int iMode(paramList.getInt(0));
-        HcrPmc730::HmcOperationMode hmcMode =
-                static_cast<HcrPmc730::HmcOperationMode>(iMode);
 
-        ILOG << "Received 'setRequestedHmcMode(" << iMode << ")' command";
-        TheTransmitControl->setRequestedHmcMode(hmcMode);
+        ILOG << "Received 'setRequestedOperationMode(" << mode.name() << ")' command";
+        TheTransmitControl->setRequestedOperationMode(mode);
         *retvalP = xmlrpc_c::value_nil();
+    }
+};
+
+/// @brief xmlrpc_c::method to get the current Operation mode
+class GetCurrentOperationModeMethod : public xmlrpc_c::method {
+public:
+    GetCurrentOperationModeMethod() {
+        this->_help = "This method gets the current Operation mode.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        paramList.verifyEnd(0);
+
+        ILOG << "Received 'getCurrentOperationMode()' command";
+        *retvalP = XmlrpcSerializable<OperationMode>(TheTransmitControl->getCurrentOperationMode());
     }
 };
 
@@ -262,21 +274,29 @@ main(int argc, char *argv[]) {
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("setApsValveControl", new SetApsValveControlMethod);
-    myRegistry.addMethod("setRequestedHmcMode", new SetRequestedHmcModeMethod);
+    myRegistry.addMethod("getCurrentOperationMode", new GetCurrentOperationModeMethod);
+    myRegistry.addMethod("setRequestedOperationMode", new SetRequestedOperationModeMethod);
     myRegistry.addMethod("setHvRequested", new SetHvRequestedMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
-    // Start a thread to get HcrPmc730Daemon status on a regular basis.
-    HcrPmc730StatusThread hcrPmc730StatusThread("localhost",
-                                                HCRPMC730DAEMON_PORT);
-    QObject::connect(App, SIGNAL(aboutToQuit()),
-                     &hcrPmc730StatusThread, SLOT(quit()));
+    // Create a thread and attach a HcrPmc730StatusWorker to it so that we get
+    // periodic status from the HcrPmc730Daemon
+    QThread hcrPmc730StatusThread;
+    hcrPmc730StatusThread.setObjectName("HCRExec-PmcStatus"); // thread name shown by 'top'
+    QObject::connect(App, &QCoreApplication::aboutToQuit,
+                     &hcrPmc730StatusThread, &QThread::quit);
+
+    HcrPmc730StatusWorker hcrPmc730StatusWorker("localhost",
+                                                HCRPMC730DAEMON_PORT,
+                                                &hcrPmc730StatusThread);
     hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
-    MotionControlStatusThread mcStatusThread("localhost",
-                                             MOTIONCONTROLDAEMON_PORT);
-    QObject::connect(App, SIGNAL(aboutToQuit()), &mcStatusThread, SLOT(quit()));
+    QThread mcStatusThread;
+    mcStatusThread.setObjectName("HCRExec-MCStatus"); // thread name shown by 'top'
+    MotionControlStatusWorker mcStatusWorker("localhost", MOTIONCONTROLDAEMON_PORT, &mcStatusThread);
+    QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+                     &mcStatusThread, &QThread::quit);
     mcStatusThread.start();
     
     // MaxPowerFmqClient instance
@@ -285,12 +305,12 @@ main(int argc, char *argv[]) {
     
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
-    TheApsControl = new ApsControl(hcrPmc730StatusThread);
+    TheApsControl = new ApsControl(hcrPmc730StatusWorker);
     
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
-    TheTransmitControl = new TransmitControl(hcrPmc730StatusThread, 
-                                             mcStatusThread,
+    TheTransmitControl = new TransmitControl(hcrPmc730StatusWorker,
+                                             mcStatusWorker,
                                              maxPowerClient);
     
     // catch a control-C or kill to shut down cleanly
@@ -335,9 +355,6 @@ main(int argc, char *argv[]) {
     QDateTime giveUpTime(QDateTime::currentDateTime().addMSecs(maxWaitMsecs));
     if (! mcStatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
         WLOG << "mcStatusThread is still running at exit";
-    }
-    if (! hcrPmc730StatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
-        WLOG << "hcrPmc730StatusThread is still running at exit";
     }
 
     ILOG << "HcrExecutive (" << getpid() << ") exiting";

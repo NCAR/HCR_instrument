@@ -33,6 +33,7 @@
 #include <sstream>
 #include <math.h>
 #include <logx/Logging.h>
+#include <Archive_xmlrpc_c.h>
 #include "HcrExecutiveRpcClient.h"
 
 LOGGING("HcrExecutiveRpcClient")
@@ -40,8 +41,8 @@ LOGGING("HcrExecutiveRpcClient")
 HcrExecutiveRpcClient::HcrExecutiveRpcClient(
 		std::string daemonHost,
         int daemonPort) :
-        _daemonResponding(false),
-        _client() {
+        xmlrpc_c::clientSimple(),
+        _daemonResponding(false) {
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
     ss << "http://" << daemonHost << ":" << daemonPort << "/RPC2";
@@ -58,7 +59,7 @@ HcrExecutiveRpcClient::_execXmlRpcCall(std::string methodName,
 {
     try {
         xmlrpc_c::value result;
-        _client.call(_daemonUrl, methodName, params, &result);
+        call(_daemonUrl, methodName, params, &result);
         _daemonResponding = true;
         return(result);
     }
@@ -79,12 +80,20 @@ HcrExecutiveRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
 }
 
 void
-HcrExecutiveRpcClient::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
-    ILOG << "Setting requested HMC mode to " << mode;
+HcrExecutiveRpcClient::setRequestedOperationMode(OperationMode& mode) {
+    ILOG << "Setting requested Operation mode to " << mode.name();
 
     xmlrpc_c::paramList params;
-    params.add(xmlrpc_c::value_int(mode));
-    _execXmlRpcCall("setRequestedHmcMode", params);
+    params.add(XmlrpcSerializable<OperationMode>(mode));
+    _execXmlRpcCall("setRequestedOperationMode", params);
+}
+
+OperationMode
+HcrExecutiveRpcClient::getCurrentOperationMode() {
+    DLOG << "Getting current operation mode";
+
+    XmlrpcSerializable<OperationMode> mode(_execXmlRpcCall("getCurrentOperationMode"));
+    return(mode);
 }
 
 void

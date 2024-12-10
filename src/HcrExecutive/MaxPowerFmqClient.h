@@ -47,7 +47,6 @@ public:
     MaxPowerFmqClient(std::string fmqUrl);
     virtual ~MaxPowerFmqClient();
 
-    void run();
 signals:
     /// @brief Signal emitted when the max power server becomes responsive or
 	/// unresponsive.

@@ -29,7 +29,7 @@
  */
 #include "SpectracomDetails.h"
 #include <sstream>
-#include <QtCore/QDateTime>
+#include <QDateTime>
 
 SpectracomDetails::SpectracomDetails(QWidget *parent) :
     QDialog(parent),

@@ -1,27 +1,28 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 #include "IwrfExport.h"
+#include "StatusGrabber.h"
 #include <logx/Logging.h>
 #include <sys/timeb.h>
 #include <cmath>
@@ -43,14 +44,13 @@
 LOGGING("IwrfExport")
 
 ///////////////////////////////////////////////////////////////////////////
-
 IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor) :
         QThread(),
         _insAccessLock(QReadWriteLock::NonRecursive),
         _fmqAccessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
-        _hmcMode(HcrPmc730::HMC_MODE_INVALID),
+        _hmcMode(),
         _antennaMode(MotionControl::MODE_UNDEFINED),
         _ins1WatchThread(*this, 1),
         _ins2WatchThread(*this, 2),
@@ -65,26 +65,24 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _vPulseCount(0),
         _ins1Count(0),
         _ins2Count(0),
-        _lastGeorefTime(0)
+        _lastGeorefTime(0),
+        _polMode(IWRF_POL_MODE_NOT_SET),
+        _xmitRcvMode(IWRF_XMIT_RCV_MODE_NOT_SET)
 {
 
   // initialize
-
   _queueSize = _config.merge_queue_size();
   _iwrfServerTcpPort = _config.iwrf_server_tcp_port();
 
   // queues
-
   _qH = new CircBuffer<PulseData>(_queueSize);
   _qV = new CircBuffer<PulseData>(_queueSize);
 
-  // pulse and burst data for reading from queues
-
+  // received H and V data for a given pulse
   _pulseH = new PulseData;
   _pulseV = new PulseData;
 
   // iq data
-
   _nGates = 0;
   _pulseBuf = NULL;
   _iq = NULL;
@@ -93,18 +91,12 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _pulseMsgLen = 0;
 
   // status xml
-
   _xmlLen = 0;
   _statusBuf = NULL;
   _statusBufLen = 0;
   _statusMsgLen = 0;
-  
-  // I and Q count scaling factor to get power in mW easily:
-  // mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
-  _iqScaleForMw = _config.iqcount_scale_for_mw();
 
   // pulse seq num and times
-
   _pulseSeqNum = -1;
   _timeSecs = 0;
   _nanoSecs = 0;
@@ -115,7 +107,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
 
   // initialize IWRF calibration struct from the calibration file defined in
   // the config
-
   std::string errStr;
   if (_calib.readFromXmlFile(_config.calibration_file(), errStr) != 0) {
       ELOG << "Error reading calibration file '" <<
@@ -124,7 +115,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   }
 
   // initialize IWRF radar_info struct from config
-
   _packetSeqNum = 0;
 
   iwrf_radar_info_init(_radarInfo);
@@ -141,46 +131,32 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
           IWRF_MAX_RADAR_NAME - 1);
 
   // initialize IWRF ts_processing struct from config
-
   iwrf_ts_processing_init(_tsProc);
   _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
   _tsProc.xmit_phase_mode = IWRF_XMIT_PHASE_MODE_FIXED;
   _tsProc.prf_mode = IWRF_PRF_MODE_FIXED;
   _tsProc.pulse_type = IWRF_PULSE_TYPE_RECT;
-  _tsProc.prt_usec = _config.prt1() * 1.0e6;
-  _tsProc.prt2_usec = _config.prt2() * 1.0e6;
   _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
   _tsProc.burst_range_offset_m = 0.0;
   //   _tsProc.burst_range_offset_m =
   //     _config.burst_sample_delay() * lightSpeedMps / 2.0;
-  _tsProc.pulse_width_us = _config.tx_pulse_width() * 1.0e6;
-  const double SpeedOfLight = 2.99792458e8; // m/s
-  _tsProc.gate_spacing_m = _config.digitizer_sample_width() * SpeedOfLight / 2;
   _tsProc.start_range_m = _config.range_to_gate0_m(); // center of gate 0 in meters
   _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
 
-  // initialize pulse header
+  // these are variable, so can't be set to anything sensible here
+  _tsProc.prt_usec = NAN;
+  _tsProc.prt2_usec = NAN;
+  _tsProc.pulse_width_us = NAN;
+  _tsProc.gate_spacing_m = NAN;
 
+  // initialize pulse header
   iwrf_pulse_header_init(_pulseHdr);
 
-  /// PRT mode
-
-  _staggeredPrt = false;
-  if (_config.staggered_prt() != HcrDrxConfig::UNSET_BOOL) {
-    _staggeredPrt = _config.staggered_prt();
-  }
-  _prt1 = 1.0e-3;
-  if (_config.prt1() != HcrDrxConfig::UNSET_DOUBLE) {
-    _prt1 = _config.prt1();
-  }
-  
   /// beam angles
-  
   _azimuthDeg = 0.0;
   _elevationDeg = 0.0;
 
   /// angle corrections
-
   _rollCorr = 0.0;
   _pitchCorr = 0.0;
   _headingCorr = 0.0;
@@ -189,42 +165,28 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _rotationCorr = 0.0;
 
   /// simulation of antenna angles
-
   _simAntennaAngles = false;
   _simNElev = 10;
   _simStartElev = 0.5;
   _simDeltaElev = 1.0;
   _simAzRate = 10.0;
-  if (_config.simulate_antenna_angles() != HcrDrxConfig::UNSET_BOOL) {
-    _simAntennaAngles = _config.simulate_antenna_angles();
-  }
-  if (_config.sim_n_elev() != HcrDrxConfig::UNSET_INT) {
-    _simNElev = _config.sim_n_elev();
-  }
-  if (_config.sim_start_elev() != HcrDrxConfig::UNSET_DOUBLE) {
-    _simStartElev = _config.sim_start_elev();
-  }
-  if (_config.sim_delta_elev() != HcrDrxConfig::UNSET_DOUBLE) {
-    _simDeltaElev = _config.sim_delta_elev();
-  }
-  if (_config.sim_az_rate() != HcrDrxConfig::UNSET_DOUBLE) {
-    _simAzRate = _config.sim_az_rate();
-  }
+  _simAntennaAngles = _config.simulate_antenna_angles();
+  _simNElev = _config.sim_n_elev();
+  _simStartElev = _config.sim_start_elev();
+  _simDeltaElev = _config.sim_delta_elev();
+  _simAzRate = _config.sim_az_rate();
   _simElev = _simStartElev;
   _simAz = 0.0;
   _simVolNum = 0;
   _simSweepNum = 0;
 
   // IWRF EXPORT
-
   // server
-
   _serverIsOpen = false;
   _sock = NULL;
   _newClient = false;
 
   // output fmq
-
   _fmqPath = _config.iwrf_fmq_path();
   _fmqOpen = false;
   _firstFmqMessage = false;
@@ -238,7 +200,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
       ELOG << "  Will open TCP server instead";
     }
   }
-  
+
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
   _statusTimer = new QTimer();
@@ -256,7 +218,7 @@ IwrfExport::~IwrfExport()
 
   // Clean up allocated memory
   delete(_statusTimer);
-  
+
   if (_sock && _sock->isOpen()) {
     _sock->close();
   }
@@ -277,26 +239,21 @@ IwrfExport::~IwrfExport()
 /////////////////////////////////////////////////////////////////////////////
 //
 // Thread run method
-
 void IwrfExport::run()
 
 {
   // Since we have no event loop,
   // allow thread termination via the terminate() method.
-
   setTerminationEnabled(true);
-  
-  // start the loop
 
+  // start the loop
   bool metaDataInitialized = false;
   while (true) {
 
     // Process pending Qt events for this thread
-      
     QCoreApplication::processEvents();
 
     // read in next pulse
-
     _readNextPulse();
 
     if (!_config.export_iwrf_via_fmq()) {
@@ -307,11 +264,9 @@ void IwrfExport::run()
     }
 
     // determine number of gates
-
     int nGates = _pulseH->getNGates();
-    
+
     // should we send meta-data?
-    
     bool sendMeta = false;
     if (_newClient || _firstFmqMessage) {
       sendMeta = true;
@@ -326,6 +281,11 @@ void IwrfExport::run()
       sendMeta = true;
       _hmcMode = _monitor.pmc730Status().hmcMode();
     }
+    if (_pulseH->getPolMode() != _polMode || _pulseH->getXmitRcvMode() != _xmitRcvMode) {
+      sendMeta = true;
+      _polMode =_pulseH->getPolMode();
+      _xmitRcvMode = _pulseH->getXmitRcvMode();
+    }
     if (_monitor.motionControlStatus().antennaMode != _antennaMode) {
       sendMeta = true;
       _antennaMode = _monitor.motionControlStatus().antennaMode;
@@ -339,48 +299,42 @@ void IwrfExport::run()
       _sendIwrfMetaData();
       metaDataInitialized = true;
     }
-    
+
     // Generate any IWRF georef packet(s) with times before this pulse, waiting
     // for new INS data for a while if necessary.
     _doIwrfGeorefsBeforePulse();
 
     // assemble and send out the IWRF pulse packet
-    
     if (metaDataInitialized) {
       _assembleIwrfPulsePacket();
       _sendIwrfPulsePacket();
     }
-    
+
     // If it's been long enough since our last status packet, generate a new
     // one now.
-
     if (metaDataInitialized) {
       if (sendMeta) {
         _assembleStatusPacket();
         _sendIwrfStatusXmlPacket();
       }
     }
-    
-  } // while
 
+  } // while
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // read the next set of pulse data
-
 void IwrfExport::_readNextPulse()
 {
 
   PMU_auto_register("reading pulses");
 
   // read next pulse data for each channel
-
   _readNextH();
   _readNextV();
-  
+
   // synchronize the pulses and burst to have same sequence number,
   // reading extra pulses as required
-  
   _syncPulses();
 
   if (_pulseSeqNum < 0) {
@@ -397,7 +351,7 @@ void IwrfExport::_readNextPulse()
   _pulseSeqNum = _pulseH->getPulseSeqNum();
   _timeSecs = _pulseH->getTimeSecs();
   _nanoSecs = _pulseH->getNanoSecs();
-  
+
   if (! (_pulseSeqNum % 10000)) {
     DLOG << "got 10000 pulses, seqNum, secs, nanoSecs: "
          << _pulseSeqNum << ", " << _timeSecs << ", " << _nanoSecs;
@@ -416,12 +370,10 @@ void IwrfExport::_readNextPulse()
 /////////////////////////////////////////////////////////////////////////////
 // synchronize the pulses and burst to have same sequence number,
 // reading extra pulses as required
-
 void IwrfExport::_syncPulses()
 {
-  
+
   // compute the max pulse seq num
-  
   int64_t seqNumH = _pulseH->getPulseSeqNum();
   int64_t seqNumV = _pulseV->getPulseSeqNum();
   int64_t maxSeqNum = seqNumH;
@@ -430,14 +382,12 @@ void IwrfExport::_syncPulses()
   }
 
   // read until all sequence numbers match
-
   bool done = false;
   while (!done) {
 
     done = true;
 
     // H channel
-
     if (seqNumH < maxSeqNum) {
       _readNextH();
       seqNumH = _pulseH->getPulseSeqNum();
@@ -448,7 +398,6 @@ void IwrfExport::_syncPulses()
     }
 
     // V channel
-
     if (seqNumV < maxSeqNum) {
       _readNextV();
       seqNumV = _pulseV->getPulseSeqNum();
@@ -459,14 +408,12 @@ void IwrfExport::_syncPulses()
     }
 
   } // while
-
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // write data for next H pulse
 // called by HcrDrxPub threads
 // Returns pulse data object for recycling
-
 PulseData *IwrfExport::writePulseH(PulseData *val)
 {
   _hPulseCount++;
@@ -477,7 +424,6 @@ PulseData *IwrfExport::writePulseH(PulseData *val)
 // write data for next V pulse
 // called by HcrDrxPub threads
 // Returns pulse data object for recycling
-
 PulseData *IwrfExport::writePulseV(PulseData *val)
 {
   _vPulseCount++;
@@ -486,13 +432,12 @@ PulseData *IwrfExport::writePulseV(PulseData *val)
 
 /////////////////////////////////////////////////////////////////////////////
 // read the next H data
-
 void IwrfExport::_readNextH()
 {
   // Our old pulse goes back for reuse
   PulseData *replacementElement = _pulseH;
   _pulseH = NULL;
-  
+
   // Loop until we get a new pulse from the circular buffer
   for (int ntries = 0; _pulseH == NULL; ntries++) {
     if (ntries != 0) {
@@ -504,7 +449,6 @@ void IwrfExport::_readNextH()
 
 /////////////////////////////////////////////////////////////////////////////
 // read the next V data
-
 void IwrfExport::_readNextV()
 {
   // Our old pulse goes back for reuse
@@ -522,12 +466,10 @@ void IwrfExport::_readNextV()
 
 /////////////////////////////////////////////////////////////////////////////
 // send the IWRF meta data
-
 int IwrfExport::_sendIwrfMetaData()
 {
 
   // set seq num and time in packet headers
-
   _radarInfo.packet.seq_num = _packetSeqNum++;
   _radarInfo.packet.time_secs_utc = _timeSecs;
   _radarInfo.packet.time_nano_secs = _nanoSecs;
@@ -537,28 +479,20 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.time_nano_secs = _nanoSecs;
 
   // set our polarization and calibration modes for processing
-  
   switch (_hmcMode) {
-    case HcrPmc730::HMC_MODE_V_HV:
-    case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
-    case HcrPmc730::HMC_MODE_BENCH_TEST:
-    case HcrPmc730::HMC_MODE_UNUSED_7:
+    case HmcMode::TRANSMIT:
+    case HmcMode::TRANSMIT_ATTENUATED:
+        _tsProc.xmit_rcv_mode = _xmitRcvMode;
+        _tsProc.pol_mode = _polMode;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
+        break;
+    case HmcMode::BENCH_TEST:
+    case HmcMode::V_HV_ISOL_NOISE:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_MODE_H_HV:
-    case HcrPmc730::HMC_MODE_H_HV_ATTENUATED:
-        _tsProc.xmit_rcv_mode = IWRF_H_ONLY_FIXED_HV;
-        _tsProc.pol_mode = IWRF_POL_MODE_H;
-        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
-        break;
-    case HcrPmc730::HMC_MODE_HV_HV:
-        _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
-        _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
-        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
-        break;
-    case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
+    case HmcMode::NOISE_SOURCE_CAL:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
@@ -572,7 +506,6 @@ int IwrfExport::_sendIwrfMetaData()
   }
 
   // assemble the calibration struct
-
   iwrf_calibration_t calibStruct = _calib.getStruct();
   calibStruct.packet.seq_num = _packetSeqNum++;
   calibStruct.packet.time_secs_utc = _timeSecs;
@@ -591,11 +524,10 @@ int IwrfExport::_sendIwrfMetaData()
     _outputMsg.addPart(IWRF_SCAN_SEGMENT_ID, sizeof(_scanSegment), &_scanSegment);
 
   } else {
-    
+
     // publish individual messages for each struct to our socket
-    
     bool closeSocket = false;
-    
+
     if (_sock && _sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
       ELOG << "_sendIwrfMetaData() writing IWRF_RADAR_INFO: " << _sock->getErrStr();
       closeSocket = true;
@@ -609,7 +541,7 @@ int IwrfExport::_sendIwrfMetaData()
       ELOG << "_sendIwrfMetaData() writing IWRF_SCAN_SEGMENT: " << _sock->getErrStr();
       closeSocket = true;
     }
-    
+
     if (closeSocket) {
       _closeSocketToClient();
       return -1;
@@ -623,42 +555,29 @@ int IwrfExport::_sendIwrfMetaData()
 
 /////////////////////////////////////////////////////////////////////////////
 // assemble IWRF pulse packet
-
 void IwrfExport::_assembleIwrfPulsePacket()
 {
 
   // allocate space for IQ data
-  
   _allocPulseBuf();
 
   // load up IQ data
+  memcpy(_iq, _pulseH->getIq(), _pulseH->getNGates() * sizeof(IQData));
 
-  memcpy(_iq, _pulseH->getIq(), _pulseH->getNGates() * 2 * sizeof(int16_t));
+  memcpy(_iq + _nGates, _pulseV->getIq(), _pulseV->getNGates() * sizeof(IQData));
 
-  memcpy(_iq + (_nGates * 2),
-         _pulseV->getIq(), _pulseV->getNGates() * 2 * sizeof(int16_t));
-  
   // pulse header
-  
   _pulseHdr.packet.len_bytes = _pulseMsgLen;
   _pulseHdr.packet.seq_num = _packetSeqNum++;
   _pulseHdr.packet.time_secs_utc = _timeSecs;
   _pulseHdr.packet.time_nano_secs = _nanoSecs;
 
   _pulseHdr.pulse_seq_num = _pulseSeqNum;
+  _pulseHdr.prt = _pulseH->getCurrentPrt();
 
-  if (_staggeredPrt) {
-     _pulseHdr.prt =
-       (double) (_timeSecs - _prevTimeSecs) +
-       (double) (_nanoSecs - _prevNanoSecs) * 1.0e-9;
-  } else {
-    _pulseHdr.prt = _prt1;
-  }
-
-  _pulseHdr.pulse_width_us = _tsProc.pulse_width_us;
   _pulseHdr.n_gates = _nGates;
   _pulseHdr.n_channels = NCHANNELS;
-  _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI16;
+  _pulseHdr.iq_encoding = _pulseH->getEncoding();
   // Pulse transmit polarization should be the same in both the H and V
   // receiver data. We just get it from _pulseH receiver data.
   _pulseHdr.hv_flag =
@@ -668,11 +587,18 @@ void IwrfExport::_assembleIwrfPulsePacket()
   _pulseHdr.iq_offset[0] = 0;
   _pulseHdr.iq_offset[1] = _nGates * 2;
   _pulseHdr.iq_offset[2] = _nGates * 4;
-  _pulseHdr.scale = 1.0 / _iqScaleForMw;
-  _pulseHdr.offset = 0.0;
+  _pulseHdr.scale = _pulseH->getScale();
+  _pulseHdr.offset = _pulseH->getOffset();
   _pulseHdr.n_gates_burst = 0;
   _pulseHdr.start_range_m = _tsProc.start_range_m;
-  _pulseHdr.gate_spacing_m = _tsProc.gate_spacing_m;
+  const double SpeedOfLight = 2.99792458e8; // m/s
+  _pulseHdr.gate_spacing_m = _pulseH->getSampleWidth() * SpeedOfLight / 2.0;
+  _pulseHdr.pulse_width_us = _pulseH->getTxPulseWidth() * 1.0e6;
+
+  _tsProc.gate_spacing_m = _pulseHdr.gate_spacing_m;
+  _tsProc.pulse_width_us =_pulseHdr.pulse_width_us;
+  _tsProc.prt_usec = _pulseH->getPrt1() * 1.0e6;
+  _tsProc.prt2_usec = _pulseH->getPrt2() * 1.0e6;
 
   if (_simAntennaAngles) {
     double dAz = _pulseHdr.prt * _simAzRate;
@@ -698,14 +624,13 @@ void IwrfExport::_assembleIwrfPulsePacket()
     _pulseHdr.elevation = _elevationDeg;
     _pulseHdr.azimuth = _azimuthDeg;
   }
-  
+
   memcpy(_pulseBuf, &_pulseHdr, sizeof(_pulseHdr));
-  
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // send out the IWRF pulse packet
-
 int IwrfExport::_sendIwrfPulsePacket()
 {
 
@@ -713,7 +638,7 @@ int IwrfExport::_sendIwrfPulsePacket()
 
     _outputMsg.addPart(IWRF_PULSE_HEADER_ID, _pulseMsgLen, _pulseBuf);
     _writeToOutputFmq();
-    
+
   } else {
 
     bool closeSocket = false;
@@ -723,61 +648,56 @@ int IwrfExport::_sendIwrfPulsePacket()
       ELOG << "  " << _sock->getErrStr();
       closeSocket = true;
     }
-    
+
     if (closeSocket) {
       _closeSocketToClient();
-      return -1; 
+      return -1;
     }
 
   }
-  
+
   return 0;
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // allocate pulse buffer
-
 void IwrfExport::_allocPulseBuf()
 {
 
   _pulseMsgLen =
-    sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * 2 * sizeof(int16_t));
+    sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * sizeof(IQData));
 
   if (_pulseMsgLen > _pulseBufLen) {
-    
+
     if (_pulseBuf) {
       delete[] _pulseBuf;
     }
 
     _pulseBufLen = _pulseMsgLen;
     _pulseBuf = new char[_pulseBufLen];
-    _iq = reinterpret_cast<int16_t *>(_pulseBuf + sizeof(iwrf_pulse_header));
+    _iq = reinterpret_cast<IQData *>(_pulseBuf + sizeof(iwrf_pulse_header));
 
   }
 
-  memset(_iq, 0, _nGates * NCHANNELS * 2 * sizeof(int16_t));
+  memset(_iq, 0, _nGates * NCHANNELS * sizeof(IQData));
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // assemble IWRF status packet
-
 void IwrfExport::_assembleStatusPacket()
 
 {
 
   // assemble the xml
-
   string xmlStr = _assembleStatusXml();
   _xmlLen = ((xmlStr.size() + 7) / 8) * 8; // round up to 8-bytes
-  
-  // allocate buffer
 
+  // allocate buffer
   _allocStatusBuf();
 
   // set header
-
   iwrf_status_xml_t hdr;
   iwrf_status_xml_init(hdr);
   hdr.xml_len = _xmlLen;
@@ -785,18 +705,16 @@ void IwrfExport::_assembleStatusPacket()
   hdr.packet.seq_num = _packetSeqNum++;
 
   // copy data into buffer
-  
   memset(_statusBuf, 0, _statusBufLen);
   memcpy(_statusBuf, &hdr, sizeof(iwrf_status_xml_t));
   memcpy(_statusBuf + sizeof(iwrf_status_xml_t),
          xmlStr.c_str(), xmlStr.size());
-  
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // assemble status XML
 // returns the XML string
-
 string IwrfExport::_assembleStatusXml()
 
 {
@@ -804,12 +722,10 @@ string IwrfExport::_assembleStatusXml()
   string xml;
 
   // main block
-
   xml += TaXml::writeStartTag("HcrStatus", 0);
 
   ///////////////////////////////////////////////////////
   // transmit block
-  
   xml += TaXml::writeStartTag("HcrTransmitterStatus", 1);
 
   const XmitStatus &xs = _monitor.transmitterStatus();
@@ -819,14 +735,12 @@ string IwrfExport::_assembleStatusXml()
 
   ///////////////////////////////////////////////////////
   // receive block
-
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
   // Start with status from the PMC-730 card
   const HcrPmc730Status pmc730Status = _monitor.pmc730Status();
-  
+
   // ints
-  
   xml += TaXml::writeInt
     ("HmcMode", 2, pmc730Status.hmcMode());
 
@@ -834,7 +748,6 @@ string IwrfExport::_assembleStatusXml()
     ("EmsErrorCount", 2, pmc730Status.emsErrorCount());
 
   // floats
-
   xml += TaXml::writeDouble
     ("DetectedRfPower", 2, pmc730Status.detectedRfPower());
 
@@ -894,7 +807,6 @@ string IwrfExport::_assembleStatusXml()
     ("PsVoltage", 2, pmc730Status.psVoltage());
 
   // booleans
-
   xml += TaXml::writeBoolean
     ("ApsValveOpen", 2, pmc730Status.apsValveOpen());
 
@@ -909,7 +821,7 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("ModPulseDisabled", 2, pmc730Status.modPulseDisabled());
-  
+
   xml += TaXml::writeBoolean
     ("RdsXmitterFilamentOn", 2, pmc730Status.rdsXmitterFilamentOn());
 
@@ -918,7 +830,7 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("RadarPowerError", 2, pmc730Status.radarPowerError());
-  
+
   xml += TaXml::writeBoolean
     ("EmsError1", 2, pmc730Status.emsError1());
 
@@ -950,12 +862,10 @@ string IwrfExport::_assembleStatusXml()
     ("PentekBoardTemp", 2, drxStatus.pentekBoardTemp());
 
   // end receive status
-
   xml += TaXml::writeEndTag("HcrReceiverStatus", 1);
 
   ///////////////////////////////////////////////////////
   // HcrIns1Data and HcrIns2Data blocks
-
   for (int insNum = 1; insNum <= 2; insNum++) {
 
     std::ostringstream oss;
@@ -1003,7 +913,6 @@ string IwrfExport::_assembleStatusXml()
   }
 
   // differences between INSs
-
   double insDeltaTime = fabs(_latestIns1Data.time3500 - _latestIns2Data.time3500);
   if (insDeltaTime > 9999) {
     insDeltaTime = 9999;
@@ -1027,7 +936,6 @@ string IwrfExport::_assembleStatusXml()
 
   ////////////////////////////////////////////////
   // close
-
   xml += TaXml::writeEndTag("HcrStatus", 0);
 
   return xml;
@@ -1036,29 +944,28 @@ string IwrfExport::_assembleStatusXml()
 
 /////////////////////////////////////////////////////////////////////////////
 // send out the IWRF status packet
-
 int IwrfExport::_sendIwrfStatusXmlPacket()
 
 {
-    
+
   if (_fmqOpen) {
-    
+
     _outputMsg.addPart(IWRF_STATUS_XML_ID, _statusMsgLen, _statusBuf);
 
   } else {
-    
+
     bool closeSocket = false;
-    
+
     if (_sock && _sock->writeBuffer(_statusBuf, _statusMsgLen)) {
       ELOG << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()";
       ELOG << "  Writing status xml packet";
       ELOG << "  " << _sock->getErrStr();
       closeSocket = true;
     }
-    
+
     if (closeSocket) {
       _closeSocketToClient();
-      return -1; 
+      return -1;
     }
 
   }
@@ -1069,7 +976,6 @@ int IwrfExport::_sendIwrfStatusXmlPacket()
 
 /////////////////////////////////////////////////////////////////////////////
 // allocate status buffer
-
 void IwrfExport::_allocStatusBuf()
 {
 
@@ -1081,7 +987,7 @@ void IwrfExport::_allocStatusBuf()
     _statusBufLen = _statusMsgLen;
     _statusBuf = new char[_statusBufLen];
   }
-  
+
 }
 
 //////////////////////////////////////////////////
@@ -1093,8 +999,8 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   _insAccessLock.lockForRead();
 
   // If INS deque is empty and we haven't already marked INS data as
-  // delayed, busy wait for a bit to see if more will come in. We need to do 
-  // this to allow for occasional times when INS data arrive later than the 
+  // delayed, busy wait for a bit to see if more will come in. We need to do
+  // this to allow for occasional times when INS data arrive later than the
   // associated pulse data.
   bool waitForIns1 = (_ins1Deque.empty() && ! _ins1DataDelayed);
   bool waitForIns2 = (_ins2Deque.empty() && ! _ins2DataDelayed);
@@ -1166,7 +1072,6 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   int writeCount;
   for (writeCount = 0; true; writeCount++) {
       // Find the INS deque with the earliest entry time
-
       // Get the number of the INS (1 or 2) with the earliest deque entry
       int insWithEarliest = 0;
 
@@ -1213,17 +1118,17 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
 
       // Initialize the georef packet
       iwrf_platform_georef_init(_radarGeoref);
-      
+
       // Time tag the georef packet with the C-MIGITS 3512 message time
-      if ((earliest.time3512 % 1000) / 10 == 0) {
-          DLOG << "New georef tagged " << (earliest.time3512 / 1000) % 60 <<
+      if (fmod(earliest.time3512, 1000) / 10 == 0) {
+          DLOG << "New georef tagged " << fmod(earliest.time3512 / 1000, 60) <<
                   "." << std::setw(3) << std::setfill('0') <<
-                  earliest.time3512 % 1000 << " for pulse tagged " <<
+                  fmod(earliest.time3512, 1000) << " for pulse tagged " <<
                   _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
                   _nanoSecs / 1000000;
       }
       _radarGeoref.packet.time_secs_utc = earliest.time3512 / 1000;
-      _radarGeoref.packet.time_nano_secs = (earliest.time3512 % 1000) * 1000000;
+      _radarGeoref.packet.time_nano_secs = fmod(earliest.time3512, 1000) * 1000000;
 
       // The unit_num member is kind of funky: unit_num = 0 indicates that this
       // is the "primary" INS (i.e., the one used by MotionControlDaemon), and
@@ -1282,39 +1187,39 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       for (int i = 0; i < nUnused; i++) {
           _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
       }
-      
+
       // Log unexpected time differences between georef packets
       uint64_t thisGeorefTime = earliest.time3512;
       int64_t deltaMs = _lastGeorefTime ? thisGeorefTime - _lastGeorefTime : 0;
       if (deltaMs < 0) {
-          QDateTime qLastTime = 
+          QDateTime qLastTime =
                   QDateTime::fromTime_t(_lastGeorefTime / 1000).addMSecs(_lastGeorefTime % 1000);
           ELOG << "Georef time went backward " << -deltaMs << " ms after " <<
-                  qLastTime.toString("hh:mm:ss.zzz").toStdString();    
-      } else if (deltaMs > 11) { // nominal 10 ms difference between 3512 
+                  qLastTime.toString("hh:mm:ss.zzz").toStdString();
+      } else if (deltaMs > 11) { // nominal 10 ms difference between 3512
                                  // time tags is sometimes 9 or 11 ms.
-          QDateTime qLastTime = 
+          QDateTime qLastTime =
                   QDateTime::fromTime_t(_lastGeorefTime / 1000).addMSecs(_lastGeorefTime % 1000);
           WLOG << "Georef time jumped forward " << deltaMs << " ms after " <<
-                  qLastTime.toString("hh:mm:ss.zzz").toStdString();                  
+                  qLastTime.toString("hh:mm:ss.zzz").toStdString();
       }
-      
+
       _lastGeorefTime = thisGeorefTime;
-      
+
       // compute elevation and azimuth
       _computeRadarAngles();
-      
+
       // send the packet
       _sendIwrfGeorefPacket();
-      
+
       // get the read lock before looking at the INS deque-s again
       _insAccessLock.lockForRead();
   }
-  
+
   // Log a warning if we wrote more than one georef packet per INS and we are
   // not on the first pulse.
   if (writeCount > 2) {
-      WLOG << "Wrote " << writeCount << 
+      WLOG << "Wrote " << writeCount <<
               " consecutive georef packets before pulse " << _pulseSeqNum;
   }
 }
@@ -1326,9 +1231,8 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
 //
 // see Wen-Chau Lee's paper
 // "Mapping of the Airborne Doppler Radar Data"
-
 void IwrfExport::_computeRadarAngles()
-  
+
 {
 
   double R = (_radarGeoref.roll_deg + _rollCorr) * DEG_TO_RAD;
@@ -1336,13 +1240,13 @@ void IwrfExport::_computeRadarAngles()
   double H = (_radarGeoref.heading_deg + _headingCorr) * DEG_TO_RAD;
   double D = (_radarGeoref.drift_angle_deg + _driftCorr) * DEG_TO_RAD;
   double T = H + D;
-  
+
   double sinP = sin(P);
   double cosP = cos(P);
   double sinD = sin(D);
   double cosD = cos(D);
-  
-  double theta_a = 
+
+  double theta_a =
     (_radarGeoref.rotation_angle_deg + _rotationCorr) * DEG_TO_RAD;
   double tau_a =
     (_radarGeoref.tilt_deg + _tiltCorr) * DEG_TO_RAD;
@@ -1350,57 +1254,54 @@ void IwrfExport::_computeRadarAngles()
   double cos_tau_a = cos(tau_a);
   double sin_theta_rc = sin(theta_a + R); /* roll corrected rotation angle */
   double cos_theta_rc = cos(theta_a + R); /* roll corrected rotation angle */
-  
+
   double xsubt = (cos_theta_rc * sinD * cos_tau_a * sinP
                   + cosD * sin_theta_rc * cos_tau_a
                   -sinD * cosP * sin_tau_a);
-  
+
   double ysubt = (-cos_theta_rc * cosD * cos_tau_a * sinP
                   + sinD * sin_theta_rc * cos_tau_a
                   + cosP * cosD * sin_tau_a);
-  
+
   double zsubt = (cosP * cos_tau_a * cos_theta_rc
                   + sinP * sin_tau_a);
-  
+
   // _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
   // _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
   double lambda_t = atan2(xsubt, ysubt);
   double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
   double elevationRad = asin(zsubt);
-  
+
   _elevationDeg = elevationRad * RAD_TO_DEG;
   _azimuthDeg = azimuthRad * RAD_TO_DEG;
-  
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // send the IWRF georef packet
-
 int IwrfExport::_sendIwrfGeorefPacket()
 {
-    
-  // set seq num in packet header
 
+  // set seq num in packet header
   _radarGeoref.packet.seq_num = _packetSeqNum++;
 
   // write the message
-  
   if (_fmqOpen) {
-    
+
     _outputMsg.addPart(IWRF_PLATFORM_GEOREF_ID,
                        sizeof(_radarGeoref), &_radarGeoref);
-    
+
   } else {
-    
+
     bool closeSocket = false;
-    
+
     if (_sock && _sock->writeBuffer(&_radarGeoref, sizeof(_radarGeoref))) {
       ELOG << "ERROR - IwrfExport::_sendIwrfGeorefPacket()";
       ELOG << "  Writing IWRF_RADAR_GEOREF";
       ELOG << "  " << _sock->getErrStr();
       closeSocket = true;
     }
-    
+
     if (closeSocket) {
       _closeSocketToClient();
       return -1;
@@ -1415,7 +1316,6 @@ int IwrfExport::_sendIwrfGeorefPacket()
 //////////////////////////////////////////////////
 // open server
 // Returns 0 on success, -1 on failure
-
 int IwrfExport::_openServer()
 
 {
@@ -1443,7 +1343,6 @@ int IwrfExport::_openServer()
 //////////////////////////////////////////////////
 // check we have an open socket to client
 // Returns 0 on success, -1 on failure
-
 int IwrfExport::_checkClient()
 
 {
@@ -1453,14 +1352,12 @@ int IwrfExport::_checkClient()
   }
 
   // check status
-
   if (_sock && _sock->isOpen()) {
     _newClient = false;
     return 0;
   }
 
   // get a client if one is out there
-
   _sock = _server.getClient(0);
 
   if (_sock == NULL) {
@@ -1470,12 +1367,11 @@ int IwrfExport::_checkClient()
 
   DLOG << "====>> Connected to client <<====";
   return 0;
-  
+
 }
 
 //////////////////////////////////////////////////
 // close socket to client
-
 void IwrfExport::_closeSocketToClient()
 
 {
@@ -1495,12 +1391,10 @@ void IwrfExport::_closeSocketToClient()
 
 //////////////////////////////////////////////////
 // Accept incoming new C-MIGITS data
-
 void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
 
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
-
   QWriteLocker wLocker(&_insAccessLock);
 
   // Get the previous data, then store the new latest data for use in
@@ -1519,7 +1413,7 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
               "Expected 1 or 2!";
       abort();
   }
-  
+
   // Log anything where INS latency is longer than current pulse latency
   struct timeval tvNow;
   gettimeofday(&tvNow, 0);
@@ -1532,11 +1426,11 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
   }
   if (insLagMs > pulseLagMs) {
       if (pulseLagMs < insLagMs) {
-          WLOG << "INS" << insNum << " data latency (" << insLagMs << 
+          WLOG << "INS" << insNum << " data latency (" << insLagMs <<
                   " ms) > pulse latency (" << pulseLagMs << " ms)";
       }
   }
-  
+
   // Log gaps in the INS data
   uint64_t lastTime = prevData.time3512;
   uint64_t thisTime = data.time3512;
@@ -1546,8 +1440,8 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
       WLOG << "INS" << insNum << " time went backwards by " << -deltaMs <<
               " ms after " << qLastTime.toString("hh:mm:ss.zzz").toStdString();
   } else if (deltaMs > 11) {
-      // Nominal time between 100 Hz data is 10 ms, but 1 ms resolution in 
-      // time stamps means we sometimes see 9 or 11 ms. Anything over 11 ms 
+      // Nominal time between 100 Hz data is 10 ms, but 1 ms resolution in
+      // time stamps means we sometimes see 9 or 11 ms. Anything over 11 ms
       // is notable, though...
       WLOG << "INS data gap of " << deltaMs << " ms after " <<
               qLastTime.toString("hh:mm:ss.zzz").toStdString();
@@ -1583,7 +1477,6 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
 
 //////////////////////////////////////////////////
 // Log status
-
 void IwrfExport::_logStatus() {
   ILOG << "new count for INS1: " << _ins1Count << ", INS2: " << _ins2Count;
   _hPulseCount = 0;
@@ -1595,13 +1488,11 @@ void IwrfExport::_logStatus() {
 ///////////////////////////////////////
 // open the output FMQ
 // returns 0 on success, -1 on failure
-
 int IwrfExport::_openOutputFmq()
 
 {
 
   // initialize the output FMQ
-  
   if (_outputFmq.initReadWrite
       (_fmqPath.c_str(), "dowdrx",
        false, // set debug?
@@ -1623,7 +1514,6 @@ int IwrfExport::_openOutputFmq()
   }
 
   // initialize message
-  
   _outputMsg.clearAll();
   _outputMsg.setType(0);
 
@@ -1634,16 +1524,13 @@ int IwrfExport::_openOutputFmq()
 ///////////////////////////////////////
 // write to output FMQ if ready
 // returns 0 on success, -1 on failure
-
 int IwrfExport::_writeToOutputFmq(bool force)
 
 {
 
   // if the message is large enough, write to the FMQ
-  
-  int nParts = _outputMsg.getNParts();
+  uint nParts = _outputMsg.getNParts();
   // DLOG << "==>> WriteToOutputFmq, nparts: " << nParts;
-
   if (!force && nParts < _config.iwrf_fmq_npackets_per_message()) {
     return 0;
   }
@@ -1668,7 +1555,6 @@ int IwrfExport::_writeToOutputFmq(bool force)
 
 ///////////////////////////////////////
 // Assemble our iwrf_scan_segment_t packet with current scanning/pointing mode
-
 void IwrfExport::_assembleIwrfScanSegment()
 
 {
@@ -1709,13 +1595,5 @@ void IwrfExport::_assembleIwrfScanSegment()
 //        ELOG << "Raising SIGINT to exit the program";
 //        raise(SIGINT);
     }
-
-    // XXX This piece was inherited from the apardrx code. I don't think it's
-    // necessary for HCR.
-//    // We use the polarization mode name as the segment name for ease in
-//    // configuring HawkEye displays
-//    strncpy(_scanSegment.segment_name,
-//            APAR_Config::PolarizationModeName(_config.polarization_mode()).c_str(),
-//            IWRF_MAX_SEGMENT_NAME - 1);
 
 }

@@ -1,0 +1,40 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x0",
+      "device": "xczu27dr-ffvg1517-1-e",
+      "name": "design_1",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2019.2"
+    },
+    "design_tree": {
+      "cmac_usplus_0": ""
+    },
+    "components": {
+      "cmac_usplus_0": {
+        "vlnv": "xilinx.com:ip:cmac_usplus:3.0",
+        "xci_name": "design_1_cmac_usplus_0_0",
+        "parameters": {
+          "CMAC_CAUI4_MODE": {
+            "value": "1"
+          },
+          "CMAC_CORE_SELECT": {
+            "value": "CMACE4_X0Y0"
+          },
+          "GT_GROUP_SELECT": {
+            "value": "X0Y4~X0Y7"
+          },
+          "GT_REF_CLK_FREQ": {
+            "value": "156.25"
+          },
+          "NUM_LANES": {
+            "value": "4x25"
+          },
+          "RX_CHECK_ACK": {
+            "value": "1"
+          }
+        }
+      }
+    }
+  }
+}

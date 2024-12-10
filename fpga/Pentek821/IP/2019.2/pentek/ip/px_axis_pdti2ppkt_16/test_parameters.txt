@@ -1,0 +1,28 @@
+1
+1
+true
+00000000
+000001ff
+00000100
+00000000
+00000200
+00000000
+00000000
+00001000
+
+Parameters:
+    MODE_SEL                  : std_ulogic_vector(3 downto 0);
+    DATA_MODE_SEL             : std_ulogic_vector(3 downto 0);
+    STAY_ARMED                : boolean; -- false - don't stay armed at end of triggered gate, true - Stay armed at end of triggered gate
+    TRIGGER_DLY_VALUE         : std_ulogic_vector(31 downto 0); -- Value to load to delay counter
+    TRIGGER_LENGTH_VALUE      : std_ulogic_vector(31 downto 0); -- Value to load to sample counter 
+    TIMESTAMP_START_LWR_VALUE : std_ulogic_vector(31 downto 0);
+    TIMESTAMP_START_UPR_VALUE : std_ulogic_vector(31 downto 0);
+    TIMESTAMP_END_LWR_VALUE   : std_ulogic_vector(31 downto 0);
+    TIMESTAMP_END_UPR_VALUE   : std_ulogic_vector(31 downto 0);
+    rate_div                  : integer   -- number of clock cycles per valid input -1  
+    TRIG_SPACE                : std_ulogic_vector(31 downto 0); -- space between triggers
+
+Enter logic vectors in hex format without 0x prefix -- example 0xC1234567 is entered C1234567.
+Enter logic vectors in hex format without 0x prefix -- example 0x3 is entered 3.
+Enter boolean values as true or false

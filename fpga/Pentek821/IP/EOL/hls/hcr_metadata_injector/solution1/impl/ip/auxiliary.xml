@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="hcr_metadata_injector" xd:componentRef="hcr_metadata_injector" xd:initiationInterval="x" xd:clockPeriod="3.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="i_data.data" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="64"/>
+  <xd:arg xd:name="i_data.keep" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="8"/>
+  <xd:arg xd:name="i_data.strb" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="8"/>
+  <xd:arg xd:name="i_data.user" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="i_data.last" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="i_data.id" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="i_data.dest" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="o_data.data" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:arg xd:name="o_data.keep" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="4"/>
+  <xd:arg xd:name="o_data.strb" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="4"/>
+  <xd:arg xd:name="o_data.user" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="128"/>
+  <xd:arg xd:name="o_data.last" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="o_data.id" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="o_data.dest" xd:originalName="o_data" xd:direction="out" xd:interfaceRef="o_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.def.prt[0]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="31:0" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.prt[1]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="63:32" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.num_pulses" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="95:64" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.block_post_time" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="127:96" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.control_flags" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="159:128" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.polarization_mode" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="191:160" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.filter_select_ch0" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="223:192" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.filter_select_ch1" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="255:224" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.filter_select_ch2" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="287:256" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.phase_table_begin" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="319:288" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.phase_table_end" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="351:320" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[0]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="383:352" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[1]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="415:384" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[2]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="447:416" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[3]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="479:448" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[4]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="511:480" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[5]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="543:512" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[6]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="575:544" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_offset[7]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="607:576" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[0]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="639:608" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[1]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="671:640" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[2]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="703:672" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[3]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="735:704" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[4]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="767:736" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[5]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="799:768" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[6]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="831:800" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.def.timer_width[7]" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="863:832" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.sequence_index" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="871:864" xd:dataWidth="8"/>
+  <xd:arg xd:name="pulse_metadata.num_samples" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="903:872" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.post_decimation" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="911:904" xd:dataWidth="8"/>
+  <xd:arg xd:name="pulse_metadata.phase_sample" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="943:912" xd:dataWidth="32"/>
+  <xd:arg xd:name="pulse_metadata.first_pulse_in_block" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="944:944" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.last_pulse_in_block" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="945:945" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.first_pulse_in_xfer" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="946:946" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.last_pulse_in_xfer" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="947:947" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.use_mag_phase" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.terminate" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="949:949" xd:dataWidth="1"/>
+  <xd:arg xd:name="*(pos_enc_0)" xd:originalName="pos_enc_0" xd:direction="in" xd:interfaceRef="pos_enc_0" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="32" xd:firstOut="2"/>
+  <xd:arg xd:name="*(pos_enc_1)" xd:originalName="pos_enc_1" xd:direction="in" xd:interfaceRef="pos_enc_1" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="32" xd:firstOut="2"/>
+  <xd:arg xd:name="*(flags)" xd:originalName="flags" xd:direction="in" xd:interfaceRef="flags" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16" xd:firstOut="2"/>
+  <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
+  <xd:resourceEstimates xd:LUT="20366" xd:FF="17540" xd:BRAM="13" xd:DSP="23"/>
+</xd:acceleratorMap>

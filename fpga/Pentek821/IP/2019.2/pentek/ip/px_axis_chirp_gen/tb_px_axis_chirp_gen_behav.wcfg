@@ -1,0 +1,1435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_axis_chirp_gen_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_axis_chirp_gen" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="12580000001fs"></ZoomEndTime>
+      <Cursor1Time time="11350000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="257"></NameColumnWidth>
+      <ValueColumnWidth column_width="89"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="351" />
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axis_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axis_ptctl_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_ptctl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ptctl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/s_axis_ptctl_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_ptctl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ptctl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/m_axis_pd_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pd_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pd_tdata[31:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/m_axis_pd_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pd_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pd_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/samples_per_cycle" type="other">
+      <obj_property name="ElementShortName">samples_per_cycle</obj_property>
+      <obj_property name="ObjectShortName">samples_per_cycle</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/sample_freq" type="other">
+      <obj_property name="ElementShortName">sample_freq</obj_property>
+      <obj_property name="ObjectShortName">sample_freq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/pulsewidth" type="other">
+      <obj_property name="ElementShortName">pulsewidth</obj_property>
+      <obj_property name="ObjectShortName">pulsewidth</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/start_freq" type="other">
+      <obj_property name="ElementShortName">start_freq</obj_property>
+      <obj_property name="ObjectShortName">start_freq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/end_freq" type="other">
+      <obj_property name="ElementShortName">end_freq</obj_property>
+      <obj_property name="ObjectShortName">end_freq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/out_file_name" type="array">
+      <obj_property name="ElementShortName">out_file_name[1:25]</obj_property>
+      <obj_property name="ObjectShortName">out_file_name[1:25]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/clkperiod" type="other">
+      <obj_property name="ElementShortName">clkperiod</obj_property>
+      <obj_property name="ObjectShortName">clkperiod</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/start_ph" type="other">
+      <obj_property name="ElementShortName">start_ph</obj_property>
+      <obj_property name="ObjectShortName">start_ph</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/start_ph_incr" type="array">
+      <obj_property name="ElementShortName">start_ph_incr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">start_ph_incr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/rate_ph" type="other">
+      <obj_property name="ElementShortName">rate_ph</obj_property>
+      <obj_property name="ObjectShortName">rate_ph</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/rate_ph_incr" type="array">
+      <obj_property name="ElementShortName">rate_ph_incr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rate_ph_incr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/pw" type="array">
+      <obj_property name="ElementShortName">pw[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pw[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/CTRL_REGISTER" type="array">
+      <obj_property name="ElementShortName">CTRL_REGISTER[15:0]</obj_property>
+      <obj_property name="ObjectShortName">CTRL_REGISTER[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/START_REGISTER" type="array">
+      <obj_property name="ElementShortName">START_REGISTER[15:0]</obj_property>
+      <obj_property name="ObjectShortName">START_REGISTER[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/RATE_REGISTER" type="array">
+      <obj_property name="ElementShortName">RATE_REGISTER[15:0]</obj_property>
+      <obj_property name="ObjectShortName">RATE_REGISTER[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/PW_REGISTER" type="array">
+      <obj_property name="ElementShortName">PW_REGISTER[15:0]</obj_property>
+      <obj_property name="ObjectShortName">PW_REGISTER[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/rstn" type="logic">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ce" type="logic">
+      <obj_property name="ElementShortName">ce</obj_property>
+      <obj_property name="ObjectShortName">ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/gate" type="logic">
+      <obj_property name="ElementShortName">gate</obj_property>
+      <obj_property name="ObjectShortName">gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/up" type="logic">
+      <obj_property name="ElementShortName">up</obj_property>
+      <obj_property name="ObjectShortName">up</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/load" type="logic">
+      <obj_property name="ElementShortName">load</obj_property>
+      <obj_property name="ObjectShortName">load</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/start" type="array">
+      <obj_property name="ElementShortName">start[31:0]</obj_property>
+      <obj_property name="ObjectShortName">start[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/offset" type="array">
+      <obj_property name="ElementShortName">offset[31:0]</obj_property>
+      <obj_property name="ObjectShortName">offset[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/rate" type="array">
+      <obj_property name="ElementShortName">rate[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rate[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/i0" type="array">
+      <obj_property name="ElementShortName">i0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/q0" type="array">
+      <obj_property name="ElementShortName">q0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">q0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/i1" type="array">
+      <obj_property name="ElementShortName">i1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/q1" type="array">
+      <obj_property name="ElementShortName">q1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">q1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/i2" type="array">
+      <obj_property name="ElementShortName">i2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/q2" type="array">
+      <obj_property name="ElementShortName">q2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">q2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/i3" type="array">
+      <obj_property name="ElementShortName">i3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/q3" type="array">
+      <obj_property name="ElementShortName">q3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">q3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/s_mf" type="array">
+      <obj_property name="ElementShortName">s_mf[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_mf[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/r_mf" type="array">
+      <obj_property name="ElementShortName">r_mf[6:0]</obj_property>
+      <obj_property name="ObjectShortName">r_mf[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ce_out" type="logic">
+      <obj_property name="ElementShortName">ce_out</obj_property>
+      <obj_property name="ObjectShortName">ce_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/gate_out" type="logic">
+      <obj_property name="ElementShortName">gate_out</obj_property>
+      <obj_property name="ObjectShortName">gate_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/calc_strt" type="logic">
+      <obj_property name="ElementShortName">calc_strt</obj_property>
+      <obj_property name="ObjectShortName">calc_strt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/calc" type="logic">
+      <obj_property name="ElementShortName">calc</obj_property>
+      <obj_property name="ObjectShortName">calc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/ce" type="logic">
+      <obj_property name="ElementShortName">ce</obj_property>
+      <obj_property name="ObjectShortName">ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/load" type="logic">
+      <obj_property name="ElementShortName">load</obj_property>
+      <obj_property name="ObjectShortName">load</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_bypass" type="logic">
+      <obj_property name="ElementShortName">t2_bypass</obj_property>
+      <obj_property name="ObjectShortName">t2_bypass</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init0" type="array">
+      <obj_property name="ElementShortName">t2_init0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init0[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init1" type="array">
+      <obj_property name="ElementShortName">t2_init1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init2" type="array">
+      <obj_property name="ElementShortName">t2_init2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init3" type="array">
+      <obj_property name="ElementShortName">t2_init3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init3[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init4" type="array">
+      <obj_property name="ElementShortName">t2_init4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init5" type="array">
+      <obj_property name="ElementShortName">t2_init5[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init5[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init6" type="array">
+      <obj_property name="ElementShortName">t2_init6[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init6[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t2_init7" type="array">
+      <obj_property name="ElementShortName">t2_init7[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_init7[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t5_p3_accx_b" type="array">
+      <obj_property name="ElementShortName">t5_p3_accx_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_p3_accx_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t5_p4_accx_b" type="array">
+      <obj_property name="ElementShortName">t5_p4_accx_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_p4_accx_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t5_p5_accx_b" type="array">
+      <obj_property name="ElementShortName">t5_p5_accx_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_p5_accx_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t5_p6_accx_b" type="array">
+      <obj_property name="ElementShortName">t5_p6_accx_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_p6_accx_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t5_p7_accx_b" type="array">
+      <obj_property name="ElementShortName">t5_p7_accx_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_p7_accx_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p0_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p0_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p0_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p1_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p1_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p1_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p2_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p2_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p2_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p3_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p3_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p3_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p4_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p4_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p4_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p5_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p5_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p5_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p6_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p6_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p6_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/t3_p7_accy_b" type="array">
+      <obj_property name="ElementShortName">t3_p7_accy_b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t3_p7_accy_b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/p_s" type="array">
+      <obj_property name="ElementShortName">p_s[31:0]</obj_property>
+      <obj_property name="ObjectShortName">p_s[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/p_r" type="array">
+      <obj_property name="ElementShortName">p_r[31:0]</obj_property>
+      <obj_property name="ObjectShortName">p_r[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/rom_addr" type="array">
+      <obj_property name="ElementShortName">rom_addr[3:0]</obj_property>
+      <obj_property name="ObjectShortName">rom_addr[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/rom_out" type="array">
+      <obj_property name="ElementShortName">rom_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rom_out[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/cal_vctr" type="array">
+      <obj_property name="ElementShortName">cal_vctr[0:15][31:0]</obj_property>
+      <obj_property name="ObjectShortName">cal_vctr[0:15][31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/phase0" type="array">
+      <obj_property name="ElementShortName">phase0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase0[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/phase1" type="array">
+      <obj_property name="ElementShortName">phase1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase1[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/phase2" type="array">
+      <obj_property name="ElementShortName">phase2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase2[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/phase3" type="array">
+      <obj_property name="ElementShortName">phase3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase3[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/phase4" type="array">
+      <obj_property name="ElementShortName">phase4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase4[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/phase5" type="array">
+      <obj_property name="ElementShortName">phase5[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase5[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/phase6" type="array">
+      <obj_property name="ElementShortName">phase6[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase6[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/ph_acc_inst/phase7" type="array">
+      <obj_property name="ElementShortName">phase7[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase7[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/acc_gate_out" type="logic">
+      <obj_property name="ElementShortName">acc_gate_out</obj_property>
+      <obj_property name="ObjectShortName">acc_gate_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/s_tuser" type="array">
+      <obj_property name="ElementShortName">s_tuser[0:0]</obj_property>
+      <obj_property name="ObjectShortName">s_tuser[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/m_tuser" type="array">
+      <obj_property name="ElementShortName">m_tuser[0:0]</obj_property>
+      <obj_property name="ObjectShortName">m_tuser[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/dds0_ce_out" type="logic">
+      <obj_property name="ElementShortName">dds0_ce_out</obj_property>
+      <obj_property name="ObjectShortName">dds0_ce_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/dds0_out" type="array">
+      <obj_property name="ElementShortName">dds0_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dds0_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/dds1_out" type="array">
+      <obj_property name="ElementShortName">dds1_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dds1_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/dds2_out" type="array">
+      <obj_property name="ElementShortName">dds2_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dds2_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/dds3_out" type="array">
+      <obj_property name="ElementShortName">dds3_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dds3_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_inst/samples_per_cycle" type="other">
+      <obj_property name="ElementShortName">samples_per_cycle</obj_property>
+      <obj_property name="ObjectShortName">samples_per_cycle</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider106">
+      <obj_property name="label">pulse gen</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_gate_out_fe" type="logic">
+      <obj_property name="ElementShortName">chrpgen_gate_out_fe</obj_property>
+      <obj_property name="ObjectShortName">chrpgen_gate_out_fe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_gate_out_re" type="logic">
+      <obj_property name="ElementShortName">chrpgen_gate_out_re</obj_property>
+      <obj_property name="ObjectShortName">chrpgen_gate_out_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/rstn" type="logic">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/trig_clr" type="logic">
+      <obj_property name="ElementShortName">trig_clr</obj_property>
+      <obj_property name="ObjectShortName">trig_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/trig_in" type="logic">
+      <obj_property name="ElementShortName">trig_in</obj_property>
+      <obj_property name="ObjectShortName">trig_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/gate_in" type="logic">
+      <obj_property name="ElementShortName">gate_in</obj_property>
+      <obj_property name="ObjectShortName">gate_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/gate_mode" type="logic">
+      <obj_property name="ElementShortName">gate_mode</obj_property>
+      <obj_property name="ObjectShortName">gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/pulse_width" type="array">
+      <obj_property name="ElementShortName">pulse_width[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_width[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/ce" type="logic">
+      <obj_property name="ElementShortName">ce</obj_property>
+      <obj_property name="ObjectShortName">ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/gate_out" type="logic">
+      <obj_property name="ElementShortName">gate_out</obj_property>
+      <obj_property name="ObjectShortName">gate_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/gate_out_re" type="logic">
+      <obj_property name="ElementShortName">gate_out_re</obj_property>
+      <obj_property name="ObjectShortName">gate_out_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/gate_in_fe" type="logic">
+      <obj_property name="ElementShortName">gate_in_fe</obj_property>
+      <obj_property name="ObjectShortName">gate_in_fe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t1_trig_clr" type="logic">
+      <obj_property name="ElementShortName">t1_trig_clr</obj_property>
+      <obj_property name="ObjectShortName">t1_trig_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t2_trig_clr" type="logic">
+      <obj_property name="ElementShortName">t2_trig_clr</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t1_gate_mode" type="logic">
+      <obj_property name="ElementShortName">t1_gate_mode</obj_property>
+      <obj_property name="ObjectShortName">t1_gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t2_gate_mode" type="logic">
+      <obj_property name="ElementShortName">t2_gate_mode</obj_property>
+      <obj_property name="ObjectShortName">t2_gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t3_gate_mode" type="logic">
+      <obj_property name="ElementShortName">t3_gate_mode</obj_property>
+      <obj_property name="ObjectShortName">t3_gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t2_trig_ld" type="logic">
+      <obj_property name="ElementShortName">t2_trig_ld</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_ld</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t1_gate_in" type="logic">
+      <obj_property name="ElementShortName">t1_gate_in</obj_property>
+      <obj_property name="ObjectShortName">t1_gate_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t2_gate_in" type="logic">
+      <obj_property name="ElementShortName">t2_gate_in</obj_property>
+      <obj_property name="ObjectShortName">t2_gate_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t3_gate_in" type="logic">
+      <obj_property name="ElementShortName">t3_gate_in</obj_property>
+      <obj_property name="ObjectShortName">t3_gate_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t4_gate_in" type="logic">
+      <obj_property name="ElementShortName">t4_gate_in</obj_property>
+      <obj_property name="ObjectShortName">t4_gate_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t1_trig_in" type="logic">
+      <obj_property name="ElementShortName">t1_trig_in</obj_property>
+      <obj_property name="ObjectShortName">t1_trig_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t2_trig_re" type="logic">
+      <obj_property name="ElementShortName">t2_trig_re</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/trig_cntr" type="array">
+      <obj_property name="ElementShortName">trig_cntr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_cntr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t3_trig_gate" type="logic">
+      <obj_property name="ElementShortName">t3_trig_gate</obj_property>
+      <obj_property name="ObjectShortName">t3_trig_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t4_trig_gate" type="logic">
+      <obj_property name="ElementShortName">t4_trig_gate</obj_property>
+      <obj_property name="ObjectShortName">t4_trig_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t1_pulse_width_val" type="array">
+      <obj_property name="ElementShortName">t1_pulse_width_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_pulse_width_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/t2_pulse_width_val" type="array">
+      <obj_property name="ElementShortName">t2_pulse_width_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_pulse_width_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_inst/samples_per_cycle" type="other">
+      <obj_property name="ElementShortName">samples_per_cycle</obj_property>
+      <obj_property name="ObjectShortName">samples_per_cycle</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider199">
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axis_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axis_ptctl_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_ptctl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ptctl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/s_axis_ptctl_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_ptctl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ptctl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/m_axis_pd_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pd_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pd_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/m_axis_pd_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pd_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pd_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/trig_state" type="other">
+      <obj_property name="ElementShortName">trig_state</obj_property>
+      <obj_property name="ObjectShortName">trig_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t1_s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">t1_s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t2_s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">t2_s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t2_s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t1_arm" type="logic">
+      <obj_property name="ElementShortName">t1_arm</obj_property>
+      <obj_property name="ObjectShortName">t1_arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/arm_re" type="logic">
+      <obj_property name="ElementShortName">arm_re</obj_property>
+      <obj_property name="ObjectShortName">arm_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/arm" type="logic">
+      <obj_property name="ElementShortName">arm</obj_property>
+      <obj_property name="ObjectShortName">arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/arm_clr" type="logic">
+      <obj_property name="ElementShortName">arm_clr</obj_property>
+      <obj_property name="ObjectShortName">arm_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/trig_clr" type="logic">
+      <obj_property name="ElementShortName">trig_clr</obj_property>
+      <obj_property name="ObjectShortName">trig_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/stay_armed" type="logic">
+      <obj_property name="ElementShortName">stay_armed</obj_property>
+      <obj_property name="ObjectShortName">stay_armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/trig_armed" type="logic">
+      <obj_property name="ElementShortName">trig_armed</obj_property>
+      <obj_property name="ObjectShortName">trig_armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t1_s_axis_ptctl_tdata" type="array">
+      <obj_property name="ElementShortName">t1_s_axis_ptctl_tdata[2:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_ptctl_tdata[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t1_s_axis_ptctl_tvalid" type="logic">
+      <obj_property name="ElementShortName">t1_s_axis_ptctl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_ptctl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_irq" type="logic">
+      <obj_property name="ElementShortName">csr_irq</obj_property>
+      <obj_property name="ObjectShortName">csr_irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/pps_or" type="logic">
+      <obj_property name="ElementShortName">pps_or</obj_property>
+      <obj_property name="ObjectShortName">pps_or</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/sync_or" type="logic">
+      <obj_property name="ElementShortName">sync_or</obj_property>
+      <obj_property name="ObjectShortName">sync_or</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/gate_or" type="logic">
+      <obj_property name="ElementShortName">gate_or</obj_property>
+      <obj_property name="ObjectShortName">gate_or</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t3_s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">t3_s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t3_s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t1_s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">t1_s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/gate_in_fe" type="logic">
+      <obj_property name="ElementShortName">gate_in_fe</obj_property>
+      <obj_property name="ObjectShortName">gate_in_fe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/trig_sig_sel" type="array">
+      <obj_property name="ElementShortName">trig_sig_sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_sig_sel[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_gate_in" type="logic">
+      <obj_property name="ElementShortName">plsgen_gate_in</obj_property>
+      <obj_property name="ObjectShortName">plsgen_gate_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/gate_mode" type="logic">
+      <obj_property name="ElementShortName">gate_mode</obj_property>
+      <obj_property name="ObjectShortName">gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/pulse_width" type="array">
+      <obj_property name="ElementShortName">pulse_width[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_width[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_gate_out" type="logic">
+      <obj_property name="ElementShortName">plsgen_gate_out</obj_property>
+      <obj_property name="ObjectShortName">plsgen_gate_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/plsgen_gate_out_re" type="logic">
+      <obj_property name="ElementShortName">plsgen_gate_out_re</obj_property>
+      <obj_property name="ObjectShortName">plsgen_gate_out_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/up_mode" type="logic">
+      <obj_property name="ElementShortName">up_mode</obj_property>
+      <obj_property name="ObjectShortName">up_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/start_frq_incr" type="array">
+      <obj_property name="ElementShortName">start_frq_incr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">start_frq_incr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/rate" type="array">
+      <obj_property name="ElementShortName">rate[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rate[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_i0" type="array">
+      <obj_property name="ElementShortName">chrp_i0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_i0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_q0" type="array">
+      <obj_property name="ElementShortName">chrp_q0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_q0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_i1" type="array">
+      <obj_property name="ElementShortName">chrp_i1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_i1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_q1" type="array">
+      <obj_property name="ElementShortName">chrp_q1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_q1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_i2" type="array">
+      <obj_property name="ElementShortName">chrp_i2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_i2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_q2" type="array">
+      <obj_property name="ElementShortName">chrp_q2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_q2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_i3" type="array">
+      <obj_property name="ElementShortName">chrp_i3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_i3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_q3" type="array">
+      <obj_property name="ElementShortName">chrp_q3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">chrp_q3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrp_ce" type="logic">
+      <obj_property name="ElementShortName">chrp_ce</obj_property>
+      <obj_property name="ObjectShortName">chrp_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_gate_out" type="logic">
+      <obj_property name="ElementShortName">chrpgen_gate_out</obj_property>
+      <obj_property name="ObjectShortName">chrpgen_gate_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t1_chrpgen_gate_out" type="logic">
+      <obj_property name="ElementShortName">t1_chrpgen_gate_out</obj_property>
+      <obj_property name="ObjectShortName">t1_chrpgen_gate_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_gate_out_re" type="logic">
+      <obj_property name="ElementShortName">chrpgen_gate_out_re</obj_property>
+      <obj_property name="ObjectShortName">chrpgen_gate_out_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/chrpgen_gate_out_fe" type="logic">
+      <obj_property name="ElementShortName">chrpgen_gate_out_fe</obj_property>
+      <obj_property name="ObjectShortName">chrpgen_gate_out_fe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/gain" type="array">
+      <obj_property name="ElementShortName">gain[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gain[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/phase_offset" type="array">
+      <obj_property name="ElementShortName">phase_offset[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase_offset[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/b_data_in" type="array">
+      <obj_property name="ElementShortName">b_data_in[16:0]</obj_property>
+      <obj_property name="ObjectShortName">b_data_in[16:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/d_data_in" type="array">
+      <obj_property name="ElementShortName">d_data_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">d_data_in[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_i0" type="array">
+      <obj_property name="ElementShortName">t4_go_i0[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_i0[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_q0" type="array">
+      <obj_property name="ElementShortName">t4_go_q0[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_q0[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_i1" type="array">
+      <obj_property name="ElementShortName">t4_go_i1[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_i1[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_q1" type="array">
+      <obj_property name="ElementShortName">t4_go_q1[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_q1[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_i2" type="array">
+      <obj_property name="ElementShortName">t4_go_i2[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_i2[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_q2" type="array">
+      <obj_property name="ElementShortName">t4_go_q2[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_q2[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_i3" type="array">
+      <obj_property name="ElementShortName">t4_go_i3[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_i3[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t4_go_q3" type="array">
+      <obj_property name="ElementShortName">t4_go_q3[17:0]</obj_property>
+      <obj_property name="ObjectShortName">t4_go_q3[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_i0" type="array">
+      <obj_property name="ElementShortName">t5_sat_i0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_i0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_q0" type="array">
+      <obj_property name="ElementShortName">t5_sat_q0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_q0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_i1" type="array">
+      <obj_property name="ElementShortName">t5_sat_i1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_i1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_q1" type="array">
+      <obj_property name="ElementShortName">t5_sat_q1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_q1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_i2" type="array">
+      <obj_property name="ElementShortName">t5_sat_i2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_i2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_q2" type="array">
+      <obj_property name="ElementShortName">t5_sat_q2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_q2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_i3" type="array">
+      <obj_property name="ElementShortName">t5_sat_i3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_i3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t5_sat_q3" type="array">
+      <obj_property name="ElementShortName">t5_sat_q3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t5_sat_q3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/reg_rst" type="logic">
+      <obj_property name="ElementShortName">reg_rst</obj_property>
+      <obj_property name="ObjectShortName">reg_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/t2_rstn" type="logic">
+      <obj_property name="ElementShortName">t2_rstn</obj_property>
+      <obj_property name="ObjectShortName">t2_rstn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/samples_per_cycle" type="other">
+      <obj_property name="ElementShortName">samples_per_cycle</obj_property>
+      <obj_property name="ObjectShortName">samples_per_cycle</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider270">
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/axis_aclk" type="logic">
+      <obj_property name="ElementShortName">axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/reg_rst" type="logic">
+      <obj_property name="ElementShortName">reg_rst</obj_property>
+      <obj_property name="ObjectShortName">reg_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/arm" type="logic">
+      <obj_property name="ElementShortName">arm</obj_property>
+      <obj_property name="ObjectShortName">arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/stay_armed" type="logic">
+      <obj_property name="ElementShortName">stay_armed</obj_property>
+      <obj_property name="ObjectShortName">stay_armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/arm_clr" type="logic">
+      <obj_property name="ElementShortName">arm_clr</obj_property>
+      <obj_property name="ObjectShortName">arm_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/gate_mode" type="logic">
+      <obj_property name="ElementShortName">gate_mode</obj_property>
+      <obj_property name="ObjectShortName">gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_clr" type="logic">
+      <obj_property name="ElementShortName">trig_clr</obj_property>
+      <obj_property name="ObjectShortName">trig_clr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/pulse_width" type="array">
+      <obj_property name="ElementShortName">pulse_width[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_width[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/gain" type="array">
+      <obj_property name="ElementShortName">gain[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gain[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/start_frq_incr" type="array">
+      <obj_property name="ElementShortName">start_frq_incr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">start_frq_incr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/phase_offset" type="array">
+      <obj_property name="ElementShortName">phase_offset[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase_offset[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rate" type="array">
+      <obj_property name="ElementShortName">rate[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rate[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/up_mode" type="logic">
+      <obj_property name="ElementShortName">up_mode</obj_property>
+      <obj_property name="ObjectShortName">up_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_sig_sel" type="array">
+      <obj_property name="ElementShortName">trig_sig_sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_sig_sel[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_start_event" type="logic">
+      <obj_property name="ElementShortName">trig_start_event</obj_property>
+      <obj_property name="ObjectShortName">trig_start_event</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_end_event" type="logic">
+      <obj_property name="ElementShortName">trig_end_event</obj_property>
+      <obj_property name="ObjectShortName">trig_end_event</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_armed" type="logic">
+      <obj_property name="ElementShortName">trig_armed</obj_property>
+      <obj_property name="ObjectShortName">trig_armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/axis_rst" type="logic">
+      <obj_property name="ElementShortName">axis_rst</obj_property>
+      <obj_property name="ObjectShortName">axis_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg0" type="array">
+      <obj_property name="ElementShortName">cntl_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg1" type="array">
+      <obj_property name="ElementShortName">cntl_reg1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg2" type="array">
+      <obj_property name="ElementShortName">cntl_reg2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg3" type="array">
+      <obj_property name="ElementShortName">cntl_reg3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg3[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg4" type="array">
+      <obj_property name="ElementShortName">cntl_reg4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg0x" type="array">
+      <obj_property name="ElementShortName">cntl_reg0x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg0x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg1x" type="array">
+      <obj_property name="ElementShortName">cntl_reg1x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg1x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg2x" type="array">
+      <obj_property name="ElementShortName">cntl_reg2x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg2x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg3x" type="array">
+      <obj_property name="ElementShortName">cntl_reg3x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg3x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntl_reg4x" type="array">
+      <obj_property name="ElementShortName">cntl_reg4x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg4x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/int_src_stat" type="array">
+      <obj_property name="ElementShortName">int_src_stat[2:0]</obj_property>
+      <obj_property name="ObjectShortName">int_src_stat[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/t1_cntl_reg0_1" type="logic">
+      <obj_property name="ElementShortName">t1_cntl_reg0_1</obj_property>
+      <obj_property name="ObjectShortName">t1_cntl_reg0_1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/araddr" type="array">
+      <obj_property name="ElementShortName">araddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">araddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/src_send01" type="logic">
+      <obj_property name="ElementShortName">src_send01</obj_property>
+      <obj_property name="ObjectShortName">src_send01</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/src_rcv01" type="logic">
+      <obj_property name="ElementShortName">src_rcv01</obj_property>
+      <obj_property name="ObjectShortName">src_rcv01</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/dest_req01" type="logic">
+      <obj_property name="ElementShortName">dest_req01</obj_property>
+      <obj_property name="ObjectShortName">dest_req01</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntrl01_vctr" type="array">
+      <obj_property name="ElementShortName">cntrl01_vctr[159:0]</obj_property>
+      <obj_property name="ObjectShortName">cntrl01_vctr[159:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/cntrlx01_vctr" type="array">
+      <obj_property name="ElementShortName">cntrlx01_vctr[159:0]</obj_property>
+      <obj_property name="ObjectShortName">cntrlx01_vctr[159:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/src_sends" type="logic">
+      <obj_property name="ElementShortName">src_sends</obj_property>
+      <obj_property name="ObjectShortName">src_sends</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/src_rcvs" type="logic">
+      <obj_property name="ElementShortName">src_rcvs</obj_property>
+      <obj_property name="ObjectShortName">src_rcvs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/dest_reqs" type="logic">
+      <obj_property name="ElementShortName">dest_reqs</obj_property>
+      <obj_property name="ObjectShortName">dest_reqs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/src_senda" type="logic">
+      <obj_property name="ElementShortName">src_senda</obj_property>
+      <obj_property name="ObjectShortName">src_senda</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/src_rcva" type="logic">
+      <obj_property name="ElementShortName">src_rcva</obj_property>
+      <obj_property name="ObjectShortName">src_rcva</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/dest_reqa" type="logic">
+      <obj_property name="ElementShortName">dest_reqa</obj_property>
+      <obj_property name="ObjectShortName">dest_reqa</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_eventsx" type="logic">
+      <obj_property name="ElementShortName">trig_eventsx</obj_property>
+      <obj_property name="ObjectShortName">trig_eventsx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_eventex" type="logic">
+      <obj_property name="ElementShortName">trig_eventex</obj_property>
+      <obj_property name="ObjectShortName">trig_eventex</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/trig_armedx" type="logic">
+      <obj_property name="ElementShortName">trig_armedx</obj_property>
+      <obj_property name="ObjectShortName">trig_armedx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/arm_load_p" type="logic">
+      <obj_property name="ElementShortName">arm_load_p</obj_property>
+      <obj_property name="ObjectShortName">arm_load_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/MODE_CNTL_REG_INIT_VAL" type="array">
+      <obj_property name="ElementShortName">MODE_CNTL_REG_INIT_VAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MODE_CNTL_REG_INIT_VAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/FREQ_REG_INIT_VAL" type="array">
+      <obj_property name="ElementShortName">FREQ_REG_INIT_VAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">FREQ_REG_INIT_VAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/src_arst" type="logic">
+      <obj_property name="ElementShortName">src_arst</obj_property>
+      <obj_property name="ObjectShortName">src_arst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/dest_clk" type="logic">
+      <obj_property name="ElementShortName">dest_clk</obj_property>
+      <obj_property name="ObjectShortName">dest_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/dest_arst" type="logic">
+      <obj_property name="ElementShortName">dest_arst</obj_property>
+      <obj_property name="ObjectShortName">dest_arst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/arststages_ff" type="array">
+      <obj_property name="ElementShortName">arststages_ff[1:0]</obj_property>
+      <obj_property name="ObjectShortName">arststages_ff[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/glblGSR_xpmcdc" type="logic">
+      <obj_property name="ElementShortName">glblGSR_xpmcdc</obj_property>
+      <obj_property name="ObjectShortName">glblGSR_xpmcdc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/async_path_bit" type="logic">
+      <obj_property name="ElementShortName">async_path_bit</obj_property>
+      <obj_property name="ObjectShortName">async_path_bit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/reset_pol" type="logic">
+      <obj_property name="ElementShortName">reset_pol</obj_property>
+      <obj_property name="ObjectShortName">reset_pol</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/reset_polo" type="logic">
+      <obj_property name="ElementShortName">reset_polo</obj_property>
+      <obj_property name="ObjectShortName">reset_polo</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/DEST_SYNC_FF" type="array">
+      <obj_property name="ElementShortName">DEST_SYNC_FF[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DEST_SYNC_FF[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/INIT_SYNC_FF" type="array">
+      <obj_property name="ElementShortName">INIT_SYNC_FF[31:0]</obj_property>
+      <obj_property name="ObjectShortName">INIT_SYNC_FF[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/RST_ACTIVE_HIGH" type="array">
+      <obj_property name="ElementShortName">RST_ACTIVE_HIGH[31:0]</obj_property>
+      <obj_property name="ObjectShortName">RST_ACTIVE_HIGH[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/VERSION" type="array">
+      <obj_property name="ElementShortName">VERSION[31:0]</obj_property>
+      <obj_property name="ObjectShortName">VERSION[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/DEF_VAL" type="logic">
+      <obj_property name="ElementShortName">DEF_VAL</obj_property>
+      <obj_property name="ObjectShortName">DEF_VAL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/rst_cdc_inst/INV_DEF_VAL" type="logic">
+      <obj_property name="ElementShortName">INV_DEF_VAL</obj_property>
+      <obj_property name="ObjectShortName">INV_DEF_VAL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_clk" type="logic">
+      <obj_property name="ElementShortName">src_clk</obj_property>
+      <obj_property name="ObjectShortName">src_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_pulse" type="logic">
+      <obj_property name="ElementShortName">src_pulse</obj_property>
+      <obj_property name="ObjectShortName">src_pulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_clk" type="logic">
+      <obj_property name="ElementShortName">dest_clk</obj_property>
+      <obj_property name="ObjectShortName">dest_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_rst" type="logic">
+      <obj_property name="ElementShortName">src_rst</obj_property>
+      <obj_property name="ObjectShortName">src_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_rst" type="logic">
+      <obj_property name="ElementShortName">dest_rst</obj_property>
+      <obj_property name="ObjectShortName">dest_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_pulse" type="logic">
+      <obj_property name="ElementShortName">dest_pulse</obj_property>
+      <obj_property name="ObjectShortName">dest_pulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/glblGSR_xpmcdc" type="logic">
+      <obj_property name="ElementShortName">glblGSR_xpmcdc</obj_property>
+      <obj_property name="ObjectShortName">glblGSR_xpmcdc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_level_ff" type="logic">
+      <obj_property name="ElementShortName">src_level_ff</obj_property>
+      <obj_property name="ObjectShortName">src_level_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_in_ff" type="logic">
+      <obj_property name="ElementShortName">src_in_ff</obj_property>
+      <obj_property name="ObjectShortName">src_in_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_level_nxt" type="logic">
+      <obj_property name="ElementShortName">src_level_nxt</obj_property>
+      <obj_property name="ObjectShortName">src_level_nxt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_edge_det" type="logic">
+      <obj_property name="ElementShortName">src_edge_det</obj_property>
+      <obj_property name="ObjectShortName">src_edge_det</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_sync_in" type="logic">
+      <obj_property name="ElementShortName">src_sync_in</obj_property>
+      <obj_property name="ObjectShortName">src_sync_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_sync_out" type="logic">
+      <obj_property name="ElementShortName">dest_sync_out</obj_property>
+      <obj_property name="ObjectShortName">dest_sync_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_event_nxt" type="logic">
+      <obj_property name="ElementShortName">dest_event_nxt</obj_property>
+      <obj_property name="ObjectShortName">dest_event_nxt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_event_ff" type="logic">
+      <obj_property name="ElementShortName">dest_event_ff</obj_property>
+      <obj_property name="ObjectShortName">dest_event_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_sync_qual" type="logic">
+      <obj_property name="ElementShortName">dest_sync_qual</obj_property>
+      <obj_property name="ObjectShortName">dest_sync_qual</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/src_rst_qual" type="logic">
+      <obj_property name="ElementShortName">src_rst_qual</obj_property>
+      <obj_property name="ObjectShortName">src_rst_qual</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_rst_qual" type="logic">
+      <obj_property name="ElementShortName">dest_rst_qual</obj_property>
+      <obj_property name="ObjectShortName">dest_rst_qual</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_pulse_int" type="logic">
+      <obj_property name="ElementShortName">dest_pulse_int</obj_property>
+      <obj_property name="ObjectShortName">dest_pulse_int</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/dest_pulse_ff" type="logic">
+      <obj_property name="ElementShortName">dest_pulse_ff</obj_property>
+      <obj_property name="ObjectShortName">dest_pulse_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/DEST_SYNC_FF" type="array">
+      <obj_property name="ElementShortName">DEST_SYNC_FF[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DEST_SYNC_FF[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/INIT_SYNC_FF" type="array">
+      <obj_property name="ElementShortName">INIT_SYNC_FF[31:0]</obj_property>
+      <obj_property name="ObjectShortName">INIT_SYNC_FF[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/REG_OUTPUT" type="array">
+      <obj_property name="ElementShortName">REG_OUTPUT[31:0]</obj_property>
+      <obj_property name="ObjectShortName">REG_OUTPUT[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/RST_USED" type="array">
+      <obj_property name="ElementShortName">RST_USED[31:0]</obj_property>
+      <obj_property name="ObjectShortName">RST_USED[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/SIM_ASSERT_CHK" type="array">
+      <obj_property name="ElementShortName">SIM_ASSERT_CHK[31:0]</obj_property>
+      <obj_property name="ObjectShortName">SIM_ASSERT_CHK[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/tes_cdc_inst/VERSION" type="array">
+      <obj_property name="ElementShortName">VERSION[31:0]</obj_property>
+      <obj_property name="ObjectShortName">VERSION[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_chirp_gen/uut/csr_inst/csr_inst/U0/int_flag_reg" type="array">
+      <obj_property name="ElementShortName">int_flag_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_flag_reg[31:0]</obj_property>
+   </wvobject>
+</wave_config>

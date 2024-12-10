@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_3324_FMC_intrfc_twsi_test_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_3324_FMC_intrfc_twsi_test" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="620656000001fs"></ZoomEndTime>
+      <Cursor1Time time="100000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="199"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="120" />
+   <wvobject type="divider" fp_name="divider201">
+      <obj_property name="label">CSR Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#D2691E</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider357">
+      <obj_property name="label">System Level Inputs</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#808000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/PCIE_CLK" type="logic">
+      <obj_property name="ElementShortName">PCIE_CLK</obj_property>
+      <obj_property name="ObjectShortName">PCIE_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/LRST_N" type="logic">
+      <obj_property name="ElementShortName">LRST_N</obj_property>
+      <obj_property name="ObjectShortName">LRST_N</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider358">
+      <obj_property name="label">TWSI I/O Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/TWSI_SDA" type="logic">
+      <obj_property name="ElementShortName">TWSI_SDA</obj_property>
+      <obj_property name="ObjectShortName">TWSI_SDA</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/TWSI_SCL" type="logic">
+      <obj_property name="ElementShortName">TWSI_SCL</obj_property>
+      <obj_property name="ObjectShortName">TWSI_SCL</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/TRNS_DONE_INT" type="logic">
+      <obj_property name="ElementShortName">TRNS_DONE_INT</obj_property>
+      <obj_property name="ObjectShortName">TRNS_DONE_INT</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/NO_ACK_INT" type="logic">
+      <obj_property name="ElementShortName">NO_ACK_INT</obj_property>
+      <obj_property name="ObjectShortName">NO_ACK_INT</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider359">
+      <obj_property name="label">Testbench Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#008080</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/tx_data" type="array">
+      <obj_property name="ElementShortName">tx_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/twsi_address" type="array">
+      <obj_property name="ElementShortName">twsi_address[6:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_address[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_ctrl" type="array">
+      <obj_property name="ElementShortName">twsi_ctrl[31:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_ctrl[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_wr_data" type="array">
+      <obj_property name="ElementShortName">twsi_wr_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_wr_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_rd_data" type="array">
+      <obj_property name="ElementShortName">twsi_rd_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_rd_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_start" type="array">
+      <obj_property name="ElementShortName">twsi_start[31:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_start[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_status" type="array">
+      <obj_property name="ElementShortName">twsi_status[31:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_status[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_data_in_r" type="array">
+      <obj_property name="ElementShortName">twsi_data_in_r[7:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_data_in_r[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_data_out_r" type="array">
+      <obj_property name="ElementShortName">twsi_data_out_r[7:0]</obj_property>
+      <obj_property name="ObjectShortName">twsi_data_out_r[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_wr" type="logic">
+      <obj_property name="ElementShortName">twsi_wr</obj_property>
+      <obj_property name="ObjectShortName">twsi_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_rd" type="logic">
+      <obj_property name="ElementShortName">twsi_rd</obj_property>
+      <obj_property name="ObjectShortName">twsi_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/START_REG_ADDR" type="array">
+      <obj_property name="ElementShortName">START_REG_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">START_REG_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/CONTROL_REG_ADDR" type="array">
+      <obj_property name="ElementShortName">CONTROL_REG_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">CONTROL_REG_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/STATUS_REG_ADDR" type="array">
+      <obj_property name="ElementShortName">STATUS_REG_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">STATUS_REG_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/WRITE_DATA_ADDR" type="array">
+      <obj_property name="ElementShortName">WRITE_DATA_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">WRITE_DATA_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/READ_DATA_ADDR" type="array">
+      <obj_property name="ElementShortName">READ_DATA_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">READ_DATA_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider202">
+      <obj_property name="label">TWSI Core</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/RST_N" type="logic">
+      <obj_property name="ElementShortName">RST_N</obj_property>
+      <obj_property name="ObjectShortName">RST_N</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/SDA" type="logic">
+      <obj_property name="ElementShortName">SDA</obj_property>
+      <obj_property name="ObjectShortName">SDA</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/SCL" type="logic">
+      <obj_property name="ElementShortName">SCL</obj_property>
+      <obj_property name="ObjectShortName">SCL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/ENABLE" type="logic">
+      <obj_property name="ElementShortName">ENABLE</obj_property>
+      <obj_property name="ObjectShortName">ENABLE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/ADDR" type="array">
+      <obj_property name="ElementShortName">ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/STRT_PLS" type="logic">
+      <obj_property name="ElementShortName">STRT_PLS</obj_property>
+      <obj_property name="ObjectShortName">STRT_PLS</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/R_W_N" type="logic">
+      <obj_property name="ElementShortName">R_W_N</obj_property>
+      <obj_property name="ObjectShortName">R_W_N</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/NUM_BYTES" type="array">
+      <obj_property name="ElementShortName">NUM_BYTES[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NUM_BYTES[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/FIFO_WR" type="logic">
+      <obj_property name="ElementShortName">FIFO_WR</obj_property>
+      <obj_property name="ObjectShortName">FIFO_WR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/FIFO_RD" type="logic">
+      <obj_property name="ElementShortName">FIFO_RD</obj_property>
+      <obj_property name="ObjectShortName">FIFO_RD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/WR_DATA" type="array">
+      <obj_property name="ElementShortName">WR_DATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">WR_DATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/RD_DATA" type="array">
+      <obj_property name="ElementShortName">RD_DATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RD_DATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/RD_FIFO_CNT" type="array">
+      <obj_property name="ElementShortName">RD_FIFO_CNT[4:0]</obj_property>
+      <obj_property name="ObjectShortName">RD_FIFO_CNT[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/RD_FIFO_FULL" type="logic">
+      <obj_property name="ElementShortName">RD_FIFO_FULL</obj_property>
+      <obj_property name="ObjectShortName">RD_FIFO_FULL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/RD_FIFO_EMPTY" type="logic">
+      <obj_property name="ElementShortName">RD_FIFO_EMPTY</obj_property>
+      <obj_property name="ObjectShortName">RD_FIFO_EMPTY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/WR_FIFO_CNT" type="array">
+      <obj_property name="ElementShortName">WR_FIFO_CNT[4:0]</obj_property>
+      <obj_property name="ObjectShortName">WR_FIFO_CNT[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/WR_FIFO_FULL" type="logic">
+      <obj_property name="ElementShortName">WR_FIFO_FULL</obj_property>
+      <obj_property name="ObjectShortName">WR_FIFO_FULL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/WR_FIFO_EMPTY" type="logic">
+      <obj_property name="ElementShortName">WR_FIFO_EMPTY</obj_property>
+      <obj_property name="ObjectShortName">WR_FIFO_EMPTY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/BUSY_OUT" type="logic">
+      <obj_property name="ElementShortName">BUSY_OUT</obj_property>
+      <obj_property name="ObjectShortName">BUSY_OUT</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/TRNS_DONE_INT" type="logic">
+      <obj_property name="ElementShortName">TRNS_DONE_INT</obj_property>
+      <obj_property name="ObjectShortName">TRNS_DONE_INT</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/NO_ACK_INT" type="logic">
+      <obj_property name="ElementShortName">NO_ACK_INT</obj_property>
+      <obj_property name="ObjectShortName">NO_ACK_INT</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/next_state" type="other">
+      <obj_property name="ElementShortName">next_state</obj_property>
+      <obj_property name="ObjectShortName">next_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/clk_cntr" type="array">
+      <obj_property name="ElementShortName">clk_cntr[10:0]</obj_property>
+      <obj_property name="ObjectShortName">clk_cntr[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/sm_ce" type="logic">
+      <obj_property name="ElementShortName">sm_ce</obj_property>
+      <obj_property name="ObjectShortName">sm_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/clkout_ce" type="logic">
+      <obj_property name="ElementShortName">clkout_ce</obj_property>
+      <obj_property name="ObjectShortName">clkout_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/strt_reg" type="logic">
+      <obj_property name="ElementShortName">strt_reg</obj_property>
+      <obj_property name="ObjectShortName">strt_reg</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_r_w_n" type="logic">
+      <obj_property name="ElementShortName">t1_r_w_n</obj_property>
+      <obj_property name="ObjectShortName">t1_r_w_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/busy" type="logic">
+      <obj_property name="ElementShortName">busy</obj_property>
+      <obj_property name="ObjectShortName">busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/int_sda" type="logic">
+      <obj_property name="ElementShortName">int_sda</obj_property>
+      <obj_property name="ObjectShortName">int_sda</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/int_scl" type="logic">
+      <obj_property name="ElementShortName">int_scl</obj_property>
+      <obj_property name="ObjectShortName">int_scl</obj_property>
+      <obj_property name="CustomSignalColor">#D2691E</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/wr_data_fifo_rd" type="logic">
+      <obj_property name="ElementShortName">wr_data_fifo_rd</obj_property>
+      <obj_property name="ObjectShortName">wr_data_fifo_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/shift_in" type="logic">
+      <obj_property name="ElementShortName">shift_in</obj_property>
+      <obj_property name="ObjectShortName">shift_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rd_data_fifo_wr" type="logic">
+      <obj_property name="ElementShortName">rd_data_fifo_wr</obj_property>
+      <obj_property name="ObjectShortName">rd_data_fifo_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/no_ack" type="logic">
+      <obj_property name="ElementShortName">no_ack</obj_property>
+      <obj_property name="ObjectShortName">no_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/trns_done" type="logic">
+      <obj_property name="ElementShortName">trns_done</obj_property>
+      <obj_property name="ObjectShortName">trns_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/tx_full" type="logic">
+      <obj_property name="ElementShortName">tx_full</obj_property>
+      <obj_property name="ObjectShortName">tx_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/tx_empty" type="logic">
+      <obj_property name="ElementShortName">tx_empty</obj_property>
+      <obj_property name="ObjectShortName">tx_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/tx_data_count" type="array">
+      <obj_property name="ElementShortName">tx_data_count[4:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_data_count[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rx_full" type="logic">
+      <obj_property name="ElementShortName">rx_full</obj_property>
+      <obj_property name="ObjectShortName">rx_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rx_empty" type="logic">
+      <obj_property name="ElementShortName">rx_empty</obj_property>
+      <obj_property name="ObjectShortName">rx_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rx_data_count" type="array">
+      <obj_property name="ElementShortName">rx_data_count[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_data_count[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/tx_fifo_rd" type="logic">
+      <obj_property name="ElementShortName">tx_fifo_rd</obj_property>
+      <obj_property name="ObjectShortName">tx_fifo_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rx_fifo_wr" type="logic">
+      <obj_property name="ElementShortName">rx_fifo_wr</obj_property>
+      <obj_property name="ObjectShortName">rx_fifo_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_num_bytes" type="array">
+      <obj_property name="ElementShortName">t1_num_bytes[3:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_num_bytes[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/trns_cntr" type="array">
+      <obj_property name="ElementShortName">trns_cntr[3:0]</obj_property>
+      <obj_property name="ObjectShortName">trns_cntr[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/last_word" type="logic">
+      <obj_property name="ElementShortName">last_word</obj_property>
+      <obj_property name="ObjectShortName">last_word</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/sda_in" type="logic">
+      <obj_property name="ElementShortName">sda_in</obj_property>
+      <obj_property name="ObjectShortName">sda_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/scl_in" type="logic">
+      <obj_property name="ElementShortName">scl_in</obj_property>
+      <obj_property name="ObjectShortName">scl_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_addr" type="array">
+      <obj_property name="ElementShortName">t1_addr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_addr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/oe_n" type="logic">
+      <obj_property name="ElementShortName">oe_n</obj_property>
+      <obj_property name="ObjectShortName">oe_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/sda_oe" type="logic">
+      <obj_property name="ElementShortName">sda_oe</obj_property>
+      <obj_property name="ObjectShortName">sda_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/scl_oe" type="logic">
+      <obj_property name="ElementShortName">scl_oe</obj_property>
+      <obj_property name="ObjectShortName">scl_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/tx_fifo_dout" type="array">
+      <obj_property name="ElementShortName">tx_fifo_dout[7:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_fifo_dout[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rx_fifo_dout" type="array">
+      <obj_property name="ElementShortName">rx_fifo_dout[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_fifo_dout[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_int_sda" type="logic">
+      <obj_property name="ElementShortName">t1_int_sda</obj_property>
+      <obj_property name="ObjectShortName">t1_int_sda</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rx_sr" type="array">
+      <obj_property name="ElementShortName">rx_sr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_sr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_fifo_wr" type="logic">
+      <obj_property name="ElementShortName">t1_fifo_wr</obj_property>
+      <obj_property name="ObjectShortName">t1_fifo_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_fifo_rd" type="logic">
+      <obj_property name="ElementShortName">t1_fifo_rd</obj_property>
+      <obj_property name="ObjectShortName">t1_fifo_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_wr_data" type="array">
+      <obj_property name="ElementShortName">t1_wr_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_wr_data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_strt_pls" type="logic">
+      <obj_property name="ElementShortName">t1_strt_pls</obj_property>
+      <obj_property name="ObjectShortName">t1_strt_pls</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t2_strt_pls" type="logic">
+      <obj_property name="ElementShortName">t2_strt_pls</obj_property>
+      <obj_property name="ObjectShortName">t2_strt_pls</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/t1_trns_done" type="logic">
+      <obj_property name="ElementShortName">t1_trns_done</obj_property>
+      <obj_property name="ObjectShortName">t1_trns_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/twsi_local_bus_intrfc_inst/zero" type="logic">
+      <obj_property name="ElementShortName">zero</obj_property>
+      <obj_property name="ObjectShortName">zero</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider393">
+      <obj_property name="label">Misc. Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/t1_twsi_wr" type="logic">
+      <obj_property name="ElementShortName">t1_twsi_wr</obj_property>
+      <obj_property name="ObjectShortName">t1_twsi_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/t2_twsi_wr" type="logic">
+      <obj_property name="ElementShortName">t2_twsi_wr</obj_property>
+      <obj_property name="ObjectShortName">t2_twsi_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/t3_twsi_wr" type="logic">
+      <obj_property name="ElementShortName">t3_twsi_wr</obj_property>
+      <obj_property name="ObjectShortName">t3_twsi_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/t1_twsi_rd" type="logic">
+      <obj_property name="ElementShortName">t1_twsi_rd</obj_property>
+      <obj_property name="ObjectShortName">t1_twsi_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/t2_twsi_rd" type="logic">
+      <obj_property name="ElementShortName">t2_twsi_rd</obj_property>
+      <obj_property name="ObjectShortName">t2_twsi_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_twsi_test/uut/t3_twsi_rd" type="logic">
+      <obj_property name="ElementShortName">t3_twsi_rd</obj_property>
+      <obj_property name="ObjectShortName">t3_twsi_rd</obj_property>
+   </wvobject>
+</wave_config>

@@ -1,0 +1,8 @@
+create_clock -period 2.222 -name s_axis_ppkt_aclk [get_ports s_axis_ppkt_aclk]
+create_clock -period 2.222 -name m_axis_ppkt_aclk [get_ports m_axis_ppkt_aclk]
+create_clock -period 3.333 -name axis_ddr_aclk  [get_ports axis_ddr_aclk]
+create_clock -period 4.000 -name s_axi_csr_aclk [get_ports s_axi_csr_aclk]
+set_clock_groups -asynchronous -group [get_clocks s_axi_csr_aclk] -group [get_clocks s_axis_ppkt_aclk]  -group [get_clocks m_axis_ppkt_aclk]  -group [get_clocks axis_ddr_aclk]
+set_clock_groups -asynchronous -group [get_clocks s_axis_ppkt_aclk] -group [get_clocks s_axi_csr_aclk]  -group [get_clocks m_axis_ppkt_aclk]  -group [get_clocks axis_ddr_aclk]
+set_clock_groups -asynchronous -group [get_clocks m_axis_ppkt_aclk] -group [get_clocks s_axi_csr_aclk]  -group [get_clocks s_axis_ppkt_aclk]  -group [get_clocks axis_ddr_aclk]
+set_clock_groups -asynchronous -group [get_clocks axis_ddr_aclk] -group [get_clocks s_axi_csr_aclk]  -group [get_clocks m_axis_ppkt_aclk]  -group [get_clocks s_axis_ppkt_aclk]

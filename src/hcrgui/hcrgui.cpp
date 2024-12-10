@@ -35,7 +35,7 @@
 #include <logx/Logging.h>
 
 #include "HcrGuiMainWindow.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 
 LOGGING("hcrgui")
 

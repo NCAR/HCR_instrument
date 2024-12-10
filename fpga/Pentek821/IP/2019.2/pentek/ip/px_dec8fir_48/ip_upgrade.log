@@ -1,0 +1,2919 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:46 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 40) to (Rev. 42)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:46 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:43 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly2 (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:43 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:42 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.1) from (Rev. 23) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:42 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 19) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:42 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.4) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:41 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 23) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:40 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 26) to (Rev. 27)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:40 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 20) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:39 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:38 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:34:37 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:02 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 39) to (Rev. 40)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:02 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:02 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly2 (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:01 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:01 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.1) from (Rev. 22) to (Rev. 23)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:01 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:08:01 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mult'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mult (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 16) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:59 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.4) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:57 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_dspsum'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_dspsum (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 16) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:55 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 22) to (Rev. 23)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:54 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 25) to (Rev. 26)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:54 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 19) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:51 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:50 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:07:49 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:29 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 38) to (Rev. 39)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:28 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:27 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.1) from (Rev. 20) to (Rev. 22)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:26 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 17) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:26 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.4) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:18 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 21) to (Rev. 22)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:18 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 24) to (Rev. 25)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:17 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 17) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:11 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2 (Rev. 11)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:09 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2 (Rev. 11)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:04:07 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2 (Rev. 11)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:32 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 37) to (Rev. 38)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:32 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:30 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly2 (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:30 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:29 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.1) from (Rev. 18) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:29 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 15) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:28 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mult'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mult (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:25 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.4) to (Rev. 1)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:16 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_dspsum'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_dspsum (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:12 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 19) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:12 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 22) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:12 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 15) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:07 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 9) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:05 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 9) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:15:03 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2) from (Rev. 9) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:37 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 36) to (Rev. 37)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:37 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:36 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly2 (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:35 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:34 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.1) from (Rev. 17) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:34 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:33 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mult'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mult (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:29 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem from xilinx.com:ip:blk_mem_gen:8.3 (Rev. 6) to xilinx.com:ip:blk_mem_gen:8.4
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:21 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_dspsum'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_dspsum (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:17 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:17 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 21) to (Rev. 22)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:17 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:13 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 8) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:11 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 8) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:37:10 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2) from (Rev. 8) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 13:32:55 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat from pentek.com:px_ip:px_axis_saturate:1.0 (Rev. 15) to pentek.com:px_ip:px_axis_saturate:1.1 (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 13:32:55 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 12) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 13:32:55 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 16) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 13:32:54 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 19) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 13:32:54 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Thu May  4 08:04:45 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:50 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 34) to (Rev. 36)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:50 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:49 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:48 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:48 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mult'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mult (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:44 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.3) from (Rev. 5) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:32 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_dspsum'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_dspsum (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:29 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:28 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 17) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:27 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:23 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 7) to (Rev. 8)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:21 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 7) to (Rev. 8)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 08:47:19 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2) from (Rev. 7) to (Rev. 8)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Tue Feb 07 09:43:44 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 32) to (Rev. 34)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:48:07 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 30) to (Rev. 32)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:48:06 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:48:05 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.0) from (Rev. 11) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:48:05 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 9) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:48:05 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.3) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:47:57 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 13) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:47:57 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 15) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:47:56 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Thu Nov 10 14:20:34 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 29) to (Rev. 30)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Thu Nov 10 10:53:24 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 28) to (Rev. 29)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 25 10:44:49 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 27) to (Rev. 28)
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'stim_test_sig_48'.
+
+
+-Upgrade has removed interface 's_axi_csr_signal_clock'
+
+-Upgrade has removed interface 's_axi_csr_signal_reset'
+
+-Upgrade has removed interface 's_axis_signal_clock'
+
+-Upgrade has removed interface 's_axis_signal_reset'
+
+-Upgrade has removed interface 'signal_interrupt'
+
+-Upgrade has added interface 'irq' (xilinx.com:signal:interrupt:1.0)
+
+-Upgrade has added interface 's_axi_csr_aclk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 's_axi_csr_aresetn' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 's_axis_aclk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 's_axis_aresetn' (xilinx.com:signal:reset:1.0)
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:34 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the update of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0 (Rev. 27)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:34 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_ld_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_ld_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:33 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_xclk'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_xclk (pentek.com:user:px_lvl_trans_xclk:1.0) from (Rev. 7) to (Rev. 8)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:32 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly2 (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 9) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:31 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_tuserdly'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_tuserdly (xilinx.com:ip:c_shift_ram:12.0) from (Rev. 9) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:30 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_sat'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_sat (pentek.com:px_ip:px_axis_saturate:1.0) from (Rev. 9) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:30 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_rnd16'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_rnd16 (pentek.com:px_ip:px_axis_round:1.0) from (Rev. 7) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:29 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mult'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mult (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:24 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_mem'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_mem (xilinx.com:ip:blk_mem_gen:8.3) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:11 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_dspsum'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_dspsum (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:06 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 11) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:06 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_brctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_brctlr (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 14) to (Rev. 15)
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'px_dec8fir_48_brctlr'.
+
+
+-Upgrade has removed interface 'bram_signal_clock'
+
+-Upgrade has removed interface 's_axi_signal_clock'
+
+-Upgrade has removed interface 's_axi_signal_reset'
+
+-Upgrade has added interface 'bram_clk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 'bram_rst' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 's_axi_aclk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 's_axi_aresetn' (xilinx.com:signal:reset:1.0)
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:39:05 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dec8fir_48_axi_xbar'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dec8fir_48_axi_xbar (xilinx.com:ip:axi_crossbar:2.1) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:38:59 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_bnu'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of fir_dec4_4i1o_bnu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 6) to (Rev. 7)
+
+After upgrade, an IP may have parameter differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality.
+
+2. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'CoefficientVector' from '6,0,-4,-3,5,6,-6,-13,7,44,64,44,7,-13,-6,6,5,-3,-4,0,6' to '1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1' has been ignored for IP 'fir_dec4_4i1o_bnu'
+
+An attempt to modify the value of disabled parameter 'DATA_TUSER_Width' from '1' to '128' has been ignored for IP 'fir_dec4_4i1o_bnu'
+
+
+3. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:fir_compiler:7.2 -user_name fir_dec4_4i1o_bnu
+set_property -dict "\
+  CONFIG.BestPrecision {false} \
+  CONFIG.Blank_Output {false} \
+  CONFIG.Channel_Sequence {Basic} \
+  CONFIG.Clock_Frequency {450} \
+  CONFIG.CoefficientSource {COE_File} \
+  CONFIG.CoefficientVector {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1} \
+  CONFIG.Coefficient_Buffer_Type {Automatic} \
+  CONFIG.Coefficient_File {../../coef/coef_80_4b.coe} \
+  CONFIG.Coefficient_Fractional_Bits {0} \
+  CONFIG.Coefficient_Reload {true} \
+  CONFIG.Coefficient_Sets {2} \
+  CONFIG.Coefficient_Sign {Signed} \
+  CONFIG.Coefficient_Structure {Inferred} \
+  CONFIG.Coefficient_Width {18} \
+  CONFIG.ColumnConfig {112} \
+  CONFIG.Component_Name {fir_dec4_4i1o_bnu} \
+  CONFIG.DATA_Has_TLAST {Not_Required} \
+  CONFIG.DATA_TUSER_Width {128} \
+  CONFIG.Data_Buffer_Type {Automatic} \
+  CONFIG.Data_Fractional_Bits {0} \
+  CONFIG.Data_Sign {Signed} \
+  CONFIG.Data_Width {16} \
+  CONFIG.Decimation_Rate {4} \
+  CONFIG.DisplayReloadOrder {false} \
+  CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} \
+  CONFIG.Filter_Selection {1} \
+  CONFIG.Filter_Type {Decimation} \
+  CONFIG.GUI_Behaviour {Coregen} \
+  CONFIG.Gen_MIF_Files {false} \
+  CONFIG.Gen_MIF_from_COE {false} \
+  CONFIG.Gen_MIF_from_Spec {false} \
+  CONFIG.HardwareOversamplingRate {1} \
+  CONFIG.Has_ACLKEN {false} \
+  CONFIG.Has_ARESETn {false} \
+  CONFIG.Input_Buffer_Type {Automatic} \
+  CONFIG.Inter_Column_Pipe_Length {4} \
+  CONFIG.Interpolation_Rate {1} \
+  CONFIG.M_DATA_Has_TREADY {false} \
+  CONFIG.M_DATA_Has_TUSER {Not_Required} \
+  CONFIG.Multi_Column_Support {Automatic} \
+  CONFIG.Num_Reload_Slots {1} \
+  CONFIG.Number_Channels {1} \
+  CONFIG.Number_Paths {1} \
+  CONFIG.Optimization_Goal {Speed} \
+  CONFIG.Optimization_List {Data_Path_Fanout,Pre-Adder_Pipeline,Coefficient_Fanout,Control_Path_Fanout,Control_Column_Fanout,Control_Broadcast_Fanout,Control_LUT_Pipeline,No_BRAM_Read_First_Mode,Optimal_Column_Lengths,Other} \
+  CONFIG.Optimization_Selection {All} \
+  CONFIG.Output_Buffer_Type {Automatic} \
+  CONFIG.Output_Rounding_Mode {Symmetric_Rounding_to_Zero} \
+  CONFIG.Output_Width {27} \
+  CONFIG.Passband_Max {0.5} \
+  CONFIG.Passband_Min {0.0} \
+  CONFIG.Pattern_List {P4-0,P4-1,P4-2,P4-3,P4-4} \
+  CONFIG.Preference_For_Other_Storage {Automatic} \
+  CONFIG.Quantization {Integer_Coefficients} \
+  CONFIG.RateSpecification {Frequency_Specification} \
+  CONFIG.Rate_Change_Type {Integer} \
+  CONFIG.Reload_File {no_coe_file_loaded} \
+  CONFIG.Reset_Data_Vector {true} \
+  CONFIG.S_CONFIG_Method {Single} \
+  CONFIG.S_CONFIG_Sync_Mode {On_Vector} \
+  CONFIG.S_DATA_Has_FIFO {false} \
+  CONFIG.S_DATA_Has_TUSER {Not_Required} \
+  CONFIG.SamplePeriod {1} \
+  CONFIG.Sample_Frequency {1800} \
+  CONFIG.Select_Pattern {All} \
+  CONFIG.Stopband_Max {1.0} \
+  CONFIG.Stopband_Min {0.5} \
+  CONFIG.Zero_Pack_Factor {1} \
+  CONFIG.aclk_intf.ASSOCIATED_BUSIF {S_AXIS_CONFIG:M_AXIS_DATA:S_AXIS_DATA:S_AXIS_RELOAD} \
+  CONFIG.aclk_intf.ASSOCIATED_CLKEN {aclken} \
+  CONFIG.aclk_intf.ASSOCIATED_RESET {aresetn} \
+  CONFIG.aclk_intf.FREQ_HZ {100000000} \
+  CONFIG.aresetn_intf.POLARITY {ACTIVE_LOW} \
+  CONFIG.event_s_config_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_config_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_chanid_incorrect_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_reload_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_reload_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} " [get_ips fir_dec4_4i1o_bnu]
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:38:58 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_anu'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of fir_dec4_4i1o_anu (xilinx.com:ip:fir_compiler:7.2) from (Rev. 6) to (Rev. 7)
+
+After upgrade, an IP may have parameter differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality.
+
+2. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'CoefficientVector' from '6,0,-4,-3,5,6,-6,-13,7,44,64,44,7,-13,-6,6,5,-3,-4,0,6' to '1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1' has been ignored for IP 'fir_dec4_4i1o_anu'
+
+An attempt to modify the value of disabled parameter 'DATA_TUSER_Width' from '1' to '128' has been ignored for IP 'fir_dec4_4i1o_anu'
+
+
+3. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:fir_compiler:7.2 -user_name fir_dec4_4i1o_anu
+set_property -dict "\
+  CONFIG.BestPrecision {false} \
+  CONFIG.Blank_Output {false} \
+  CONFIG.Channel_Sequence {Basic} \
+  CONFIG.Clock_Frequency {450} \
+  CONFIG.CoefficientSource {COE_File} \
+  CONFIG.CoefficientVector {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1} \
+  CONFIG.Coefficient_Buffer_Type {Automatic} \
+  CONFIG.Coefficient_File {../../coef/coef_80_4a.coe} \
+  CONFIG.Coefficient_Fractional_Bits {0} \
+  CONFIG.Coefficient_Reload {true} \
+  CONFIG.Coefficient_Sets {2} \
+  CONFIG.Coefficient_Sign {Signed} \
+  CONFIG.Coefficient_Structure {Inferred} \
+  CONFIG.Coefficient_Width {18} \
+  CONFIG.ColumnConfig {112} \
+  CONFIG.Component_Name {fir_dec4_4i1o_anu} \
+  CONFIG.DATA_Has_TLAST {Not_Required} \
+  CONFIG.DATA_TUSER_Width {128} \
+  CONFIG.Data_Buffer_Type {Automatic} \
+  CONFIG.Data_Fractional_Bits {0} \
+  CONFIG.Data_Sign {Signed} \
+  CONFIG.Data_Width {16} \
+  CONFIG.Decimation_Rate {4} \
+  CONFIG.DisplayReloadOrder {false} \
+  CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} \
+  CONFIG.Filter_Selection {1} \
+  CONFIG.Filter_Type {Decimation} \
+  CONFIG.GUI_Behaviour {Coregen} \
+  CONFIG.Gen_MIF_Files {false} \
+  CONFIG.Gen_MIF_from_COE {false} \
+  CONFIG.Gen_MIF_from_Spec {false} \
+  CONFIG.HardwareOversamplingRate {1} \
+  CONFIG.Has_ACLKEN {false} \
+  CONFIG.Has_ARESETn {false} \
+  CONFIG.Input_Buffer_Type {Automatic} \
+  CONFIG.Inter_Column_Pipe_Length {4} \
+  CONFIG.Interpolation_Rate {1} \
+  CONFIG.M_DATA_Has_TREADY {false} \
+  CONFIG.M_DATA_Has_TUSER {Not_Required} \
+  CONFIG.Multi_Column_Support {Automatic} \
+  CONFIG.Num_Reload_Slots {1} \
+  CONFIG.Number_Channels {1} \
+  CONFIG.Number_Paths {1} \
+  CONFIG.Optimization_Goal {Speed} \
+  CONFIG.Optimization_List {Data_Path_Fanout,Pre-Adder_Pipeline,Coefficient_Fanout,Control_Path_Fanout,Control_Column_Fanout,Control_Broadcast_Fanout,Control_LUT_Pipeline,No_BRAM_Read_First_Mode,Optimal_Column_Lengths,Other} \
+  CONFIG.Optimization_Selection {All} \
+  CONFIG.Output_Buffer_Type {Automatic} \
+  CONFIG.Output_Rounding_Mode {Symmetric_Rounding_to_Zero} \
+  CONFIG.Output_Width {27} \
+  CONFIG.Passband_Max {0.5} \
+  CONFIG.Passband_Min {0.0} \
+  CONFIG.Pattern_List {P4-0,P4-1,P4-2,P4-3,P4-4} \
+  CONFIG.Preference_For_Other_Storage {Automatic} \
+  CONFIG.Quantization {Integer_Coefficients} \
+  CONFIG.RateSpecification {Frequency_Specification} \
+  CONFIG.Rate_Change_Type {Integer} \
+  CONFIG.Reload_File {no_coe_file_loaded} \
+  CONFIG.Reset_Data_Vector {true} \
+  CONFIG.S_CONFIG_Method {Single} \
+  CONFIG.S_CONFIG_Sync_Mode {On_Vector} \
+  CONFIG.S_DATA_Has_FIFO {false} \
+  CONFIG.S_DATA_Has_TUSER {Not_Required} \
+  CONFIG.SamplePeriod {1} \
+  CONFIG.Sample_Frequency {1800} \
+  CONFIG.Select_Pattern {All} \
+  CONFIG.Stopband_Max {1.0} \
+  CONFIG.Stopband_Min {0.5} \
+  CONFIG.Zero_Pack_Factor {1} \
+  CONFIG.aclk_intf.ASSOCIATED_BUSIF {S_AXIS_CONFIG:M_AXIS_DATA:S_AXIS_DATA:S_AXIS_RELOAD} \
+  CONFIG.aclk_intf.ASSOCIATED_CLKEN {aclken} \
+  CONFIG.aclk_intf.ASSOCIATED_RESET {aresetn} \
+  CONFIG.aclk_intf.FREQ_HZ {100000000} \
+  CONFIG.aresetn_intf.POLARITY {ACTIVE_LOW} \
+  CONFIG.event_s_config_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_config_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_chanid_incorrect_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_reload_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_reload_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} " [get_ips fir_dec4_4i1o_anu]
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:38:56 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'fir_dec4_4i1o_a'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of fir_dec4_4i1o_a (xilinx.com:ip:fir_compiler:7.2) from (Rev. 6) to (Rev. 7)
+
+After upgrade, an IP may have parameter differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality.
+
+2. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'CoefficientVector' from '6,0,-4,-3,5,6,-6,-13,7,44,64,44,7,-13,-6,6,5,-3,-4,0,6' to '1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1' has been ignored for IP 'fir_dec4_4i1o_a'
+
+
+3. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:fir_compiler:7.2 -user_name fir_dec4_4i1o_a
+set_property -dict "\
+  CONFIG.BestPrecision {false} \
+  CONFIG.Blank_Output {false} \
+  CONFIG.Channel_Sequence {Basic} \
+  CONFIG.Clock_Frequency {450} \
+  CONFIG.CoefficientSource {COE_File} \
+  CONFIG.CoefficientVector {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1} \
+  CONFIG.Coefficient_Buffer_Type {Automatic} \
+  CONFIG.Coefficient_File {../../coef/coef_80_4a.coe} \
+  CONFIG.Coefficient_Fractional_Bits {0} \
+  CONFIG.Coefficient_Reload {true} \
+  CONFIG.Coefficient_Sets {2} \
+  CONFIG.Coefficient_Sign {Signed} \
+  CONFIG.Coefficient_Structure {Inferred} \
+  CONFIG.Coefficient_Width {18} \
+  CONFIG.ColumnConfig {112} \
+  CONFIG.Component_Name {fir_dec4_4i1o_a} \
+  CONFIG.DATA_Has_TLAST {Not_Required} \
+  CONFIG.DATA_TUSER_Width {128} \
+  CONFIG.Data_Buffer_Type {Automatic} \
+  CONFIG.Data_Fractional_Bits {0} \
+  CONFIG.Data_Sign {Signed} \
+  CONFIG.Data_Width {16} \
+  CONFIG.Decimation_Rate {4} \
+  CONFIG.DisplayReloadOrder {false} \
+  CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} \
+  CONFIG.Filter_Selection {2} \
+  CONFIG.Filter_Type {Decimation} \
+  CONFIG.GUI_Behaviour {Coregen} \
+  CONFIG.Gen_MIF_Files {false} \
+  CONFIG.Gen_MIF_from_COE {false} \
+  CONFIG.Gen_MIF_from_Spec {false} \
+  CONFIG.HardwareOversamplingRate {1} \
+  CONFIG.Has_ACLKEN {false} \
+  CONFIG.Has_ARESETn {false} \
+  CONFIG.Input_Buffer_Type {Automatic} \
+  CONFIG.Inter_Column_Pipe_Length {4} \
+  CONFIG.Interpolation_Rate {1} \
+  CONFIG.M_DATA_Has_TREADY {false} \
+  CONFIG.M_DATA_Has_TUSER {User_Field} \
+  CONFIG.Multi_Column_Support {Automatic} \
+  CONFIG.Num_Reload_Slots {1} \
+  CONFIG.Number_Channels {1} \
+  CONFIG.Number_Paths {1} \
+  CONFIG.Optimization_Goal {Speed} \
+  CONFIG.Optimization_List {Data_Path_Fanout,Pre-Adder_Pipeline,Coefficient_Fanout,Control_Path_Fanout,Control_Column_Fanout,Control_Broadcast_Fanout,Control_LUT_Pipeline,No_BRAM_Read_First_Mode,Optimal_Column_Lengths,Other} \
+  CONFIG.Optimization_Selection {All} \
+  CONFIG.Output_Buffer_Type {Automatic} \
+  CONFIG.Output_Rounding_Mode {Symmetric_Rounding_to_Zero} \
+  CONFIG.Output_Width {27} \
+  CONFIG.Passband_Max {0.5} \
+  CONFIG.Passband_Min {0.0} \
+  CONFIG.Pattern_List {P4-0,P4-1,P4-2,P4-3,P4-4} \
+  CONFIG.Preference_For_Other_Storage {Automatic} \
+  CONFIG.Quantization {Integer_Coefficients} \
+  CONFIG.RateSpecification {Frequency_Specification} \
+  CONFIG.Rate_Change_Type {Integer} \
+  CONFIG.Reload_File {no_coe_file_loaded} \
+  CONFIG.Reset_Data_Vector {true} \
+  CONFIG.S_CONFIG_Method {Single} \
+  CONFIG.S_CONFIG_Sync_Mode {On_Vector} \
+  CONFIG.S_DATA_Has_FIFO {false} \
+  CONFIG.S_DATA_Has_TUSER {User_Field} \
+  CONFIG.SamplePeriod {1} \
+  CONFIG.Sample_Frequency {1800} \
+  CONFIG.Select_Pattern {All} \
+  CONFIG.Stopband_Max {1.0} \
+  CONFIG.Stopband_Min {0.5} \
+  CONFIG.Zero_Pack_Factor {1} \
+  CONFIG.aclk_intf.ASSOCIATED_BUSIF {S_AXIS_CONFIG:M_AXIS_DATA:S_AXIS_DATA:S_AXIS_RELOAD} \
+  CONFIG.aclk_intf.ASSOCIATED_CLKEN {aclken} \
+  CONFIG.aclk_intf.ASSOCIATED_RESET {aresetn} \
+  CONFIG.aclk_intf.FREQ_HZ {100000000} \
+  CONFIG.aresetn_intf.POLARITY {ACTIVE_LOW} \
+  CONFIG.event_s_config_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_config_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_chanid_incorrect_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_data_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_reload_tlast_missing_intf.SENSITIVITY {EDGE_RISING} \
+  CONFIG.event_s_reload_tlast_unexpected_intf.SENSITIVITY {EDGE_RISING} " [get_ips fir_dec4_4i1o_a]
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Mon Oct 03 08:40:10 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the update of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0 (Rev. 27)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Mon Sep 26 19:58:09 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 25) to (Rev. 27)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 23 08:51:04 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'stim_test_sig_48'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of stim_test_sig_48 (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 23) to (Rev. 25)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Fri May 06 16:05:22 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'tb_test_sig_gen'
+
+1. Summary
+----------
+
+SUCCESS in the update of tb_test_sig_gen (pentek.com:px_ip:px_test_sig_gen_48:1.0 (Rev. 23)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Fri May 06 14:02:17 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'tb_test_sig_gen'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of tb_test_sig_gen (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 22) to (Rev. 23)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Fri May 06 13:52:07 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'tb_test_sig_gen'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of tb_test_sig_gen (pentek.com:px_ip:px_test_sig_gen_48:1.0) from (Rev. 21) to (Rev. 22)
+

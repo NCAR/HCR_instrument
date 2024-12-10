@@ -22,7 +22,7 @@ Default(lib)
     
 def SpectracomRpcClient(env):
     env.AppendUnique(CPPPATH = [includeDir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
     env.Require(tools)
 
 Export('SpectracomRpcClient')

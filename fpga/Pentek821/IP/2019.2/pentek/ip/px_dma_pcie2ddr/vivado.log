@@ -1,0 +1,68 @@
+#-----------------------------------------------------------
+# Vivado v2016.2 (64-bit)
+# SW Build 1577090 on Thu Jun  2 16:32:40 MDT 2016
+# IP Build 1577682 on Fri Jun  3 12:00:54 MDT 2016
+# Start of session at: Thu Jul 07 15:12:39 2016
+# Process ID: 6732
+# Current directory: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent1376 C:\Xilinx\Vivado\2016.2\data\ip\pentek\ip\px_dma_pcie2pd\px_dma_pcie2pd.xpr
+# Log file: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd/vivado.log
+# Journal file: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd/px_dma_pcie2pd.xpr
+INFO: [Project 1-313] Project file moved from 'E:/px_dma_pcie2pd' since last save.
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-2] IPUserFilesDir: Could not find the directory 'C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd/px_dma_pcie2pd.ip_user_files', nor could it be found using path 'E:/px_dma_pcie2pd/px_dma_pcie2pd.ip_user_files'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip' may become invalid. A better location for the repostory would be in a path adjacent to the project. (Current project location is 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2016.2/data/ip'.
+open_project: Time (s): cpu = 00:00:19 ; elapsed = 00:00:13 . Memory (MB): peak = 944.625 ; gain = 266.039
+ipx::package_project -root_dir C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_dma_pcie2pd -vendor xilinx.com -library user -taxonomy /UserIP
+WARNING: [IP_Flow 19-1834] The constraints file "px_dma_pcie2pd_ooc.xdc" is added to the synthesis file group only, but will be used for both synthesis and implementation in the IP generation.
+INFO: [IP_Flow 19-2228] Inferred bus interface 's_axi_csr' of definition 'xilinx.com:interface:aximm:1.0'.
+INFO: [IP_Flow 19-2228] Inferred bus interface 's_axi_descr' of definition 'xilinx.com:interface:aximm:1.0'.
+INFO: [IP_Flow 19-2228] Inferred bus interface 'm_axis_pcie_rq' of definition 'xilinx.com:interface:axis:1.0'.
+INFO: [IP_Flow 19-2228] Inferred bus interface 'm_axis_rcv_buf' of definition 'xilinx.com:interface:axis:1.0'.
+INFO: [IP_Flow 19-2228] Inferred bus interface 's_axis_cntl' of definition 'xilinx.com:interface:axis:1.0'.
+INFO: [IP_Flow 19-2228] Inferred bus interface 's_axis_pcie_rc' of definition 'xilinx.com:interface:axis:1.0'.
+INFO: [IP_Flow 19-4753] Inferred signal 'reset' from port 's_axi_csr_aresetn' as interface 's_axi_csr_aresetn'.
+INFO: [IP_Flow 19-4728] Bus Interface 's_axi_csr_aresetn': Added interface parameter 'POLARITY' with value 'ACTIVE_LOW'.
+INFO: [IP_Flow 19-4753] Inferred signal 'reset' from port 'aresetn' as interface 'aresetn'.
+INFO: [IP_Flow 19-4728] Bus Interface 'aresetn': Added interface parameter 'POLARITY' with value 'ACTIVE_LOW'.
+INFO: [IP_Flow 19-4753] Inferred signal 'clock' from port 'aclk' as interface 'aclk'.
+INFO: [IP_Flow 19-4728] Bus Interface 'aclk': Added interface parameter 'ASSOCIATED_BUSIF' with value 's_axi_csr:s_axi_descr:m_axis_pcie_rq:m_axis_rcv_buf:s_axis_cntl:s_axis_pcie_rc'.
+INFO: [IP_Flow 19-4728] Bus Interface 'aclk': Added interface parameter 'ASSOCIATED_RESET' with value 'aresetn'.
+INFO: [IP_Flow 19-4753] Inferred signal 'interrupt' from port 'irq' as interface 'irq'.
+INFO: [IP_Flow 19-4728] Bus Interface 'irq': Added interface parameter 'SENSITIVITY' with value 'LEVEL_HIGH'.
+ipx::package_project: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 947.746 ; gain = 0.000
+set_property vendor pentek.com [ipx::current_core]
+set_property library px_ip [ipx::current_core]
+set_property description {AXI4-Stream PCI Express to AXI-S DMA} [ipx::current_core]
+set_property vendor_display_name {Pentek, Inc.} [ipx::current_core]
+set_property company_url www.pentek.com [ipx::current_core]
+set_property taxonomy /PentekIP [ipx::current_core]
+ipx::remove_file px_dma_pcie2pd.srcs/constrs_1/new/px_dma_pcie2pd_ooc.xdc [ipx::get_file_groups xilinx_anylanguagesynthesis -of_objects [ipx::current_core]]
+ipx::add_file_group -type version_info {} [ipx::current_core]
+ipx::add_file E:/px_dma_pcie2pd/doc/px_dma_pcie2pd_changelog.txt [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]
+set_property type text [ipx::get_files E:/px_dma_pcie2pd/doc/px_dma_pcie2pd_changelog.txt -of_objects [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]]
+ipx::remove_file E:/px_dma_pcie2pd/doc/px_dma_pcie2pd_changelog.txt [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]
+ipx::add_file doc/px_dma_pcie2pd_changelog.txt [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]
+set_property type text [ipx::get_files doc/px_dma_pcie2pd_changelog.txt -of_objects [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]]
+set_property display_name {PCIe Channel Number} [ipgui::get_guiparamspec -name "pcie_channel" -component [ipx::current_core] ]
+set_property tooltip {PCIe Channe Numberl} [ipgui::get_guiparamspec -name "pcie_channel" -component [ipx::current_core] ]
+set_property widget {textEdit} [ipgui::get_guiparamspec -name "pcie_channel" -component [ipx::current_core] ]
+set_property value_validation_type range_long [ipx::get_user_parameters pcie_channel -of_objects [ipx::current_core]]
+set_property value_validation_range_minimum 0 [ipx::get_user_parameters pcie_channel -of_objects [ipx::current_core]]
+set_property value_validation_range_maximum 7 [ipx::get_user_parameters pcie_channel -of_objects [ipx::current_core]]
+set_property range 4096 [ipx::get_address_blocks reg0 -of_objects [ipx::get_memory_maps s_axi_csr -of_objects [ipx::current_core]]]
+set_property core_revision 2 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip'
+exit
+INFO: [Common 17-206] Exiting Vivado at Thu Jul 07 15:19:14 2016...

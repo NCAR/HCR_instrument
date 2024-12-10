@@ -1,12 +1,9 @@
 [submodule "src/logx"]
 	path = src/logx
-	url = git@github.com:ncareol/logx.git
+	url = git@github.com:ncar/logx.git
 [submodule "src/qttoolbox"]
 	path = src/qttoolbox
-	url = git@github.com:ncareol/qttoolbox.git
-[submodule "src/site_scons"]
-	path = src/site_scons
-	url = git@github.com:ncareol/eol_scons.git
+	url = git@github.com:ncar/qttoolbox.git
 [submodule "src/ascope"]
 	path = src/ascope
 	url = git@github.com:NCAR/ascope.git
@@ -22,15 +19,18 @@
 [submodule "src/QFunctionWrapper"]
 	path = src/QFunctionWrapper
 	url = git@github.com:NCAR/QFunctionWrapper.git
-[submodule "src/Pentek7142"]
-	path = src/Pentek7142
-	url = git@github.com:NCAR/Pentek7142.git
 [submodule "src/Pmc730"]
 	path = src/Pmc730
 	url = git@github.com:NCAR/Pmc730.git
 [submodule "src/cmigits"]
 	path = src/cmigits
 	url = ssh://git-codecommit.us-gov-west-1.amazonaws.com/v1/repos/cmigits
-[submodule "src/ReadyFlow7142_428_WinDriver1150"]
-	path = src/ReadyFlow7142_428_WinDriver1150
-	url = git@gitlab.eol.ucar.edu:vendor/ReadyFlow7142_428_WinDriver1150.git
+[submodule "src/Navigator_xx821"]
+	path = src/Navigator_xx821
+	url = git@github.com:NCAR/Navigator_xx821.git
+[submodule "src/Pentek_xx821"]
+	path = src/Pentek_xx821
+	url = git@github.com:/NCAR/Pentek_xx821.git
+[submodule "src/site_scons"]
+	path = src/site_scons
+	url = git@github.com:ncar/eol_scons.git

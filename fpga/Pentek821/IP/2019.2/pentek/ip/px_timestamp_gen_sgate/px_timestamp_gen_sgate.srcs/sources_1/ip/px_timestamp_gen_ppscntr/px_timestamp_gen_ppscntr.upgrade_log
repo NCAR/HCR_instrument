@@ -1,0 +1,82 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 16:13:02 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 6) to (Rev. 8)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.1 (win64) Build 1215546 Mon Apr 27 19:22:08 MDT 2015
+| Date         : Sat May 02 00:02:36 2015
+| Host         : Igor running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 5) to (Rev. 6)
+
+After upgrade, an IP may have parameter differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality.
+
+2. Customization warnings
+-------------------------
+
+WARNING: An attempt to modify the value of disabled parameter 'Threshold_Value' from '1' to 'FFFFFFFE' has been ignored for IP 'px_timestamp_gen_ppscntr'
+
+
+3. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  Please consult the warnings from the previous sections, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:c_counter_binary:12.0 -user_name px_timestamp_gen_ppscntr
+set_property -dict "\
+  CONFIG.Final_Count_Value 1 \
+  CONFIG.SSET false \
+  CONFIG.AINIT_Value 0 \
+  CONFIG.Sync_Threshold_Output false \
+  CONFIG.Load_Sense Active_High \
+  CONFIG.Latency 1 \
+  CONFIG.CE true \
+  CONFIG.Threshold_Value FFFFFFFE \
+  CONFIG.Fb_Latency 0 \
+  CONFIG.Latency_Configuration Manual \
+  CONFIG.Restrict_Count false \
+  CONFIG.SyncCtrlPriority Reset_Overrides_Set \
+  CONFIG.SINIT false \
+  CONFIG.Implementation DSP48 \
+  CONFIG.clk_intf.FREQ_HZ 10000000 \
+  CONFIG.Component_Name px_timestamp_gen_ppscntr \
+  CONFIG.SCLR true \
+  CONFIG.Fb_Latency_Configuration Manual \
+  CONFIG.Output_Width 32 \
+  CONFIG.SINIT_Value 0 \
+  CONFIG.Sync_CE_Priority Sync_Overrides_CE \
+  CONFIG.Count_Mode UP \
+  CONFIG.Load true \
+  CONFIG.Increment_Value 1 " [get_ips px_timestamp_gen_ppscntr]
+
+

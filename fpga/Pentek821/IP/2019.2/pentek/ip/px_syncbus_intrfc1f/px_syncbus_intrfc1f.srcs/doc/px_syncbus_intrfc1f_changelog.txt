@@ -1,0 +1,6 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release
+This core version is identical to px_syncbus_intrfc1. However, this version
+fixes pulse width timing error when the sample frequency is above 200 Mhz.

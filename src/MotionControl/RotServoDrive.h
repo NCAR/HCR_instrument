@@ -33,26 +33,31 @@
 #include "ElmoServoDrive.h"
 
 /// @brief Class to connect to and control a rotation servo drive at a given
-/// CANopen node ID. This is a very thin wrapper around the ElmoServoDrive 
+/// CANopen node ID. This is a very thin wrapper around the ElmoServoDrive
 /// class.
 class RotServoDrive : public ElmoServoDrive {
 public:
     /// Our rotation motor has 400000 encoder counts per full circle
-    static const uint32_t ROT_DRIVE_COUNTS_PER_CIRCLE = 400000;
-    
-    /// Instantiate a connection to the HCR rotation servo drive via the given 
+    static const uint32_t COUNTS_PER_CIRCLE = 400000;
+
+    /// Our counterclockwise and clockwise scan limits w.r.t. the home position.
+    /// The limits prevent us from pointing at the aircraft.
+    static constexpr float CCW_LIMIT_DEG = -5.0;
+    static constexpr float CW_LIMIT_DEG = 225.0;
+
+    /// Instantiate a connection to the HCR rotation servo drive via the given
     /// CANopen node ID. The drive's nickname will be set to "rotation".
     /// @param nodeId the CANopen node ID of the servo drive
     RotServoDrive(uint8_t nodeId) :
-        ElmoServoDrive(nodeId, "rotation", ROT_DRIVE_COUNTS_PER_CIRCLE,
-                -5.0, 225.0) {}
-    
-    /// Instantiate a serial port connection to the HCR rotation servo drive via 
+        ElmoServoDrive(nodeId, "rotation", COUNTS_PER_CIRCLE,
+                       CCW_LIMIT_DEG, CW_LIMIT_DEG) {}
+
+    /// Instantiate a serial port connection to the HCR rotation servo drive via
     /// the given serial device. The drive's nickname will be set to "rotation".
     /// @param ttyDev the serial device name for the servo drive
     RotServoDrive(std::string ttyDev) :
-        ElmoServoDrive(ttyDev, "rotation", ROT_DRIVE_COUNTS_PER_CIRCLE, 
-                -5.0, 225.0) {}
+        ElmoServoDrive(ttyDev, "rotation", COUNTS_PER_CIRCLE,
+                       CCW_LIMIT_DEG, CW_LIMIT_DEG) {}
 
     virtual ~RotServoDrive() {}
 private:

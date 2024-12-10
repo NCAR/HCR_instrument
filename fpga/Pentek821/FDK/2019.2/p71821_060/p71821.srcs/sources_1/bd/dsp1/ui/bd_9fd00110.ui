@@ -1,0 +1,60 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.377236",
+   "Default View_TopLeft":"-1023,0",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 non-TLS
+#  -string -flagsOSRD
+preplace port s_axi_csr -pg 1 -lvl 0 -x 0 -y 420 -defaultsOSRD
+preplace port s_axis_adc_ch0_pdti -pg 1 -lvl 0 -x 0 -y 360 -defaultsOSRD
+preplace port m_axis_adc_ch0_pdti -pg 1 -lvl 3 -x 810 -y 380 -defaultsOSRD
+preplace port m_axis_adc_ch1_pdti -pg 1 -lvl 3 -x 810 -y 740 -defaultsOSRD
+preplace port s_axis_adc_ch1_pdti -pg 1 -lvl 0 -x 0 -y 720 -defaultsOSRD
+preplace port s_axis_adc_ch2_pdti -pg 1 -lvl 0 -x 0 -y 910 -defaultsOSRD
+preplace port s_axis_dac_pdti -pg 1 -lvl 0 -x 0 -y 1100 -defaultsOSRD
+preplace port m_axis_adc_ch2_pdti -pg 1 -lvl 3 -x 810 -y 930 -defaultsOSRD
+preplace port m_axis_dac_pdti -pg 1 -lvl 3 -x 810 -y 1120 -defaultsOSRD
+preplace port s_axis_adc_pdti_aresetn -pg 1 -lvl 0 -x 0 -y 930 -defaultsOSRD
+preplace port s_axis_adc_pdti_aclk -pg 1 -lvl 0 -x 0 -y 950 -defaultsOSRD
+preplace port s_axi_csr_aclk -pg 1 -lvl 0 -x 0 -y 440 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -lvl 0 -x 0 -y 460 -defaultsOSRD
+preplace port s_axis_dac_pdti_aclk -pg 1 -lvl 0 -x 0 -y 1140 -defaultsOSRD
+preplace port s_axis_dac_pdti_aresetn -pg 1 -lvl 0 -x 0 -y 1120 -defaultsOSRD
+preplace portBus dsp_irq -pg 1 -lvl 3 -x 810 -y 140 -defaultsOSRD
+preplace inst adc_ch0 -pg 1 -lvl 2 -x 590 -y 390 -defaultsOSRD
+preplace inst adc_ch1 -pg 1 -lvl 2 -x 590 -y 750 -defaultsOSRD
+preplace inst adc_ch2 -pg 1 -lvl 2 -x 590 -y 940 -defaultsOSRD
+preplace inst dac0 -pg 1 -lvl 2 -x 590 -y 1130 -defaultsOSRD
+preplace inst axi_interconnect_0 -pg 1 -lvl 1 -x 180 -y 540 -defaultsOSRD
+preplace inst px_scalar2vctr_0 -pg 1 -lvl 2 -x 590 -y 140 -defaultsOSRD
+preplace inst zero_const -pg 1 -lvl 1 -x 180 -y 130 -defaultsOSRD
+preplace netloc s_axis_adc_pdti_aresetn_1 1 0 2 NJ 930 380
+preplace netloc s_axis_adc_pdti_aclk_1 1 0 2 NJ 950 400
+preplace netloc s_axi_csr_ack_1 1 0 2 20 340 360
+preplace netloc s_axi_csr_aresetn_1 1 0 2 30 350 340
+preplace netloc px_scalar_const_0_std_logic_const 1 1 1 340 130n
+preplace netloc px_scalar2vctr_0_output_vector 1 2 1 NJ 140
+preplace netloc ch0_irq 1 1 2 410 10 790
+preplace netloc ch1_irq 1 1 2 360 270 780
+preplace netloc ch2_irq 1 1 2 400 280 770
+preplace netloc s_axis_dac_pdti_aclk_1 1 0 2 NJ 1140 NJ
+preplace netloc s_axis_dac_pdti_aresetn_1 1 0 2 NJ 1120 NJ
+preplace netloc dac0_irq 1 1 2 410 490 760
+preplace netloc ch1_m_axis_pdti 1 2 1 NJ 740
+preplace netloc s_axis_pdti_3 1 0 2 NJ 910 NJ
+preplace netloc ch0_m_axis_pdti 1 2 1 NJ 380
+preplace netloc ch2_m_axis_pdti 1 2 1 NJ 930
+preplace netloc s_axis_pdti_1 1 0 2 NJ 360 NJ
+preplace netloc axi_interconnect_0_M00_AXI 1 1 1 370 340n
+preplace netloc ch3_m_axis_pdti 1 2 1 NJ 1120
+preplace netloc s_axi_csr_1 1 0 1 NJ 420
+preplace netloc s_axis_pdti_4 1 0 2 NJ 1100 NJ
+preplace netloc axi_interconnect_0_M01_AXI 1 1 1 390 530n
+preplace netloc axi_interconnect_0_M02_AXI 1 1 1 350 550n
+preplace netloc axi_interconnect_0_M03_AXI 1 1 1 330 570n
+preplace netloc s_axis_pdti_2 1 0 2 NJ 720 NJ
+levelinfo -pg 1 0 180 590 810
+pagesize -pg 1 -db -bbox -sgen -210 0 1000 1230
+"
+}
+0

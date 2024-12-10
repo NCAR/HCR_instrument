@@ -1,0 +1,321 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat Jun  8 10:55:07 2019
+# Process ID: 9104
+# Current directory: C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent7356 C:\Pentek\IP\2019.1\pentek\ip\px_axis_mixer_1\px_axis_mixer_1.xpr
+# Log file: C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/vivado.log
+# Journal file: C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.xpr
+update_compile_order -fileset sources_1
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci]
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci]
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -no_script -sync -force -quiet
+launch_runs -jobs 8 {mixer_dsp48_16_synth_1 mixer_dsp48_24_synth_1 px_axis_mixer_csr_synth_1 tb_mixer_dds_synth_1}
+reset_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci]
+export_ip_user_files -of_objects  [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci] -sync -no_script -force -quiet
+reset_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci]
+export_ip_user_files -of_objects  [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci] -sync -no_script -force -quiet
+reset_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+export_ip_user_files -of_objects  [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -sync -no_script -force -quiet
+reset_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci]
+export_ip_user_files -of_objects  [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci] -sync -no_script -force -quiet
+delete_ip_run [get_files -of_objects [get_fileset mixer_dsp48_16] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci]
+delete_ip_run [get_files -of_objects [get_fileset mixer_dsp48_24] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci]
+delete_ip_run [get_files -of_objects [get_fileset px_axis_mixer_csr] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci]
+delete_ip_run [get_files -of_objects [get_fileset tb_mixer_dds] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+update_compile_order -fileset sources_1
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+launch_runs -jobs 8 {mixer_dsp48_16_synth_1 mixer_dsp48_24_synth_1 px_axis_mixer_csr_synth_1 tb_mixer_dds_synth_1}
+report_ip_status -name ip_status 
+export_ip_user_files -of_objects  [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -no_script -reset -force -quiet
+remove_files  -fileset tb_mixer_dds C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci
+add_files -norecurse C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci
+export_ip_user_files -of_objects  [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -lib_map_path [list {modelsim=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/activehdl}] -force -quiet
+update_compile_order -fileset sources_1
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci]
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci]
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+launch_runs -jobs 8 {mixer_dsp48_16_synth_1 mixer_dsp48_24_synth_1 px_axis_mixer_csr_synth_1 tb_mixer_dds_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Rich/2016.1/data/ip/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+set_property used_in_synthesis false [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+set_property used_in_implementation false [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_mixer_1\component.xml}
+report_ip_status -name ip_status 
+ipx::add_file C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_1/px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci [ipx::get_file_groups xilinx_testbench -of_objects [ipx::current_core]]
+set_property type xci [ipx::get_files px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci -of_objects [ipx::get_file_groups xilinx_testbench -of_objects [ipx::current_core]]]
+ipx::reorder_files -before px_axis_mixer_1.srcs/sim_1/new/tb_px_axis_mixer_1.vhd px_axis_mixer_1.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci [ipx::get_file_groups xilinx_testbench -of_objects [ipx::current_core]]
+set_property core_revision 24 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {mixer_dsp48_16 mixer_dsp48_24 px_axis_mixer_csr tb_mixer_dds}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {mixer_dsp48_16 mixer_dsp48_24 px_axis_mixer_csr tb_mixer_dds}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/mixer_dsp48_16/mixer_dsp48_16.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/mixer_dsp48_24/mixer_dsp48_24.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/px_axis_mixer_csr/px_axis_mixer_csr.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_2/px_axis_mixer_2.srcs/sources_1/ip/tb_mixer_dds/tb_mixer_dds.xci]
+launch_runs -jobs 8 {mixer_dsp48_16_synth_1 mixer_dsp48_24_synth_1 px_axis_mixer_csr_synth_1 tb_mixer_dds_synth_1}
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_mixer_2\component.xml}
+set_property core_revision 30 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_mixer_48/px_axis_mixer_48.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {mixer_dsp48_16 mixer_dsp48_24 px_axis_mixer_csr tb_mixer_dds}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {mixer_dsp48_16 mixer_dsp48_24 px_axis_mixer_csr tb_mixer_dds}] -no_script -sync -force -quiet
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_mixer_48\component.xml}
+set_property core_revision 29 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+report_ip_status -name ip_status 
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {px_axis_nco_csr px_axis_nco_dds}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axis_nco_csr px_axis_nco_dds}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_csr/px_axis_nco_csr.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_dds/px_axis_nco_dds.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_csr/px_axis_nco_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_dds/px_axis_nco_dds.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_csr/px_axis_nco_csr.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_dds/px_axis_nco_dds.xci]
+launch_runs -jobs 8 {px_axis_nco_csr_synth_1 px_axis_nco_dds_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_csr/px_axis_nco_csr.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.srcs/sources_1/ip/px_axis_nco_dds/px_axis_nco_dds.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_1/px_axis_nco_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/2016.1/data/ip/pentek/ip/px_axis_nco_1/px_axis_nco_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_nco_1\component.xml}
+report_ip_status -name ip_status 
+set_property core_revision 25 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {px_axis_nco_2_csr px_axis_nco_2_dds}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axis_nco_2_csr px_axis_nco_2_dds}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_csr/px_axis_nco_2_csr.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_dds/px_axis_nco_2_dds.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_csr/px_axis_nco_2_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_dds/px_axis_nco_2_dds.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_csr/px_axis_nco_2_csr.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_dds/px_axis_nco_2_dds.xci]
+launch_runs -jobs 8 {px_axis_nco_2_csr_synth_1 px_axis_nco_2_dds_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_csr/px_axis_nco_2_csr.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.srcs/sources_1/ip/px_axis_nco_2_dds/px_axis_nco_2_dds.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_2/px_axis_nco_2.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_nco_2\component.xml}
+report_ip_status -name ip_status 
+set_property core_revision 11 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {px_axis_nco_48_csr px_axis_nco_48_dds}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axis_nco_48_csr px_axis_nco_48_dds}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_csr/px_axis_nco_48_csr.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_dds/px_axis_nco_48_dds.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_csr/px_axis_nco_48_csr.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_dds/px_axis_nco_48_dds.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_csr/px_axis_nco_48_csr.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_dds/px_axis_nco_48_dds.xci]
+launch_runs -jobs 8 {px_axis_nco_48_csr_synth_1 px_axis_nco_48_dds_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_csr/px_axis_nco_48_csr.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.srcs/sources_1/ip/px_axis_nco_48_dds/px_axis_nco_48_dds.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2019.1/pentek/ip/px_axis_nco_48/px_axis_nco_48.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_nco_48\component.xml}
+set_property core_revision 35 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_path_fork/px_axis_path_fork.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_path_fork\px_axis_path_fork.srcs\component.xml}
+set_property core_revision 6 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property  ip_repo_paths  c:/Pentek/IP/2019.1/pentek/ip/px_axis_path_fork/px_axis_path_fork.srcs [current_project]
+update_ip_catalog
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {px_axil_csr_flw px_axis_pdti2ppkt_1_sub32}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axil_csr_flw px_axis_pdti2ppkt_1_sub32}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axis_pdti2ppkt_1_sub32/px_axis_pdti2ppkt_1_sub32.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axis_pdti2ppkt_1_sub32/px_axis_pdti2ppkt_1_sub32.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axis_pdti2ppkt_1_sub32/px_axis_pdti2ppkt_1_sub32.xci]
+launch_runs -jobs 8 {px_axil_csr_flw_synth_1 px_axis_pdti2ppkt_1_sub32_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.srcs/sources_1/ip/px_axis_pdti2ppkt_1_sub32/px_axis_pdti2ppkt_1_sub32.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti2ppkt_1\px_axis_pdti2ppkt_1.srcs\component.xml}
+set_property core_revision 39 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip -vlnv pentek.com:px_ip:px_axil_csr:1.0 [get_ips  px_axil_csr_flw] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips px_axil_csr_flw] -no_script -sync -force -quiet
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci]
+launch_runs -jobs 8 px_axil_csr_flw_synth_1
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.srcs/sources_1/ip/px_axil_csr_flw/px_axil_csr_flw.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Rich/AppData/Users/Rich/Users/Rich/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Rich/AppData/Users/Rich/Users/Rich/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.cache/compile_simlib/questa} {riviera=C:/Users/Users/Rich/AppData/Users/Rich/Users/Rich/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Rich/AppData/Users/Rich/Users/Rich/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti2ppkt_2\px_axis_pdti2ppkt_2.srcs\component.xml}
+set_property core_revision 18 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {px_axil_csr_flw_8 px_axis_pdti2ppkt_8_wc}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axil_csr_flw_8 px_axis_pdti2ppkt_8_wc}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axil_csr_flw_8/px_axil_csr_flw_8.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axis_pdti2ppkt_8_wc/px_axis_pdti2ppkt_8_wc.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axil_csr_flw_8/px_axil_csr_flw_8.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axis_pdti2ppkt_8_wc/px_axis_pdti2ppkt_8_wc.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axil_csr_flw_8/px_axil_csr_flw_8.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axis_pdti2ppkt_8_wc/px_axis_pdti2ppkt_8_wc.xci]
+launch_runs -jobs 8 {px_axil_csr_flw_8_synth_1 px_axis_pdti2ppkt_8_wc_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axil_csr_flw_8/px_axil_csr_flw_8.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.srcs/sources_1/ip/px_axis_pdti2ppkt_8_wc/px_axis_pdti2ppkt_8_wc.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti2ppkt_8\component.xml}
+ipx::unload_core c:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/component.xml
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti2ppkt_8\component.xml}
+ipx::unload_core c:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_8/component.xml
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti2ppkt_8\component.xml}
+set_property core_revision 29 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek/ip
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips  {px_axil_csr_flw_16 px_axis_pdti2ppkt_16_wc}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axil_csr_flw_16 px_axis_pdti2ppkt_16_wc}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axil_csr_flw_16/px_axil_csr_flw_16.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axis_pdti2ppkt_16_wc/px_axis_pdti2ppkt_16_wc.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axil_csr_flw_16/px_axil_csr_flw_16.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axis_pdti2ppkt_16_wc/px_axis_pdti2ppkt_16_wc.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axil_csr_flw_16/px_axil_csr_flw_16.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axis_pdti2ppkt_16_wc/px_axis_pdti2ppkt_16_wc.xci]
+launch_runs -jobs 8 {px_axil_csr_flw_16_synth_1 px_axis_pdti2ppkt_16_wc_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axil_csr_flw_16/px_axil_csr_flw_16.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.srcs/sources_1/ip/px_axis_pdti2ppkt_16_wc/px_axis_pdti2ppkt_16_wc.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti2ppkt_16/px_axis_pdti2ppkt_16.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/modelsim} {questa=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/questa} {riviera=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/riviera} {activehdl=C:/Users/Users/Users/2016.2/data/ip/pentek/ip/px_axis_pdti2ppkt_8/px_axis_pdti2ppkt_8.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti2ppkt_16\component.xml}
+set_property core_revision 10 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek/ip
+report_ip_status -name ip_status 
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti48_split/px_axis_pdti48_split.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti48_split\px_axis_pdti48_split.srcs\sources_1\new\component.xml}
+set_property core_revision 16 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property  ip_repo_paths  c:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti48_split/px_axis_pdti48_split.srcs/sources_1/new [current_project]
+update_ip_catalog
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.xpr
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+upgrade_ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 [get_ips  tb_blk_ram] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips tb_blk_ram] -no_script -sync -force -quiet
+generate_target all [get_files  C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.srcs/sources_1/ip/tb_blk_ram/tb_blk_ram.xci]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.srcs/sources_1/ip/tb_blk_ram/tb_blk_ram.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.srcs/sources_1/ip/tb_blk_ram/tb_blk_ram.xci]
+launch_runs -jobs 8 tb_blk_ram_synth_1
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.srcs/sources_1/ip/tb_blk_ram/tb_blk_ram.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/2016.1/data/ip/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.cache/compile_simlib/modelsim} {questa=C:/Users/2016.1/data/ip/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.cache/compile_simlib/questa} {riviera=C:/Users/2016.1/data/ip/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.cache/compile_simlib/riviera} {activehdl=C:/Users/2016.1/data/ip/pentek/ip/px_axis_pdti_adv/px_axis_pdti_adv.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti_adv\component.xml}
+set_property core_revision 23 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property  ip_repo_paths  c:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_adv [current_project]
+update_ip_catalog
+report_ip_status -name ip_status 
+close_project
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.xpr
+report_ip_status -name ip_status 
+upgrade_ip [get_ips  {px_axis_pdti_dec16fir_8_st4 test_chirp_1}] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips {px_axis_pdti_dec16fir_8_st4 test_chirp_1}] -no_script -sync -force -quiet
+generate_target all [get_files  {C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/px_axis_pdti_dec16fir_8_st4/px_axis_pdti_dec16fir_8_st4.xci C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/test_chirp_1/test_chirp_1.xci}]
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/px_axis_pdti_dec16fir_8_st4/px_axis_pdti_dec16fir_8_st4.xci] -no_script -sync -force -quiet
+export_ip_user_files -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/test_chirp_1/test_chirp_1.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/px_axis_pdti_dec16fir_8_st4/px_axis_pdti_dec16fir_8_st4.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/test_chirp_1/test_chirp_1.xci]
+launch_runs -jobs 8 {px_axis_pdti_dec16fir_8_st4_synth_1 test_chirp_1_synth_1}
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/px_axis_pdti_dec16fir_8_st4/px_axis_pdti_dec16fir_8_st4.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_simulation -of_objects [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.srcs/sources_1/ip/test_chirp_1/test_chirp_1.xci] -directory C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2019.1/pentek/ip/px_axis_pdti_dec16fir_8/px_axis_pdti_dec16fir_8.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axis_pdti_dec16fir_8\component.xml}
+set_property core_revision 9 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek
+close_project

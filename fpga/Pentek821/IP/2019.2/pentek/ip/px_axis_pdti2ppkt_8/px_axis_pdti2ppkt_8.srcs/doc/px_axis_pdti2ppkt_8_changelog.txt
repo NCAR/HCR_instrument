@@ -1,0 +1,12 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release
+Version 1.1
+4/20/17 Fixed Retrigger behavior and added BAD_TRIG Interrupt source
+Version 1.2
+8/9/17 Updated documentation.
+Version 1.30 
+4/23/18 Fixed Trig Clear Behavior in Hold mode
+Version 1.40 
+12/18/18 Fixed 8-bit behavior in gate mode

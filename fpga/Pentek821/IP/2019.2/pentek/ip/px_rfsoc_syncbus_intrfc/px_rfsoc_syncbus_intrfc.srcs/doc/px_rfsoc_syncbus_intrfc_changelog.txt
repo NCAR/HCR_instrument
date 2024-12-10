@@ -1,0 +1,5 @@
+* Core Created
+Version 1.0
+Version 1.1 Fixed undriven bits of m_axis_ptctl_tdata
+Version 1.2 Removed unused sysref_tdly_out. Added generic to remove unclocked SYSREF mux for 6001
+            version that uses an externally provided AXIS clock (input clock is 500MHz and uses PLL for 4GHz instead of 4GHz directly)

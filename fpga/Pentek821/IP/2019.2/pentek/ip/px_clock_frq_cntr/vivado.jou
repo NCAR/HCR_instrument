@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:55:03 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Thu Jul 13 08:33:10 2017
+# Process ID: 10004
+# Current directory: C:/Pentek/IP/2017.1/wip/px_clock_frq_cntr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11564 C:\Pentek\IP\2017.1\wip\px_clock_frq_cntr\px_clock_frq_cntr.xpr
+# Log file: C:/Pentek/IP/2017.1/wip/px_clock_frq_cntr/vivado.log
+# Journal file: C:/Pentek/IP/2017.1/wip/px_clock_frq_cntr\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.1/wip/px_clock_frq_cntr/px_clock_frq_cntr.xpr
+update_compile_order -fileset sources_1

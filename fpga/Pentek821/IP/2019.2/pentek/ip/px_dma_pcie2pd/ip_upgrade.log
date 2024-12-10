@@ -1,0 +1,1638 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:52 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:51 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:51 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.4) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:50 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:49 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:49 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 10:36:48 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 26) to (Rev. 27)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:27 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:27 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:26 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.4) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:25 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:25 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:24 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 07:17:23 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 25) to (Rev. 26)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:27 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:26 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:25 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.4) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:17 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:16 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:15 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 08:13:13 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 24) to (Rev. 25)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:43 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:42 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:41 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.4) to (Rev. 1)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:33 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:32 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:31 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 13:24:29 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 22) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:42 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:41 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:41 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram from xilinx.com:ip:blk_mem_gen:8.3 (Rev. 6) to xilinx.com:ip:blk_mem_gen:8.4
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:33 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:32 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:31 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 08:41:29 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 21) to (Rev. 22)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 13:39:17 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 19) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 13:07:48 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:26 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:25 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:23 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.3) from (Rev. 5) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:15 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:13 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.1) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:12 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 09:00:10 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 17) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:35 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:34 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:34 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.3) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:26 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:25 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.1) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:25 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 09:50:24 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 15) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:18 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:17 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:16 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_descr_ram (xilinx.com:ip:blk_mem_gen:8.3) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:04 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:03 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:02 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 12:48:01 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dppd'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dppd (pentek.com:px_ip:px_axil_bram_ctlr:1.0) from (Rev. 14) to (Rev. 15)
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'px_axil_bram_ctlr_dppd'.
+
+
+-Upgrade has removed interface 'bram_signal_clock'
+
+-Upgrade has removed interface 's_axi_signal_clock'
+
+-Upgrade has removed interface 's_axi_signal_reset'
+
+-Upgrade has added interface 'bram_clk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 'bram_rst' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 's_axi_aclk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 's_axi_aresetn' (xilinx.com:signal:reset:1.0)
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Wed Sep 07 11:44:26 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_dma_pcie2pd_tag_fifo (xilinx.com:ip:fifo_generator:13.1 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Wed Sep 07 11:44:24 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_dma_pcie2pd_rqst_fifo (xilinx.com:ip:fifo_generator:13.1 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Wed Sep 07 11:44:22 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_dma_pcie2pd_cmp_fifo (xilinx.com:ip:fifo_generator:13.1 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Wed Sep 07 11:44:20 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_pipe'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_dma_pcie2pd_buf_pipe (xilinx.com:ip:fifo_generator:13.1 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Wed Sep 07 11:44:19 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_dma_pcie2pd_buf_fifo (xilinx.com:ip:fifo_generator:13.1 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:32:44 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_rqst_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:32:35 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_cmp_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_cmp_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:32:26 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2pd_buf_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2pd_buf_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:32:17 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2hmc_tag_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2hmc_tag_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:31:51 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2hmc_rqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2hmc_rqst_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:31:40 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2hmc_hmcrqst_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2hmc_hmcrqst_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:30:23 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2hmc_pktinfo_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2hmc_pktinfo_ram (xilinx.com:ip:dist_mem_gen:8.0) from (Rev. 8) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:30:21 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2hmc_descr_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2hmc_descr_ram from xilinx.com:ip:blk_mem_gen:8.2 (Rev. 6) to xilinx.com:ip:blk_mem_gen:8.3 (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:30:04 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_pcie2hmc_axis2to1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_pcie2hmc_axis2to1 (xilinx.com:ip:axis_switch:1.1) from (Rev. 5) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 30 11:30:01 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_bram_ctlr_dph'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_bram_ctlr_dph from pentek.com:px_ip:px_axil_bram_ctlr:0.01 (Rev. 8) to pentek.com:px_ip:px_axil_bram_ctlr:1.0 (Rev. 14)
+

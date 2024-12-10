@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_periodic_signal_cntr_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_periodic_signal_cntr" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="312000000fs"></ZoomStartTime>
+      <ZoomEndTime time="1416000001fs"></ZoomEndTime>
+      <Cursor1Time time="10000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="244"></NameColumnWidth>
+      <ValueColumnWidth column_width="181"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="66" />
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/signal_in" type="logic">
+      <obj_property name="ElementShortName">signal_in</obj_property>
+      <obj_property name="ObjectShortName">signal_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/clk_in" type="logic">
+      <obj_property name="ElementShortName">clk_in</obj_property>
+      <obj_property name="ObjectShortName">clk_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/signal_in" type="logic">
+      <obj_property name="ElementShortName">signal_in</obj_property>
+      <obj_property name="ObjectShortName">signal_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/clk_in" type="logic">
+      <obj_property name="ElementShortName">clk_in</obj_property>
+      <obj_property name="ObjectShortName">clk_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/period_cntr" type="array">
+      <obj_property name="ElementShortName">period_cntr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_cntr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/t2_re" type="logic">
+      <obj_property name="ElementShortName">t2_re</obj_property>
+      <obj_property name="ObjectShortName">t2_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/t1_signal_in" type="logic">
+      <obj_property name="ElementShortName">t1_signal_in</obj_property>
+      <obj_property name="ObjectShortName">t1_signal_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/t2_signal_in" type="logic">
+      <obj_property name="ElementShortName">t2_signal_in</obj_property>
+      <obj_property name="ObjectShortName">t2_signal_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/period_latch" type="array">
+      <obj_property name="ElementShortName">period_latch[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_latch[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/src_send" type="logic">
+      <obj_property name="ElementShortName">src_send</obj_property>
+      <obj_property name="ObjectShortName">src_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/src_rcv" type="logic">
+      <obj_property name="ElementShortName">src_rcv</obj_property>
+      <obj_property name="ObjectShortName">src_rcv</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/dest_req" type="logic">
+      <obj_property name="ElementShortName">dest_req</obj_property>
+      <obj_property name="ObjectShortName">dest_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/period_x" type="array">
+      <obj_property name="ElementShortName">period_x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/period_cntr_l" type="array">
+      <obj_property name="ElementShortName">period_cntr_l[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_cntr_l[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/t1_s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">t1_s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/rst_reg" type="logic">
+      <obj_property name="ElementShortName">rst_reg</obj_property>
+      <obj_property name="ObjectShortName">rst_reg</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/ctl0_out" type="array">
+      <obj_property name="ElementShortName">ctl0_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl0_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/send_ff" type="logic">
+      <obj_property name="ElementShortName">send_ff</obj_property>
+      <obj_property name="ObjectShortName">send_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/irqx" type="logic">
+      <obj_property name="ElementShortName">irqx</obj_property>
+      <obj_property name="ObjectShortName">irqx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/csr_inst/U0/stat0_in" type="array">
+      <obj_property name="ElementShortName">stat0_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat0_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_periodic_signal_cntr/uut/csr_inst/U0/int_flag_reg" type="array">
+      <obj_property name="ElementShortName">int_flag_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_flag_reg[31:0]</obj_property>
+   </wvobject>
+</wave_config>

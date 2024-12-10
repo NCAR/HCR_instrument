@@ -6,13 +6,13 @@ boost_program_options
 doxygen
 logx
 lrose
+qt5
+qtcore
 QFunctionWrapper
-qt4
 QXmlRpcServerAbyss
 """)
 
 xmitdEnv = Environment(tools = ['default'] + xmitdTools)
-xmitdEnv.EnableQtModules(['QtCore'])
 
 xmitd_sources = Split("""
 hcr_xmitd.cpp

@@ -1,0 +1,5 @@
+* Core Created
+Version 1.0
+Version 1.1 - Improved speed by using DSP48 in accumulators.
+Version 1.2 - Improved speed by using DSP48 in accumulators.
+Version 2.0 - Added the ability to have a maximum bus width of 1,2,4, or 8 samples per cycle instead of just 8, and to have real only bus choice.

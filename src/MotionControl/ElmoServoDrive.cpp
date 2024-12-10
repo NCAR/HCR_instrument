@@ -337,9 +337,9 @@ ElmoServoDrive::moveTo(float angle) {
     int counts = _angleToCounts(angle);
     if (! _canMoveToCount(counts)) {
         ELOG << driveName() << " cannot move to angle " << angle << 
-                ", which is outside motion boundaries (" <<
-                _lowerLimitCounts / countsPerDegree() << " to " << 
-                _upperLimitCounts / countsPerDegree() << ")";
+                ", which is outside cushioned motion boundaries (" <<
+                cushionedLowerLimitCounts() / countsPerDegree() << " to " <<
+                cushionedUpperLimitCounts() / countsPerDegree() << ")";
         return;
     }
     
@@ -709,7 +709,6 @@ ElmoServoDrive::_canMoveToCount(int count) const {
     // We apply a small cushion angle on either side to narrow the interval 
     // [_lowerLimitCounts,_upperLimitCounts]. This allows for moderate
     // imprecision in positioning without triggering motor faults.
-    const int CUSHION_COUNTS = 0.5 * countsPerDegree();
-    return((count >= (_lowerLimitCounts + CUSHION_COUNTS)) && 
-           (count <= (_upperLimitCounts - CUSHION_COUNTS)));
+    return((count >= cushionedLowerLimitCounts()) &&
+           (count <= cushionedUpperLimitCounts()));
 }

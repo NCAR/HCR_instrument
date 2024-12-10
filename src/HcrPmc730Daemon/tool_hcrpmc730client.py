@@ -7,11 +7,12 @@ tools = Split("""
     hcrpmc730
     logx
     boost_serialization
-    qt4
+    operationmode
+    qtcore
+    qtnetwork
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
-env.EnableQtModules(['QtCore', 'QtNetwork'])
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory
@@ -19,13 +20,12 @@ includeDir = tooldir
 
 sources = Split('''
 HcrPmc730Client.cpp
-HcrPmc730StatusThread.cpp
+HcrPmc730StatusWorker.cpp
 ''')
 
 headers = Split('''
 HcrPmc730Client.h
-HcrPmc730StatusThread.h
-HmcModeChange.h
+HcrPmc730StatusWorker.h
 ''')
 lib = env.Library('hcrpmc730client', sources)
 
@@ -33,7 +33,7 @@ lib = env.Library('hcrpmc730client', sources)
     
 def hcrpmc730client(env):
     env.AppendUnique(CPPPATH = [includeDir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
 #    env.AppendDoxref(doxref[0])
     env.Require(tools)
 

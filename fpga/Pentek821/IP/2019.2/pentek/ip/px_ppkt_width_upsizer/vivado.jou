@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2018.1 (64-bit)
+# SW Build 2188600 on Wed Apr  4 18:40:38 MDT 2018
+# IP Build 2185939 on Wed Apr  4 20:55:05 MDT 2018
+# Start of session at: Thu May  3 13:45:53 2018
+# Process ID: 3884
+# Current directory: C:/Pentek/IP/2018.1/pentek/ip/px_ppkt_width_upsizer
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent1216 C:\Pentek\IP\2018.1\pentek\ip\px_ppkt_width_upsizer\px_ppkt_width_upsizer.xpr
+# Log file: C:/Pentek/IP/2018.1/pentek/ip/px_ppkt_width_upsizer/vivado.log
+# Journal file: C:/Pentek/IP/2018.1/pentek/ip/px_ppkt_width_upsizer\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2018.1/pentek/ip/px_ppkt_width_upsizer/px_ppkt_width_upsizer.xpr
+update_compile_order -fileset sources_1

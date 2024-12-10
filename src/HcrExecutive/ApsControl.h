@@ -32,9 +32,8 @@
 #define APSTHREAD_H_
 
 #include <HcrPmc730Client.h>
+#include <HcrPmc730StatusWorker.h>
 #include <QObject>
-
-class HcrPmc730StatusThread;
 
 /// Class which provides implementation for HCR's Active Pressurization
 /// System (APS).
@@ -42,11 +41,11 @@ class ApsControl : public QObject {
     Q_OBJECT
     friend class HcrExecutiveStatus;
 public:
-    /// @brief Instantiate using the given HcrPmc730StatusThread as the source
+    /// @brief Instantiate using the given HcrPmc730StatusWorker as the source
     /// of status from HcrPmc730Daemon.
-    /// @param hcrPmc730StatusThread the HcrPmc730StatusThread which will
+    /// @param hcrPmc730StatusWorker the HcrPmc730StatusWorker which will
     /// provide status from HcrPmc730Daemon
-    ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread);
+    ApsControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker);
     virtual ~ApsControl();
 
     /// @brief Enumerated type for valve control state

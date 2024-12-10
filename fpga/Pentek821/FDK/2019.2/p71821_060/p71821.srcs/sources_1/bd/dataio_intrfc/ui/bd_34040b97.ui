@@ -1,0 +1,30 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.5b  2016-09-06 bk=1.3687 VDI=39 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axi_csr_aclk -pg 1 -y 80 -defaultsOSRD
+preplace port s_axi_csr -pg 1 -y 40 -defaultsOSRD
+preplace port m_axis_testsig_pdti -pg 1 -y 290 -defaultsOSRD
+preplace port s_axis_ptctl -pg 1 -y 60 -defaultsOSRD
+preplace port s_axis_pts -pg 1 -y 290 -defaultsOSRD
+preplace port testsig_irq -pg 1 -y 100 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -y 100 -defaultsOSRD
+preplace port sample_clk_a -pg 1 -y 120 -defaultsOSRD
+preplace port aresetn -pg 1 -y 140 -defaultsOSRD
+preplace inst info_tstsig -pg 1 -lvl 1 -y 230 -defaultsOSRD
+preplace inst px_test_sig_gen_0 -pg 1 -lvl 1 -y 90 -defaultsOSRD
+preplace inst axis_pdti_mrg -pg 1 -lvl 2 -y 290 -defaultsOSRD
+preplace netloc px_test_sig_gen_0_irq 1 1 2 N 100 NJ
+preplace netloc s_axis_ptctl_1 1 0 1 NJ
+preplace netloc info_tstsig_m_axis_pi 1 1 1 310
+preplace netloc s_axi_csr_aresetn_1 1 0 1 NJ
+preplace netloc s_axi_csr_aclk_1 1 0 1 NJ
+preplace netloc s_axis_pts_1 1 0 2 NJ 290 NJ
+preplace netloc px_test_sig_gen_0_m_axis_pd_testsig 1 1 1 320
+preplace netloc sample_clk_a_1 1 0 2 20 310 NJ
+preplace netloc s_axi_csr_1 1 0 1 NJ
+preplace netloc aresetn_1 1 0 2 10 330 NJ
+preplace netloc px_axis_pdti_mrg_0_m_axis_pdti 1 2 1 N
+levelinfo -pg 1 -10 170 450 590 -top 0 -bot 380
+",
+}
+0

@@ -1,0 +1,28 @@
+#-----------------------------------------------------------
+# Vivado v2017.3 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Wed Apr 18 10:38:27 2018
+# Process ID: 11816
+# Current directory: C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11568 C:\pentek\ip\2017.3\pentek\ip\px_test_sig_gen_816\px_test_sig_gen_816.xpr
+# Log file: C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816/vivado.log
+# Journal file: C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816\vivado.jou
+#-----------------------------------------------------------
+INFO: [Common 17-1460] Use of init.tcl in C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl 
+Sourcing tcl script 'C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/init.tcl'
+start_gui
+open_project C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816/px_test_sig_gen_816.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/pentek/ip/2017.3/pentek/ip'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/pentek/ip/2017.3/pentek/ip' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/data/ip'.
+WARNING: [IP_Flow 19-2162] IP 'px_axil_csr_tsig_816' is locked:
+* IP definition 'px_axil_csr_v1_0 (1.0)' for IP 'px_axil_csr_tsig_816' (customized with software release 2017.1) has a different revision in the IP Catalog.
+Please select 'Report IP Status' from the 'Tools/Report' menu or run Tcl command 'report_ip_status' for more information.
+open_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:28 . Memory (MB): peak = 786.043 ; gain = 106.219
+update_compile_order -fileset sources_1
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Apr 18 17:06:34 2018...

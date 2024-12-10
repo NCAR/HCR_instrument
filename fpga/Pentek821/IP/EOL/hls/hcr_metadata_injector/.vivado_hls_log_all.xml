@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vivadoHLSLog:LogRoot xmlns:vivadoHLSLog="www.xilinx.com/vivadoHLSLog">
+  <errorLogs>
+    <logs>
+      <synLog/>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </errorLogs>
+  <warningLogs>
+    <logs>
+      <synLog>
+        <logs message="WARNING: [SCHED 204-21] The critical path in module 'log10_39_25_s' consists of the following:&#xA;&#x9;'mul' operation of DSP[429] ('r.V', /home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:184->/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:252->/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:984) [427]  (0 ns)&#xA;&#x9;'sub' operation of DSP[429] ('ret.V', /home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:184->/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:252->/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:984) [429]  (2.64 ns)" projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:03.965+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] Estimated clock period (2.643ns) exceeds the target (target clock period: 3ns, clock uncertainty: 0.375ns, effective delay budget: 2.625ns)." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:03.962+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] The critical path in module 'hypot_fixed_39_25_s' consists of the following:&#xA;&#x9;wire read on port 'y_V' [3]  (0 ns)&#xA;&#x9;'mul' operation ('r.V', /home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_hypot_apfixed.h:59) [21]  (2.7 ns)" projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:01.849+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] Estimated clock period (2.702ns) exceeds the target (target clock period: 3ns, clock uncertainty: 0.375ns, effective delay budget: 2.625ns)." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:01.847+0000" type="Warning"/>
+        <logs message="WARNING: [SYN 201-103] Legalizing function name 'log10&lt;39, 25>' to 'log10_39_25_s'." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:01.212+0000" type="Warning"/>
+        <logs message="WARNING: [SYN 201-103] Legalizing function name 'hypot_fixed&lt;39, 25>' to 'hypot_fixed_39_25_s'." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:01.192+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'cordic_apfixed::cordic_circ_apfixed&lt;31, 3, 1>' to 'cordic_circ_apfixed' (/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_cordic_apfixed.h:97:10)" projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:17:01.187+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'cordic_apfixed::generic_atan2&lt;24, 24>' to 'generic_atan2' (/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_cordic_apfixed.h:599:7)" projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:59.207+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'hypot_internal::hypot_fixed&lt;39, 25>' to 'hypot_fixed&lt;39, 25>' (/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_hypot_apfixed.h:55:9)" projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:59.204+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'log_apfixed_reduce::log10&lt;39, 25>' to 'log10&lt;39, 25>' (/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_log_apfixed.h:178:90)" projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:59.203+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-542] Cannot flatten a loop nest 'pulse_loop' (hcr_metadata_injector/hcr_metadata_injector.cpp:44:3) in function 'hcr_metadata_injector' : &#xA;&#xA;&#xA;either the parent loop or sub loop is do-while loop." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:59.199+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-505] Ignored pipeline directive for loop 'Loop-1' (/home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_cordic_apfixed.h:87) because its parent loop or function is pipelined." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:54.313+0000" type="Warning"/>
+        <logs message="WARNING: [SYNCHK 200-23] /home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_hypot_apfixed.h:80: variable-indexed range selection may cause suboptimal QoR." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:53.432+0000" type="Warning"/>
+        <logs message="WARNING: [SYNCHK 200-120] /home/karboski/Xilinx/Vivado/2019.2/common/technology/autopilot/hls_hypot_apfixed.h:58: multiplication is assumed not to overflow by default, otherwise, please add option '-fwrapv'." projectName="hcr_metadata_injector" solutionName="solution1" date="2023-04-17T10:16:53.430+0000" type="Warning"/>
+      </synLog>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </warningLogs>
+</vivadoHLSLog:LogRoot>

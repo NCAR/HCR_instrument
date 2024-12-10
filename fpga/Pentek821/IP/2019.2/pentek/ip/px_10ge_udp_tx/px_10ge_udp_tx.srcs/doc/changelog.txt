@@ -1,0 +1,4 @@
+Version 1.0 
+03/17/2017- First Release
+Version 1.1 
+10/20/2017- Removed core status connections. Must use axi csr bus to talk to xilinx physical layer cores. 

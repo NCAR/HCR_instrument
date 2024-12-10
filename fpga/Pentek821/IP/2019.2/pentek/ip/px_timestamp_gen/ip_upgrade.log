@@ -1,0 +1,944 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 11:11:06 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 11:11:06 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 23) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 09:07:14 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 09:07:14 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accu (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 16) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 09:07:11 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accl'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accl (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 16) to (Rev. 17)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Jun  9 09:07:08 2019
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 22) to (Rev. 23)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:07:45 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 21) to (Rev. 22)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 14:13:26 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 14:13:25 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accu (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 14:13:20 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accl'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accl (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 14:13:14 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 19) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 09:11:46 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 09:11:45 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accu (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 09:11:39 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accl'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accl (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Mon Nov  6 09:11:35 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (win64) Build 1909853 Thu Jun 15 18:39:09 MDT 2017
+| Date         : Wed Aug  9 15:07:29 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 16) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 11:24:23 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accu (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 11:24:17 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accl'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accl (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Mon Apr 24 11:24:13 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1733598 Wed Dec 14 22:35:39 MST 2016
+| Date         : Mon Dec 26 10:05:12 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Sun Dec 11 19:00:17 2016
+| Host         : Igor2 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 14:43:18 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_xclkfifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_xclkfifo (xilinx.com:ip:fifo_generator:13.1) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 14:43:17 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 9) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 14:43:15 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accu (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 14:43:09 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accl'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of px_timestamp_gen_dsp48accl (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 12) to (Rev. 13)
+
+After upgrade, an IP may have parameter differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality.
+
+2. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'd_width' from '18' to '16' has been ignored for IP 'px_timestamp_gen_dsp48accl'
+
+An attempt to modify the value of disabled parameter 'a_width' from '18' to '4' has been ignored for IP 'px_timestamp_gen_dsp48accl'
+
+
+3. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:xbip_dsp48_macro:3.0 -user_name px_timestamp_gen_dsp48accl
+set_property -dict "\
+  CONFIG.Component_Name {px_timestamp_gen_dsp48accl} \
+  CONFIG.GUI_Behaviour {Coregen} \
+  CONFIG.a_binarywidth {0} \
+  CONFIG.a_width {4} \
+  CONFIG.areg_1 {false} \
+  CONFIG.areg_2 {false} \
+  CONFIG.areg_3 {false} \
+  CONFIG.areg_4 {false} \
+  CONFIG.b_binarywidth {0} \
+  CONFIG.b_width {18} \
+  CONFIG.breg_1 {false} \
+  CONFIG.breg_2 {false} \
+  CONFIG.breg_3 {false} \
+  CONFIG.breg_4 {false} \
+  CONFIG.c_binarywidth {0} \
+  CONFIG.c_width {48} \
+  CONFIG.cinreg_1 {false} \
+  CONFIG.cinreg_2 {false} \
+  CONFIG.cinreg_3 {false} \
+  CONFIG.cinreg_4 {false} \
+  CONFIG.cinreg_5 {false} \
+  CONFIG.clk_intf.ASSOCIATED_BUSIF {p_intf:pcout_intf:carrycascout_intf:carryout_intf:bcout_intf:acout_intf:concat_intf:d_intf:c_intf:b_intf:a_intf:bcin_intf:acin_intf:pcin_intf:carryin_intf:carrycascin_intf:sel_intf} \
+  CONFIG.clk_intf.ASSOCIATED_CLKEN {CE:CED:CED1:CED2:CED3:CEA:CEA1:CEA2:CEA3:CEA4:CEB:CEB1:CEB2:CEB3:CEB4:CECONCAT:CECONCAT3:CECONCAT4:CECONCAT5:CEC:CEC1:CEC2:CEC3:CEC4:CEC5:CEM:CEP:CESEL:CESEL1:CESEL2:CESEL3:CESEL4:CESEL5} \
+  CONFIG.clk_intf.ASSOCIATED_RESET {SCLR:SCLRD:SCLRA:SCLRB:SCLRCONCAT:SCLRC:SCLRM:SCLRP:SCLRSEL} \
+  CONFIG.clk_intf.FREQ_HZ {100000000} \
+  CONFIG.concat_binarywidth {0} \
+  CONFIG.concat_width {48} \
+  CONFIG.concatreg_3 {false} \
+  CONFIG.concatreg_4 {false} \
+  CONFIG.concatreg_5 {false} \
+  CONFIG.creg_1 {false} \
+  CONFIG.creg_2 {false} \
+  CONFIG.creg_3 {false} \
+  CONFIG.creg_4 {false} \
+  CONFIG.creg_5 {true} \
+  CONFIG.d_binarywidth {0} \
+  CONFIG.d_width {16} \
+  CONFIG.dreg_1 {false} \
+  CONFIG.dreg_2 {false} \
+  CONFIG.dreg_3 {false} \
+  CONFIG.has_a_ce {false} \
+  CONFIG.has_a_sclr {false} \
+  CONFIG.has_acout {false} \
+  CONFIG.has_b_ce {false} \
+  CONFIG.has_b_sclr {false} \
+  CONFIG.has_bcout {false} \
+  CONFIG.has_c_ce {false} \
+  CONFIG.has_c_sclr {false} \
+  CONFIG.has_carrycascout {true} \
+  CONFIG.has_carryout {false} \
+  CONFIG.has_ce {false} \
+  CONFIG.has_concat_ce {false} \
+  CONFIG.has_concat_sclr {false} \
+  CONFIG.has_d_ce {false} \
+  CONFIG.has_d_sclr {false} \
+  CONFIG.has_m_ce {false} \
+  CONFIG.has_m_sclr {false} \
+  CONFIG.has_p_ce {true} \
+  CONFIG.has_p_sclr {true} \
+  CONFIG.has_pcout {false} \
+  CONFIG.has_sclr {false} \
+  CONFIG.has_sel_ce {false} \
+  CONFIG.has_sel_sclr {false} \
+  CONFIG.instruction1 {P+C} \
+  CONFIG.instruction2 {C} \
+  CONFIG.instruction3 {#} \
+  CONFIG.instruction4 {#} \
+  CONFIG.instruction5 {#} \
+  CONFIG.instruction6 {#} \
+  CONFIG.instruction7 {#} \
+  CONFIG.instruction8 {#} \
+  CONFIG.instruction_list {#} \
+  CONFIG.mreg_5 {false} \
+  CONFIG.opreg_1 {false} \
+  CONFIG.opreg_2 {false} \
+  CONFIG.opreg_3 {false} \
+  CONFIG.opreg_4 {false} \
+  CONFIG.opreg_5 {true} \
+  CONFIG.output_properties {Full_Precision} \
+  CONFIG.p_binarywidth {0} \
+  CONFIG.p_full_width {48} \
+  CONFIG.p_width {48} \
+  CONFIG.pcin_binarywidth {0} \
+  CONFIG.pipeline_options {Expert} \
+  CONFIG.preg_6 {true} \
+  CONFIG.sclr_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclra_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrb_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrc_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrconcat_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrd_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrm_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrp_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.sclrsel_intf.POLARITY {ACTIVE_HIGH} \
+  CONFIG.show_filtered {false} \
+  CONFIG.tier_1 {false} \
+  CONFIG.tier_2 {false} \
+  CONFIG.tier_3 {false} \
+  CONFIG.tier_4 {false} \
+  CONFIG.tier_5 {false} \
+  CONFIG.tier_6 {false} \
+  CONFIG.use_dsp48 {true} " [get_ips px_timestamp_gen_dsp48accl]
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 14:43:03 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_axiclkcnv'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_axiclkcnv (xilinx.com:ip:axi_clock_converter:2.1) from (Rev. 8) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.3 (win64) Build 1682563 Mon Oct 10 19:07:27 MDT 2016
+| Date         : Tue Oct 18 14:43:03 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 11) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Wed Sep 07 11:53:04 2016
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_xclkfifo'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_timestamp_gen_xclkfifo (xilinx.com:ip:fifo_generator:13.1 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 23 08:59:40 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 09 12:17:34 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_xclkfifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_xclkfifo (xilinx.com:ip:fifo_generator:13.1) to (Rev. 1)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 09 12:17:32 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_axiclkcnv'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_axiclkcnv (xilinx.com:ip:axi_clock_converter:2.1) from (Rev. 7) to (Rev. 8)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (win64) Build 1577090 Thu Jun  2 16:32:40 MDT 2016
+| Date         : Thu Jun 09 12:17:30 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 9) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Thu Apr 21 16:15:05 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 8) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Wed Apr 20 14:40:27 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_xclkfifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_xclkfifo from xilinx.com:ip:fifo_generator:13.0 (Rev. 1) to xilinx.com:ip:fifo_generator:13.1
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Wed Apr 20 14:40:26 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_ppscntr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_ppscntr (xilinx.com:ip:c_counter_binary:12.0) from (Rev. 8) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Wed Apr 20 14:40:25 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accu'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accu (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Wed Apr 20 14:40:17 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_dsp48accl'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_dsp48accl (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Wed Apr 20 14:40:10 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_timestamp_gen_axiclkcnv'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_timestamp_gen_axiclkcnv (xilinx.com:ip:axi_clock_converter:2.1) from (Rev. 6) to (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.1 (win64) Build 1538259 Fri Apr  8 15:45:27 MDT 2016
+| Date         : Wed Apr 20 14:40:09 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_ts'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_ts (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 7) to (Rev. 8)
+

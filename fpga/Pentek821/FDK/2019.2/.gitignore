@@ -1,0 +1,12 @@
+
+**/*.upgrade_log
+
+**/*.dcp
+
+p71821_060/*
+!p71821_060/apar_rsp.xpr
+!p71821_060/proj/*.tcl
+
+!p71821_060/apar_rsp.srcs
+
+p71821_060/p71821.srcs/sources_1/bd

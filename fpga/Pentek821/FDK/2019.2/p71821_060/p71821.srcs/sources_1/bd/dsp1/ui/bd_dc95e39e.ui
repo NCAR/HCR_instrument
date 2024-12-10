@@ -1,0 +1,51 @@
+{
+   guistr: "# # String gsaved with Nlview 6.5.5  2015-06-26 bk=1.3371 VDI=38 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axi_csr_aclk -pg 1 -y 170 -defaultsOSRD
+preplace port s_axi_csr -pg 1 -y 150 -defaultsOSRD
+preplace port s_axis_pdti_aclk -pg 1 -y 620 -defaultsOSRD
+preplace port s_axis_pdti_aresetn -pg 1 -y 640 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -y 190 -defaultsOSRD
+preplace port irq -pg 1 -y 230 -defaultsOSRD
+preplace port m_axis_pdti -pg 1 -y 630 -defaultsOSRD
+preplace port s_axis_pdti -pg 1 -y 600 -defaultsOSRD
+preplace inst axi_interc -pg 1 -lvl 1 -y 290 -defaultsOSRD
+preplace inst bypass_mux -pg 1 -lvl 4 -y 630 -defaultsOSRD
+preplace inst irq_vctr -pg 1 -lvl 3 -y 100 -defaultsOSRD
+preplace inst thresh_gating -pg 1 -lvl 4 -y 410 -defaultsOSRD
+preplace inst ddc -pg 1 -lvl 2 -y 460 -defaultsOSRD
+preplace inst irq_pls_aggr -pg 1 -lvl 4 -y 230 -defaultsOSRD
+preplace inst axis_broadcast -pg 1 -lvl 1 -y 620 -defaultsOSRD
+preplace inst pwr_meter -pg 1 -lvl 3 -y 390 -defaultsOSRD
+preplace inst axis_combine -pg 1 -lvl 2 -y 650 -defaultsOSRD
+preplace netloc axi_interc_M04_AXI 1 1 3 320 280 NJ 280 NJ
+preplace netloc s_axis_pdti_2 1 1 1 320
+preplace netloc axi_interc_M03_AXI 1 1 3 310 200 NJ 200 NJ
+preplace netloc px_irq_pls_aggr_0_irq_out 1 4 1 NJ
+preplace netloc ddc_sat2_irq 1 2 1 680
+preplace netloc axi_interc0_M00_AXI 1 1 1 350
+preplace netloc ddc_sat3_irq 1 2 1 700
+preplace netloc ddc_m_axis_16bit_pdti 1 2 1 690
+preplace netloc ch0_ddc_m_axis_pdti 1 2 2 NJ 490 1030
+preplace netloc s_axi_csr_aresetn_1 1 0 4 20 490 310 350 720 500 1060
+preplace netloc s_axi_csr_ack_1 1 0 4 30 500 350 560 730 510 1050
+preplace netloc bypass_mux_m_axis_pdti 1 4 1 NJ
+preplace netloc thresh_gating_m_axis_pdti 1 3 2 1090 520 1360
+preplace netloc s_axis_pdti_aclk_1 1 0 4 20 550 330 570 740 520 1070
+preplace netloc axis_broadcast_M01_AXIS 1 1 1 N
+preplace netloc axis_broadcast_M02_AXIS 1 1 1 N
+preplace netloc s_axis_mag_1 1 3 1 N
+preplace netloc ddc_sat1_irq 1 2 1 670
+preplace netloc s_axi_csr_1 1 0 1 NJ
+preplace netloc axi_interc_M01_AXI 1 1 2 NJ 270 720
+preplace netloc px_scalar2vctr_0_output_vector 1 3 1 1080
+preplace netloc axi_interc0_M02_AXI 1 1 3 NJ 290 NJ 290 1030
+preplace netloc pwr_meter_irq 1 2 2 740 190 1020
+preplace netloc thresh_gating_irq 1 2 3 720 10 NJ 10 1370
+preplace netloc s_axis_pdti_1 1 0 1 NJ
+preplace netloc axis_combine_M_AXIS 1 2 2 760 590 NJ
+preplace netloc s_axis_pdti_aresetn_1 1 0 4 30 690 340 730 750 530 1080
+levelinfo -pg 1 0 170 520 890 1230 1400 -top 0 -bot 740
+",
+}
+0

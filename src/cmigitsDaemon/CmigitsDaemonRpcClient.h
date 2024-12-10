@@ -39,7 +39,7 @@
  * CmigitsDaemonRpcClient encapsulates an XML-RPC connection to a cmigitsDaemon
  * process.
  */
-class CmigitsDaemonRpcClient {
+class CmigitsDaemonRpcClient : public xmlrpc_c::clientSimple {
 public:
     /**
      * @brief Construct a CmigitsDaemonRpcClient to communicate with a 
@@ -76,7 +76,6 @@ private:
     std::string _daemonHost;
     int _daemonPort;
     std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* CMIGITSDAEMONRPCCLIENT_H_ */

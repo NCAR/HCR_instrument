@@ -1,0 +1,27 @@
+
+
+attribute mark_debug : string;
+attribute mark_debug of mcode_m_tvalid_net                              : signal is "true";
+attribute mark_debug of mcode_m_tlast_net                               : signal is "true";
+attribute mark_debug of r_config_tvalid_q_net                           : signal is "true";
+attribute mark_debug of r_reload_tvalid_q_net                           : signal is "true";
+attribute mark_debug of r_reload_tlast_q_net                            : signal is "true";
+attribute mark_debug of ce_net                                          : signal is "true";
+attribute mark_debug of realcoeffir_s_axis_data_tready_net              : signal is "true";
+attribute mark_debug of realcoeffir_s_axis_config_tready_net            : signal is "true";
+attribute mark_debug of realcoeffir_s_axis_reload_tready_net            : signal is "true";
+attribute mark_debug of realcoeffir_m_axis_data_tvalid_net              : signal is "true";
+attribute mark_debug of realcoeffir_m_axis_data_tlast_net               : signal is "true";
+attribute mark_debug of realcoeffir_event_s_reload_tlast_missing_net    : signal is "true";
+attribute mark_debug of realcoeffir_event_s_reload_tlast_unexpected_net : signal is "true";
+
+attribute mark_debug : string;
+attribute mark_debug of r_tuserin_q_net    : signal is "true";
+attribute mark_debug of r_tdatain_q_net    : signal is "true";
+attribute mark_debug of r_tvalidin_q_net   : signal is "true";
+attribute mark_debug of r_tuser_q_net      : signal is "true";
+attribute mark_debug of mcode_m_tvalid_net : signal is "true";
+attribute mark_debug of mcode_m_tlast_net  : signal is "true";
+attribute mark_debug of r_real_dout_net    : signal is "true";
+attribute mark_debug of r_imag_dout_net    : signal is "true";
+

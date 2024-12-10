@@ -1,0 +1,15 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2700185 on Thu Oct 24 18:46:05 MDT 2019
+# IP Build 2699827 on Thu Oct 24 21:16:38 MDT 2019
+# Start of session at: Tue Nov 12 11:35:59 2019
+# Process ID: 15836
+# Current directory: C:/Pentek/IP/2019.2/pentek/ip/px_axis_2to1_mux
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent7648 C:\Pentek\IP\2019.2\pentek\ip\px_axis_2to1_mux\px_axis_2to1_mux.xpr
+# Log file: C:/Pentek/IP/2019.2/pentek/ip/px_axis_2to1_mux/vivado.log
+# Journal file: C:/Pentek/IP/2019.2/pentek/ip/px_axis_2to1_mux\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2019.2/pentek/ip/px_axis_2to1_mux/px_axis_2to1_mux.xpr
+update_compile_order -fileset sources_1
+close_project

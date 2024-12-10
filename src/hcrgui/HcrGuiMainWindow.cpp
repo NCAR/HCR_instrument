@@ -35,9 +35,11 @@
 #include <fstream>
 #include <sstream>
 #include <unistd.h>
+#include <vector>
 
-#include <QtCore/QDateTime>
-#include <QtGui/QMessageBox>
+#include <QDateTime>
+#include <QMessageBox>
+#include <QThread>
 
 #include <logx/Logging.h>
 
@@ -50,6 +52,7 @@ static inline double MetersToFeet(double m) {
     return(3.28084 * m);
 }
 
+Q_DECLARE_METATYPE(OperationMode)
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, int spectracomPort,
@@ -77,13 +80,16 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
 //    _spectracomStatusThread(archiverHost, spectracomPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
     _hcrExecutiveStatusThread(rdsHost, hcrExecutivePort),
-    _mcStatusThread(rdsHost, motionControlPort),
-    _pmcStatusThread(rdsHost, pmcPort),
+    _mcStatusThread(),
+    _mcStatusWorker(rdsHost, motionControlPort, &_mcStatusThread),
+    _pmcStatusThread(),
+    _pmcStatusWorker(rdsHost, pmcPort, &_pmcStatusThread),
     _xmitdStatusThread(archiverHost, xmitterPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
+    _notRespondingLED(":/redLED_Q.png"),
     _xmitStatus(),
     _rdsXmitControl(true),
     _fireflydStatus(),
@@ -142,20 +148,39 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
     // No status from any daemons yet
-    _ui.ins1StatusIcon->setPixmap(_redLED);
-    _ui.ins2StatusIcon->setPixmap(_redLED);
-    _ui.fireflydStatusIcon->setPixmap(_redLED);
-    _ui.hcrdrxStatusIcon->setPixmap(_redLED);
-    _ui.hcrExecutiveStatusIcon->setPixmap(_redLED);
-    _ui.mcStatusIcon->setPixmap(_redLED);
-    _ui.pmc730StatusIcon->setPixmap(_redLED);
-//    _ui.spectracomStatusIcon->setPixmap(_redLED);
-    _ui.xmitterStatusIcon->setPixmap(_redLED);
+    _ui.ins1StatusIcon->setPixmap(_notRespondingLED);
+    _ui.ins2StatusIcon->setPixmap(_notRespondingLED);
+    _ui.fireflydStatusIcon->setPixmap(_notRespondingLED);
+    _ui.hcrdrxStatusIcon->setPixmap(_notRespondingLED);
+    _ui.hcrExecutiveStatusIcon->setPixmap(_notRespondingLED);
+    _ui.mcStatusIcon->setPixmap(_notRespondingLED);
+    _ui.pmc730StatusIcon->setPixmap(_notRespondingLED);
+//    _ui.spectracomStatusIcon->setPixmap(_notRespondingLED);
+    _ui.xmitterStatusIcon->setPixmap(_notRespondingLED);
 
     // Disable Spectracom widgets
     _ui.spectracomStatusIcon->setEnabled(false);
     _ui.spectracomStatusLabel->setEnabled(false);
     _ui.spectracomDetailsButton->setEnabled(false);
+
+    // Set up to stop each of our threads when the QApplication quits
+    std::vector<QThread*> myThreads {
+        &_ins1StatusThread,
+        &_ins2StatusThread,
+        &_dataMapperStatusThread,
+        &_fireflydStatusThread,
+//        &_spectracomStatusThread,
+        &_hcrdrxStatusThread,
+        &_hcrExecutiveStatusThread,
+        &_mcStatusThread,
+        &_pmcStatusThread
+    };
+
+    for (auto thread: myThreads)
+    {
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+                thread, &QThread::quit);
+    }
 
     // Connect InsOverview's requestNewInsInUse(int) signal to our
     // _setMotionControlInsInUse(int) slot
@@ -176,11 +201,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_setIns2Status(CmigitsStatus)));
     _ins2StatusThread.start();
 
-    // Connect and start the MotionControlStatusThread
-    connect(& _mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_mcResponsivenessChange(bool, QString)));
-    connect(& _mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
-            this, SLOT(_setMotionControlStatus(MotionControl::Status)));
+    // Connect MotionControlStatusWorker's signals and start its QThread
+    connect(& _mcStatusWorker, &MotionControlStatusWorker::serverResponsive,
+            this, &HcrGuiMainWindow::_mcResponsivenessChange);
+    connect(& _mcStatusWorker, &MotionControlStatusWorker::newStatus,
+            this, &HcrGuiMainWindow::_setMotionControlStatus);
     _mcStatusThread.start();
 
     // Connect signals from our HcrdrxStatusThread object and start the thread.
@@ -199,11 +224,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_reportHvForcedOff(QString)));
     _hcrExecutiveStatusThread.start();
 
-    // Connect signals from our HcrPmc730StatusThread object and start the thread.
-    connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_pmcResponsivenessChange(bool, QString)));
-    connect(& _pmcStatusThread, SIGNAL(newStatus(HcrPmc730Status)),
-            this, SLOT(_setPmcStatus(HcrPmc730Status)));
+    // Connect signals from our HcrPmc730StatusWorker and its QThread and start the thread.
+    connect(QCoreApplication::instance(), &QApplication::aboutToQuit,
+            &_pmcStatusThread, &QThread::quit);
+    connect(&_pmcStatusWorker, &HcrPmc730StatusWorker::serverResponsive,
+            this, &HcrGuiMainWindow::_pmcResponsivenessChange);
+    connect(&_pmcStatusWorker, &HcrPmc730StatusWorker::newStatus,
+            this, &HcrGuiMainWindow::_setPmcStatus);
     _pmcStatusThread.start();
 
     // Connect signals from our XmitdStatusThread object and start the thread.
@@ -246,11 +273,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     // Update GUI every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
-    
-    // Populate the HMC mode combo box
-    for (int i = 0; i < HcrPmc730::HMC_NMODES; i++) {
-        _ui.requestedModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i);
-    }
 
     // Start with angle display cleared
     _clearAngleDisplay();
@@ -331,7 +353,7 @@ HcrGuiMainWindow::_mcResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "MotionControlDaemon " <<
-            _mcStatusThread.rpcClient().daemonUrl() <<
+            _mcStatusWorker.daemonUrl() <<
             (responding ? " is " : " is not ") <<
             "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
@@ -347,8 +369,7 @@ void
 HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
     _mcStatus = status;
     // Update the details dialog
-    _motionControlDetails.updateStatus(_mcStatusThread.serverIsResponding(),
-            _mcStatus);
+    _motionControlDetails.updateStatus(_mcStatusWorker.daemonResponding(), _mcStatus);
     // Update the main GUI
     _update();
 }
@@ -358,8 +379,8 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "HcrPmc730Daemon @ " <<
-            _pmcStatusThread.rpcClient().getDaemonHost() << ":" <<
-            _pmcStatusThread.rpcClient().getDaemonPort() <<
+            _pmcStatusWorker.rpcClient().getDaemonHost() << ":" <<
+            _pmcStatusWorker.rpcClient().getDaemonPort() <<
             (responding ? " is " : " is not ") <<
             "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
@@ -375,7 +396,7 @@ void
 HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
     _pmcStatus = status;
     // Update the details dialog
-    _pmc730Details.updateStatus(_pmcStatusThread.serverIsResponding(),
+    _pmc730Details.updateStatus(_pmcStatusWorker.serverIsResponding(),
             _pmcStatus);
     // Update the main GUI
     _update();
@@ -546,9 +567,12 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
             "responding";
     _logMessage(ss.str().c_str());
 
+    // Enable the dataBox widget iff hcrdrx is responsive
+    _ui.dataBox->setEnabled(responding);
+
+    // If hcrdrx is not responding, create a default (bad) DrxStatus, and set it
+    // as the last status received.
     if (! responding) {
-        // Create a default (bad) DrxStatus, and set it as the last status
-        // received.
         _setDrxStatus(DrxStatus());
     }
 }
@@ -656,7 +680,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
             float angle;
             _antennaModeDialog.getPointingAngle(angle);
             // Point the antenna to the angle
-            _mcStatusThread.rpcClient().point(angle);
+            _mcStatusWorker.point(angle);
         }
         else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
             float ccwLimit, cwLimit, scanRate, beamTilt;
@@ -676,7 +700,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
                 }
             }
             // Start scanning
-            _mcStatusThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
+            _mcStatusWorker.scan(ccwLimit, cwLimit, scanRate, beamTilt);
         }
     }
 }
@@ -687,7 +711,7 @@ HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
     // Toggle the current state of attitude correction
     bool correction = _mcStatus.attitudeCorrectionEnabled;
     ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
-    _mcStatusThread.rpcClient().setCorrectionEnabled(! correction);
+    _mcStatusWorker.setCorrectionEnabled(! correction);
 }
 
 void
@@ -724,15 +748,15 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     // zero-count positions after homing long enough for us to also zero the
     // motor counts on the Pentek.
     bool savedState = _mcStatus.attitudeCorrectionEnabled;
-    _mcStatusThread.rpcClient().setCorrectionEnabled(false);
+    _mcStatusWorker.setCorrectionEnabled(false);
 
     // Start the drive homing program.
-    _mcStatusThread.rpcClient().homeDrive();
+    _mcStatusWorker.homeDrive();
 
     // Poll until homing is complete
     ILOG << "Waiting for servo drives to complete homing";
     while (true) {
-        if (! _mcStatusThread.rpcClient().homingInProgress()) {
+        if (! _mcStatusWorker.homingInProgress()) {
             break;
         }
         // Let other things run for up to 200 ms
@@ -741,7 +765,7 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     
     // Update motion control status and verify drives actually got homed. Pop up
     // a warning box if homing failed.
-    _mcStatus = _mcStatusThread.rpcClient().status();
+    _mcStatus = _mcStatusWorker.status();
     if (! _mcStatus.rotDriveHomed || ! _mcStatus.tiltDriveHomed) {
         WLOG << "Homing failed";
         // Let the user know that homing failed
@@ -762,7 +786,7 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     usleep(100000);
 
 done:
-    _mcStatusThread.rpcClient().setCorrectionEnabled(savedState);
+    _mcStatusWorker.setCorrectionEnabled(savedState);
 }
 
 /// Toggle the current on/off state of the transmitter klystron filament
@@ -775,13 +799,13 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     // both cases.
     if (_pmcStatus.rdsXmitterFilamentOn()) {
         try {
-            _pmcStatusThread.rpcClient().xmitFilamentOff();
+            _pmcStatusWorker.rpcClient().xmitFilamentOff();
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrPmc730Daemon to turn off filament";
         }
     } else {
         try {
-            _pmcStatusThread.rpcClient().xmitFilamentOn();
+            _pmcStatusWorker.rpcClient().xmitFilamentOn();
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrPmc730Daemon to turn on filament";
         }
@@ -793,17 +817,18 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
     _hcrdrxDetails.show();
 }
 
-/// Set HMC mode via HcrExecutive
+/// Set Operation mode via HcrExecutive
 void
 HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
-    // Set a new requested HMC mode on HcrExecutive
-    HcrPmc730::HmcOperationMode mode =
-            static_cast<HcrPmc730::HmcOperationMode>(index);
+    
+    auto mode = _ui.requestedModeCombo->itemData(index).value<OperationMode>();
+
+    // Set a new requested Operation mode on HcrExecutive
     try {
-        ILOG << "Requesting HMC mode " << mode;
-        _hcrExecutiveStatusThread.rpcClient().setRequestedHmcMode(mode);
+        ILOG << "Requesting Operation mode " << mode.name();
+        _hcrExecutiveStatusThread.rpcClient().setRequestedOperationMode(mode);
     } catch (std::exception & e) {
-        WLOG << "Could not tell HcrExecutive to request HMC mode " << mode;
+        WLOG << "Could not tell HcrExecutive to request Operation mode " << mode.name();
     }
 }
 
@@ -947,30 +972,57 @@ HcrGuiMainWindow::_update() {
     faultCount += _xmitStatus.eikInterlockFault() ? 1 : 0;
 
     // Set the overall transmitter status LED
-    if (! _xmitStatus.serialConnected() || (faultCount > 0)) {
+    if (!_xmitdStatusThread.serverIsResponding()) {
+        _ui.xmitterStatusIcon->setPixmap(_notRespondingLED);
+    }
+    else if (! _xmitStatus.serialConnected() || (faultCount > 0)) {
         _ui.xmitterStatusIcon->setPixmap(_redLED);
     } else {
         _ui.xmitterStatusIcon->setPixmap(_greenLED);
     }
 
-    // HMC mode
-    _ui.requestedModeCombo->setCurrentIndex(_hcrExecutiveStatus.requestedHmcMode());
-    std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
-    _ui.hmcModeValue->setText(QString::fromStdString(modeText));
+    // If supported OperationMode-s have changed, update the choices in the
+    // requestedOperationMode combo box
+    if (_drxStatus.supportedOpsModes() != _requestedModeComboItems) {
+        // Populate the combo box with the new mode list
+        _ui.requestedModeCombo->clear();
+        _requestedModeComboItems = _drxStatus.supportedOpsModes();
+        for (auto&& mode: _requestedModeComboItems) {
+            _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
+        }
+
+        // Find our requested operating mode in the mode list and mark its index
+        // as the current selection.
+        _ui.requestedModeCombo->setCurrentIndex(-1);
+        auto reqMode = _hcrExecutiveStatus.requestedOperationMode();
+        for(uint i = 0; i < _requestedModeComboItems.size(); ++i) {
+            if(reqMode == _requestedModeComboItems[i]) {
+                _ui.requestedModeCombo->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
+
+    std::string modeText = _hcrExecutiveStatus.currentOperationMode().name();
+    _ui.opsModeValue->setText(modeText.c_str());
 
     // INS1 status light:
     // Green light if mode is "Air Navigation" or "Land Navigation" and we have
     // more than 5 satellites in the current solution.
     // Amber light if we have both INS and GPS
     // Red light otherwise
-    uint16_t mode = _ins1Status.currentMode();
-    if ((mode == 7 || mode == 8) && _ins1Status.nSats() > 5) {
-        light = _greenLED;
-    } else if (_ins1Status.insAvailable() &&
-               _ins1Status.gpsAvailable()) {
-        light = _amberLED;
+    if (! _ins1StatusThread.serverIsResponding()) {
+        light = _notRespondingLED;
     } else {
-        light = _redLED;
+        uint16_t mode = _ins1Status.currentMode();
+        if ((mode == 7 || mode == 8) && _ins1Status.nSats() > 5) {
+            light = _greenLED;
+        } else if (_ins1Status.insAvailable() &&
+                   _ins1Status.gpsAvailable()) {
+            light = _amberLED;
+        } else {
+            light = _redLED;
+        }
     }
     _ui.ins1StatusIcon->setPixmap(light);
 
@@ -982,14 +1034,18 @@ HcrGuiMainWindow::_update() {
     // more than 5 satellites in the current solution.
     // Amber light if we have both INS and GPS
     // Red light otherwise
-    mode = _ins2Status.currentMode();
-    if ((mode == 7 || mode == 8) && _ins2Status.nSats() > 5) {
-        light = _greenLED;
-    } else if (_ins2Status.insAvailable() &&
-               _ins2Status.gpsAvailable()) {
-        light = _amberLED;
+    if (! _ins2StatusThread.serverIsResponding()) {
+        light = _notRespondingLED;
     } else {
-        light = _redLED;
+        uint16_t mode = _ins2Status.currentMode();
+        if ((mode == 7 || mode == 8) && _ins2Status.nSats() > 5) {
+            light = _greenLED;
+        } else if (_ins2Status.insAvailable() &&
+                   _ins2Status.gpsAvailable()) {
+            light = _amberLED;
+        } else {
+            light = _redLED;
+        }
     }
     _ui.ins2StatusIcon->setPixmap(light);
 
@@ -997,8 +1053,9 @@ HcrGuiMainWindow::_update() {
     _ui.ins2StatusLabel->setEnabled(_mcStatus.insInUse == 2);
 
     // MotionControl status LED
-    if (! _mcStatusThread.serverIsResponding() ||
-            _motionControlDetails.errorDetected()) {
+    if (! _mcStatusWorker.daemonResponding()) {
+        _ui.mcStatusIcon->setPixmap(_notRespondingLED);
+    } else if (_motionControlDetails.errorDetected()) {
         _ui.mcStatusIcon->setPixmap(_redLED);
     } else if (_motionControlDetails.warningDetected()) {
         _ui.mcStatusIcon->setPixmap(_amberLED);
@@ -1006,7 +1063,7 @@ HcrGuiMainWindow::_update() {
         _ui.mcStatusIcon->setPixmap(_greenLED);
     }
 
-    if (_mcStatusThread.serverIsResponding()) {
+    if (_mcStatusWorker.daemonResponding()) {
         // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
@@ -1053,16 +1110,18 @@ HcrGuiMainWindow::_update() {
     light = _greenLED;
     if (! _hcrdrxStatusThread.serverIsResponding()) {
         // Red light if hcrdrx is not responding
-        light = _redLED;
+        light = _notRespondingLED;
     } else if (! _drxStatus.motorZeroPositionSet()) {
         // Amber light if motor zero position has not been set
         light = _amberLED;
     }
     _ui.hcrdrxStatusIcon->setPixmap(light);
-    
+
     // HcrPmc730Daemon status LED
     light = _greenLED;
-    if (! _pmcStatusThread.serverIsResponding() || _pmc730Details.errState()) {
+    if (! _pmcStatusWorker.serverIsResponding()) {
+        light = _notRespondingLED;
+    } else if (_pmc730Details.errState()) {
         light = _redLED;
     } else if (_pmc730Details.warnState()) {
         light = _amberLED;
@@ -1071,7 +1130,7 @@ HcrGuiMainWindow::_update() {
     
     // fireflyd status LED
     if (! _fireflydStatusThread.serverIsResponding()) {
-        light = _redLED;
+        light = _notRespondingLED;
     } else {
         // If we have a good status, use its overallStatus() value
         switch (_fireflydStatus.overallStatus()) {
@@ -1111,7 +1170,7 @@ HcrGuiMainWindow::_update() {
 
     // HcrExecutive status LED
     if (! _hcrExecutiveStatusThread.serverIsResponding()) {
-        light = _redLED;
+        light = _notRespondingLED;
     } else {
         // If normal transmit is allowed use green light, otherwise amber
         light = (_hcrExecutiveStatus.xmitAllowedStatus() == TransmitControl::XMIT_ALLOWED) ?
@@ -1121,7 +1180,7 @@ HcrGuiMainWindow::_update() {
 
     // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
-            _greenLED : _redLED);
+            _greenLED : _notRespondingLED);
     _ui.dataRateIcon->setPixmap(_dmapWriteRate > 0 ? _greenLED : _amberLED);
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 
@@ -1337,6 +1396,6 @@ HcrGuiMainWindow::_setMotionControlInsInUse(int requestedIns) {
     // Set MotionControlDaemon's 'INS in use'
     ILOG << "Requesting MotionControlDaemon to change INS in use from " <<
             _mcStatus.insInUse << " to " << requestedIns;
-    _mcStatusThread.rpcClient().setInsInUse(requestedIns);
+    _mcStatusWorker.setInsInUse(requestedIns);
 }
 

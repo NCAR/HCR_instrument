@@ -4,6 +4,7 @@
     <file>greenLED.png</file>
     <file>amberLED.png</file>
     <file>redLED.png</file>
+    <file>redLED_Q.png</file>
     <file>aircraft_horizon.png</file>
     <file>horizon.png</file>
   </qresource>

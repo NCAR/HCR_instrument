@@ -35,7 +35,7 @@
 #include <HcrPmc730Status.h>
 #include <xmlrpc-c/client_simple.hpp>
 
-class HcrPmc730Client {
+class HcrPmc730Client : private xmlrpc_c::clientSimple {
 public:
     HcrPmc730Client(std::string daemonHost, int daemonPort);
     virtual ~HcrPmc730Client();
@@ -70,9 +70,9 @@ public:
     void xmitHvOff();
 
     /// @brief Send "setHmcMode" command to HcrPmc730Daemon
-    /// @param mode the desired HmcOperationMode
+    /// @param mode the desired HmcMode
     /// @throws exception on XML-RPC error
-    void setHmcMode(HcrPmc730::HmcOperationMode mode);
+    void setHmcMode(HmcMode mode);
     
     /// @brief Open the Active Pressurization System solenoid valve
     void openApsValve();
@@ -92,7 +92,6 @@ private:
     std::string _daemonHost;
     int _daemonPort;
     std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* HCRPMC730CLIENT_H_ */

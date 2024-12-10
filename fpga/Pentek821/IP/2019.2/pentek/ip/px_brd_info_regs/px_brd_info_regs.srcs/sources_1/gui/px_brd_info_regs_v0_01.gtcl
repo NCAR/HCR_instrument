@@ -1,0 +1,5 @@
+# This file is automatically written.  Do not modify.
+proc gen_USERPARAMETER_fpga_code_rev_ENABLEMENT {has_rev_info_in } {expr $has_rev_info_in == false}
+proc gen_USERPARAMETER_date_month_ENABLEMENT {has_rev_info_in } {expr $has_rev_info_in == false}
+proc gen_USERPARAMETER_date_day_ENABLEMENT {has_rev_info_in } {expr $has_rev_info_in == false}
+proc gen_USERPARAMETER_date_year_ENABLEMENT {has_rev_info_in } {expr $has_rev_info_in == false}

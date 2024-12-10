@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * HcrPmc730.cpp
  *
@@ -44,27 +44,13 @@ extern "C" {
 
 LOGGING("HcrPmc730");
 
-// HMC mode names (mapped to the HmcOperationMode enum)
-std::string
-HcrPmc730::HmcModeNames[] = {
-        "tx H, rx HV",
-        "tx V, rx HV",
-        "tx HV, rx HV",
-        "tx H, rx HV (ATTENUATED)",
-        "Noise Source Cal",
-        "tx V, rx HV (ATTENUATED)",
-        "Bench Test",
-        "unused (7)",
-        "INVALID"
-};
-
 // Static to tell whether the singleton is created as a simulated PMC-730
 bool HcrPmc730::_DoSimulate = false;
 
 // Our singleton instance
 HcrPmc730 * HcrPmc730::_TheHcrPmc730 = 0;
 
-HcrPmc730::HcrPmc730() : 
+HcrPmc730::HcrPmc730() :
         Pmc730(_DoSimulate ? -1 : 0),
         _analogValues(),
         _pvPresCorrection(0.0) {
@@ -83,7 +69,7 @@ HcrPmc730::HcrPmc730() :
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
                 _HCR_DIN_UNUSED_0 << ", " <<
                 _HCR_DIN_UNUSED_1 << ", " <<
-                _HCR_DIN_EMS_ERROR_EVENT << ", " << 
+                _HCR_DIN_EMS_ERROR_EVENT << ", " <<
                 _HCR_DIN_UNUSED_3 << ", " <<
                 _HCR_DIN_UNUSED_4 << ", " <<
                 _HCR_DIN_SPARE_PENTEK_1 << ", " <<
@@ -106,7 +92,7 @@ HcrPmc730::HcrPmc730() :
                 _HCR_DOUT_HMC_OPS_MODE_BIT2 << ", " <<
                 _HCR_DOUT_TX_FILAMENT_OFF << ", " <<
                 _HCR_DOUT_HMC_OPS_MODE_BIT0 << ", " <<
-                _HCR_DOUT_TX_HV_OFF << ", and " << 
+                _HCR_DOUT_TX_HV_OFF << ", and " <<
                 _HCR_DOUT_HMC_OPS_MODE_BIT1 << " are not all set for output!";
         abort();
     }
@@ -140,9 +126,9 @@ HcrPmc730::TheHcrPmc730() {
 
 // static
 void
-HcrPmc730::SetHmcOperationMode(HmcOperationMode mode) {
+HcrPmc730::SetHmcMode(const HmcMode& mode) {
     // Set the HMC mode bits on our digital out lines. This method works
-    // atomically, setting all three bits at once rather than changing one 
+    // atomically, setting all three bits at once rather than changing one
     // at a time.
 
     // As written, this only works if the output lines we're setting are in
@@ -338,7 +324,7 @@ HcrPmc730::_MillitechDET10Power(double voltage) {
     // voltage is outside the calibrated range, we set indices to extrapolate
     // using the closest two points.
     int indexLow = 0;
-    while ((indexLow < CalTableLen - 1) && 
+    while ((indexLow < CalTableLen - 1) &&
             (voltage > CalTable[indexLow + 1].volts)) {
         indexLow++;
     }
@@ -436,11 +422,24 @@ HcrPmc730::_30PSI_A_4V_Pres(double sensorVolts) {
     return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
 }
 
+double
+HcrPmc730::_Honeywell_030PA_Pres(double sensorVolts) {
+    // Actual sensor supply voltage
+    const double v_in = Ps5vVoltage();
+
+    // Nominal from device spec: 0.1 * V_in @ zero pressure
+    const double zeroPresOffsetVolts = 0.1 * v_in;
+
+    // Nominal from device spec: 0.8 * V_in output span over 30 PSI
+    const double psiPerVolt = 30 / (0.8 * v_in);
+    return(PsiToHpa(psiPerVolt * (sensorVolts - zeroPresOffsetVolts)));
+}
+
 /**
  * @brief Briefly raise the HMC's 'status_ack' line to reset its sense-and-hold
  * values.
  */
-void 
+void
 HcrPmc730::_ackHmcStatus() {
     if (_simulate)
         return;
@@ -460,7 +459,7 @@ HcrPmc730::_initEventCounter() {
     // - input polarity high
     // - software trigger to start counting
     // - disable counter interrupts
-    
+
     // set up as an event (pulse) counter
     if (SetMode(&_card, InEvent) != Success) {
         ELOG << __PRETTY_FUNCTION__ << ": setting PMC730 to count pulses";
@@ -490,9 +489,9 @@ HcrPmc730::_initEventCounter() {
     }
     // Now enable this configuration.
     ConfigureCounterTimer(&_card);
-    
+
     // Send the software trigger to start the counter.
-    StartCounter(&_card);    
+    StartCounter(&_card);
 }
 
 uint32_t
@@ -503,7 +502,7 @@ HcrPmc730::_emsErrorCount() const {
     }
 
     // Get the current event count from the counter readback register.
-    int32_t signedCount = input_long(_card.nHandle, 
+    int32_t signedCount = input_long(_card.nHandle,
         (long*)&_card.brd_ptr->CounterReadBack);
 
     // We got a *signed* 32-bit value from input_long, but the real value is

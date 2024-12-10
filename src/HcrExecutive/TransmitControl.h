@@ -35,13 +35,15 @@
 
 #include <CmigitsFmqWatcher.h>
 #include <HcrPmc730Client.h>
-#include <MotionControlStatusThread.h>
+#include <HcrdrxRpcClient.h>
+#include <MotionControlStatusWorker.h>
+#include <OperationMode.h>
 #include <QDateTime>
 #include <QObject>
 #include <QTimer>
 #include <xmlrpc-c/client_simple.hpp>
 
-class HcrPmc730StatusThread;
+class HcrPmc730StatusWorker;
 class MaxPowerFmqClient;
 
 /// Class providing implementation for handling the transmitter high voltage
@@ -53,16 +55,16 @@ class TransmitControl : public QObject {
     // Give HcrExecutiveStatus direct access to our members
     friend class HcrExecutiveStatus;
 public:
-    /// @brief Instantiate using the given HcrPmc730StatusThread as the source
+    /// @brief Instantiate using the given HcrPmc730StatusWorker as the source
     /// of status from HcrPmc730Daemon.
-    /// @param hcrPmc730StatusThread the HcrPmc730StatusThread which will
+    /// @param hcrPmc730StatusWorker the HcrPmc730StatusWorker which will
     /// provide status from HcrPmc730Daemon
-    /// @param mcStatusThread the MotionControlStatusThread which will provide
+    /// @param mcStatusWorker the MotionControlStatusWorker which will provide
     /// status from MotionControlDaemon
     /// @param maxPowerClient the MaxPowerFmqClient which will provide
     /// updates on maximum received power
-    TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
-                    MotionControlStatusThread & mcStatusThread,
+    TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
+                    MotionControlStatusWorker & mcStatusWorker,
                     MaxPowerFmqClient & maxPowerClient);
     virtual ~TransmitControl();
 
@@ -106,9 +108,13 @@ public:
                 _xmitTestStatus < BEGIN_NOXMIT_MODES);
     }
 
-    /// @brief Set the requested HMC mode
-    /// @param mode the requested HMC mode
-    void setRequestedHmcMode(HcrPmc730::HmcOperationMode mode);
+    /// @brief Set the requested Operation mode
+    /// @param mode the requested Operation mode
+    void setRequestedOperationMode(const OperationMode& mode);
+
+    /// @brief Get the current operation mode
+    /// @return the current operation mode
+    OperationMode getCurrentOperationMode() const { return(_currentOperationMode); };
 
     /// @brief Set the requested high voltage on state
     /// @param hvRequested true if HV on is desired, false if HV off is desired
@@ -133,12 +139,11 @@ private slots:
     /// @param msg a string describing the responsiveness change
     void _updateHcrPmc730Responsive(bool responding, QString msg);
 
-    /// @brief Deal with a change in HMC operation mode.
-    /// @param mode the new HMC operation mode
+    /// @brief Deal with a change in HMC mode.
+    /// @param mode the new HMC mode
     /// @param modeChangeTime the time at which the mode was changed, double
     /// precision seconds since 1970-01-01 00:00:00 UTC
-    void _recordHmcModeChange(HcrPmc730::HmcOperationMode mode,
-                               double modeChangeTime);
+    void _handleHmcModeChange(const HmcMode mode, double modeChangeTime);
 
     /// @brief Accept a new status from MotionControlDaemon and react if necessary
     /// @param status the new status from MotionControlDaemon
@@ -281,24 +286,11 @@ private:
     /// near-nadir angles.
     bool _anyNearNadirPointing();
 
-    /// @brief Return true iff the given HMC mode is an attenuated mode.
-    /// @param mode the mode to be tested
-    /// @return true iff the given HMC mode is an attenuated mode.
-    static bool _HmcModeIsAttenuated(HcrPmc730::HmcOperationMode mode);
-
-    /// @brief Return true iff the requested HMC mode is attenuated or has a
+    /// @brief Return true iff the requested Operation mode is attenuated or has a
     /// matching attenuated mode.
-    /// @return true iff the requested HMC mode is attenuated or has a
+    /// @return true iff the requested Operation mode is attenuated or has a
     /// matching attenuated mode.
     bool _attenuatedModeAvailable();
-
-    /// @brief Return the attenuated version of the given mode if it exists,
-    /// otherwise HcrPmc730::HMC_MODE_INVALID. If the given mode is already
-    /// attenuated (or a non-transmitting mode), the same mode is returned.
-    /// @param mode the mode to be tested
-    /// @return the attenuated version of the given mode if it exists,
-    /// otherwise HcrPmc730::HMC_MODE_INVALID.
-    static HcrPmc730::HmcOperationMode _EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode);
 
     /// @brief Return true iff the HMC was using attenuated receive mode during
     /// the entire period from startTime to endTime.
@@ -314,24 +306,18 @@ private:
     /// @brief Tell HcrPmc730Daemon to turn off transmitter HV
     void _xmitHvOff();
 
-    /// @brief Set the HMC mode on HcrPmc730Daemon
-    /// @param mode the HMC mode to use
-    void _setHmcMode(HcrPmc730::HmcOperationMode mode);
+    /// @brief Set the OperationMode in use
+    ///
+    /// This involves setting the HMC's mode (via HcrPmc730Daemon) and then
+    /// setting the pulse scheduling on the Pentek (via hcrdrx)
+    /// @param mode the OperationMode to use
+    void _setOperationMode(const OperationMode& mode);
 
-    /// @brief Return the current HMC mode. We return our local value for
-    /// current mode rather than _hcrPmc730Status.hmcMode() because we may
-    /// have changed the mode but not yet gotten a new status from
-    /// HcrPmc730Daemon.
-    HcrPmc730::HmcOperationMode _currentHmcMode() const {
-        // Current mode is the last entry in our HMC mode map
-        return(_hmcModeMap.rbegin()->second);
-    }
-
-    /// @brief Clear the map of times to HMC modes
-    void _clearHmcModeMap();
+    /// @brief Clear the map of times to Operation modes
+    void _clearOperationModeMap();
 
     /// @brief Append a mode to our mode map, starting at the current time
-    void _appendToModeMap(HcrPmc730::HmcOperationMode mode);
+    void _appendToModeMap(OperationMode& mode);
 
     /// @brief How frequently will we poll the INS FMQ for new data?
     static constexpr int _INS_POLL_INTERVAL_MS = 1000;
@@ -347,7 +333,8 @@ private:
 
     /// @brief Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
-    static constexpr float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+//  static constexpr float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+    static constexpr float _PV_MINIMUM_PRESSURE_PSI = 10.0; // needed for the lab 2024/04/02
 
     /// @brief Received power threshold at which we shift to attenuated mode
     /// or disallow transmit, dBm
@@ -379,6 +366,9 @@ private:
 
     /// @brief Basic XML-RPC client instance used for TerrainHtServer
     xmlrpc_c::clientSimple _xmlrpcClient;
+
+    /// @brief XML-RPC client for hcrdrx
+    HcrdrxRpcClient _hcrdrxClient;
 
     /// @brief HcrPmc730Client instance
     HcrPmc730Client & _hcrPmc730Client;
@@ -426,16 +416,19 @@ private:
     /// @brief User's intended state for transmitter high voltage
     bool _hvRequested;
 
-    /// @brief User's intended HMC mode
-    HcrPmc730::HmcOperationMode _requestedHmcMode;
+    /// @brief User's intended OperationMode
+    OperationMode _requestedOperationMode;
+
+    /// @brief Current OperationMode
+    OperationMode _currentOperationMode;
 
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
     XmitTestStatus _xmitTestStatus;
 
-    /// @brief map of HMC mode change times (seconds since 1970-01-01 00:00:00
+    /// @brief map of Operation mode change time (seconds since 1970-01-01 00:00:00
     /// UTC) to mode
-    std::map<double, HcrPmc730::HmcOperationMode> _hmcModeMap;
+    std::map<double, OperationMode> _operationModeMap;
 
     /// @brief Time high voltage was last forced off because of high max power,
     /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been forced off.

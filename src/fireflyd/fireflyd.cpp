@@ -33,6 +33,7 @@
 #include <sstream>
 #include <boost/program_options.hpp>
 #include <QCoreApplication>
+#include <QThread>
 #include <QTimer>
 
 #include <toolsa/pmu.h>
@@ -42,15 +43,15 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
-#include "FireFly.h"
-#include "../HcrSharedResources.h"
+#include <FireFlyWorker.h>
+#include <HcrSharedResources.h>
 
 LOGGING("fireflyd")
 
 namespace po = boost::program_options;
 
-/// Our FireFly
-FireFly *Firefly = 0;
+/// Our FireFlyWorker
+FireFlyWorker *Firefly = 0;
 
 /// Our QApplication
 QCoreApplication *App = 0;
@@ -72,6 +73,8 @@ updateRegistration() {
 
 void
 logStatus() {
+    if (!Firefly) return;
+
     FireFlyStatus status = Firefly->getStatus();
     if (status.deviceResponding()) {
         ILOG << "PLL " << (status.pllLocked() ? "locked" : "NOT LOCKED") <<
@@ -125,9 +128,16 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Received 'getStatus' command";
-        // Get the latest status from shared memory, and convert it to
-        // an xmlrpc_c::value_struct dictionary.
-        *retvalP = Firefly->getStatus().toXmlRpcValue();
+        if (Firefly) {
+            // Get the latest status from shared memory, and convert it to
+            // an xmlrpc_c::value_struct dictionary.
+            *retvalP = Firefly->getStatus().toXmlRpcValue();
+        }
+        else {
+            // Return empty status
+            FireFlyStatus status;
+            *retvalP = status.toXmlRpcValue();
+        }
     }
 };
 
@@ -153,6 +163,7 @@ main(int argc, char *argv[]) {
                 "instance name for procmap connection")
         ("devName,d", po::value<std::string>(&devName)->default_value("/dev/ttyS2"),
                 "tty device name for FireFly-IIA connection")
+        ("doNothing", "respond to status requests but take no further action")
         ;
     bool argError = false;
     po::variables_map vm;
@@ -181,10 +192,16 @@ main(int argc, char *argv[]) {
 
     ILOG << "fireflyd (" << getpid() << ") started";
 
-    // Instantiate a FireFly communication thread, using the given serial port
-    PMU_auto_register("instantiating FireFly");
-    Firefly = new FireFly(devName);
-    
+    // Instantiate a FireFly communication worker, using the given serial port
+    PMU_auto_register("instantiating FireFlyWorker");
+    QThread* workThread(NULL);
+    if (!vm.count("doNothing")) {
+        workThread = new QThread();
+        QObject::connect(App, &QCoreApplication::aboutToQuit, workThread, &QThread::quit);
+        Firefly = new FireFlyWorker(devName, workThread);
+        workThread->start();
+    }
+
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
@@ -224,6 +241,8 @@ main(int argc, char *argv[]) {
     PMU_auto_unregister();
 
     // Clean up before exit
+    workThread->wait(1000);	// wait up to a second for workThread to finish
+    delete(workThread);
     delete(Firefly);
     ILOG << "fireflyd (" << getpid() << ") exiting";
     return 0;

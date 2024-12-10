@@ -23,7 +23,7 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 #include "IwrfExportInsPoller.h"
 #include "IwrfExport.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 
 #include <exception>
 #include <sstream>
@@ -76,7 +76,7 @@ IwrfExportInsPoller::~IwrfExportInsPoller() {
     if (_workThread.isRunning()) {
         DLOG << "Stopping thread";
         _workThread.quit();
-        if (! _workThread.wait(100)) {
+        if (! _workThread.wait()) {
             WLOG << "Work thread did not finish promptly in destructor.";
         }
     }

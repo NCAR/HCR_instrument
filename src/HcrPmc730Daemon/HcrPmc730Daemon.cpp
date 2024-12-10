@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * HcrPmc730Daemon.cpp
  *
@@ -47,8 +47,7 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
-#include "HmcModeChange.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 
 LOGGING("HcrPmc730Daemon")
 
@@ -57,11 +56,11 @@ namespace po = boost::program_options;
 /// Our Qt application
 QCoreApplication *App = 0;
 
-/// UDP socket on which we broadcast HMC operation mode changes.
+/// UDP socket on which we broadcast operation mode changes.
 QUdpSocket HmcModeBroadcastSocket;
 
 /// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
-/// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds. 
+/// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds.
 /// NOTE: MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS needs to be greater than about
 /// a second, due to latency in XML-RPC server request handling.
 QTimer * HvOnHeartbeatTimer;
@@ -75,10 +74,10 @@ static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 10000;
 
 void
 hvOnHeartbeatTimeout() {
-    // WLOG << "'HV on' heartbeat timed out after " << 
+    // WLOG << "'HV on' heartbeat timed out after " <<
     //         MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS << " ms. Turning off HV.";
     // HcrPmc730::setXmitterHvOn(false);
-    WLOG << "'HV on' heartbeat timed out after " << 
+    WLOG << "'HV on' heartbeat timed out after " <<
             MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS << " ms. Leaving HV on ...";
 }
 
@@ -170,46 +169,25 @@ public:
     SetHmcModeMethod() {
         // Method take an integer argument (the mode), and returns nil
         this->_signature = "n:i";
-        this->_help = "This method sets HMC mode.";
+        this->_help = "This method sets the HMC mode.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // We get a single parameter: the integer form of the desired HMC
-        // mode.
-        ILOG << "Received XML-RPC call to setHmcMode()...";
+        // We get a single parameter: the index of the requested operation mode.
+        HmcMode hmcMode = static_cast<HmcMode>(paramList.getInt(0));
         paramList.verifyEnd(1);
-        
-        // Cast the int into HcrPmc730::HmcOperationMode
-        HcrPmc730::HmcOperationMode hmcMode =
-                static_cast<HcrPmc730::HmcOperationMode>(paramList.getInt(0));
-        ILOG << "...with requested HMC mode " << 
-                "'" << HcrPmc730::HmcModeNames[hmcMode] << "'";
+
+        ILOG << "Received XML-RPC call: setHmcMode('" << hmcMode << "')";
         *retvalP = xmlrpc_c::value_nil();
-        
+
         // If requested mode is the current mode, just return now
-        if (hmcMode == HcrPmc730::HmcMode()) {
-            DLOG << "Requested HMC mode is same as current mode; returning now.";
+        if (hmcMode == HcrPmc730::GetHmcMode()) {
+            DLOG << "Requested Operation mode is same as current mode; returning now.";
             return;
         }
-        
+
         // Change to the requested mode
-        HcrPmc730::SetHmcOperationMode(hmcMode);
-        
-        // Broadcast a datagram to indicate the new mode and the time of the
-        // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
-        struct timeval nowTimeval;
-        gettimeofday(&nowTimeval, NULL);
-        double modeChangeTime = 
-                nowTimeval.tv_sec + 1.0e-6 * nowTimeval.tv_usec; // seconds since epoch
-        HmcModeChangeStruct changeStruct = { hmcMode, modeChangeTime };
-        int result = HmcModeBroadcastSocket.writeDatagram(
-                reinterpret_cast<char*>(&changeStruct), 
-                sizeof(changeStruct), QHostAddress::Broadcast, 
-                HMC_MODE_BROADCAST_PORT);
-        if (result == -1) {
-            ELOG << "HMC mode change UDP write gave QAbstractSocket::SocketError " << 
-                    HmcModeBroadcastSocket.error();
-        }
+        HcrPmc730::SetHmcMode(hmcMode);
     }
 };
 
@@ -289,7 +267,7 @@ main(int argc, char * argv[]) {
 
     App = new QCoreApplication(argc, argv);
     App->setApplicationName("HcrPmc730Daemon");
-    
+
     // Command line options
     double pvPressureCorrectionPsi = 0.0;
     po::options_description descripts("Options");
@@ -305,7 +283,7 @@ main(int argc, char * argv[]) {
     po::notify(vm);
 
     // Set pressure vessel pressure correction if requested
-    HcrPmc730::SetPvPresCorrectionPsi(pvPressureCorrectionPsi); 
+    HcrPmc730::SetPvPresCorrectionPsi(pvPressureCorrectionPsi);
 
     // Instantiate and configure our heartbeat timer for "HV on" requests.
     // The timer is started/restarted every time "HV on" is requested, and
@@ -314,7 +292,7 @@ main(int argc, char * argv[]) {
     HvOnHeartbeatTimer->setInterval(MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS);
     HvOnHeartbeatTimer->setSingleShot(true);
     QFunctionWrapper heartbeatTimeoutWrapper(hvOnHeartbeatTimeout);
-    QObject::connect(HvOnHeartbeatTimer, SIGNAL(timeout()), 
+    QObject::connect(HvOnHeartbeatTimer, SIGNAL(timeout()),
             &heartbeatTimeoutWrapper, SLOT(callFunction()));
 
     // Check for --simulate in the arg list
@@ -327,12 +305,13 @@ main(int argc, char * argv[]) {
     HcrPmc730::TheHcrPmc730();
 
     // Initialize output lines: Active Pressurization System valve closed,
-    // transmitter filament off, transmitter HV off, HMC in
-    // "txV rxHV (attenuated)" mode.
+    // transmitter filament off, transmitter HV off, bare "Bench Test"
+    // operation mode.
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
-    HcrPmc730::SetHmcOperationMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
+    HcrPmc730::SetHmcMode(HmcMode::RESET);
+    HcrPmc730::SetHmcMode(HmcMode::BENCH_TEST);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
@@ -364,7 +343,7 @@ main(int argc, char * argv[]) {
     registrationTimer.start();
 
     // Start the app, which also starts our XML-RPC server. The app runs until
-    // stopped via INT or TERM signal caught by our exitHandler(), or an 
+    // stopped via INT or TERM signal caught by our exitHandler(), or an
     // exception is raised.
     try {
         App->exec();
@@ -378,10 +357,10 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetXmitterHvOn(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetApsValveOpen(false);
-   
+
     delete(App);
     PMU_auto_unregister();
-    
+
     ILOG << "HcrPmc730Daemon stopped";
 
     return 0;

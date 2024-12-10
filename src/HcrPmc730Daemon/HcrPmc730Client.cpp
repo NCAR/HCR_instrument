@@ -35,9 +35,10 @@
 LOGGING("HcrPmc730Client")
 
 HcrPmc730Client::HcrPmc730Client(std::string daemonHost, int daemonPort) :
+    xmlrpc_c::clientSimple(),
     _daemonHost(daemonHost),
-    _daemonPort(daemonPort),
-    _client() {
+    _daemonPort(daemonPort)
+{
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
     ss << "http://" << _daemonHost << ":" << _daemonPort << "/RPC2";
@@ -50,10 +51,10 @@ HcrPmc730Client::~HcrPmc730Client() {
 
 xmlrpc_c::value
 HcrPmc730Client::_execXmlRpcCall(std::string methodName, 
-        xmlrpc_c::paramList params) {
+                                 xmlrpc_c::paramList params) {
     try {
         xmlrpc_c::value result;
-        _client.call(_daemonUrl, methodName, params, &result);
+        call(_daemonUrl, methodName, params, &result);
         return(result);
     } catch (std::exception & e) {
         WLOG << "Error on XML-RPC " << methodName << "() call: " << e.what();
@@ -82,7 +83,7 @@ HcrPmc730Client::xmitHvOff() {
 }
 
 void
-HcrPmc730Client::setHmcMode(HcrPmc730::HmcOperationMode mode) {
+HcrPmc730Client::setHmcMode(HmcMode mode) {
     xmlrpc_c::paramList params;
     params.add(xmlrpc_c::value_int(mode));
     _execXmlRpcCall("setHmcMode", params);

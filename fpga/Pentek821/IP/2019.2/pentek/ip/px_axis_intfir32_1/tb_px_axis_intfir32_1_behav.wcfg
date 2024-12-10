@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_axis_intfir32_1_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_axis_intfir32_1" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="10615000000fs"></ZoomStartTime>
+      <ZoomEndTime time="22685000001fs"></ZoomEndTime>
+      <Cursor1Time time="13445000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="257"></NameColumnWidth>
+      <ValueColumnWidth column_width="154"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="55" />
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[12:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[12:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/aclk" type="logic">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/aresetn" type="logic">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/uut/fifoout_tready" type="logic">
+      <obj_property name="ElementShortName">fifoout_tready</obj_property>
+      <obj_property name="ObjectShortName">fifoout_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/uut/out_rate_cntr" type="array">
+      <obj_property name="ElementShortName">out_rate_cntr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">out_rate_cntr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="vbus677" type="vbus">
+      <obj_property name="label">q_in</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#00FF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[31]" type="logic">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">[31]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[30]" type="logic">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">[30]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[29]" type="logic">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">[29]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[28]" type="logic">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">[28]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[27]" type="logic">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">[27]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[26]" type="logic">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">[26]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[25]" type="logic">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">[25]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[24]" type="logic">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">[24]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[23]" type="logic">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">[23]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[22]" type="logic">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">[22]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[21]" type="logic">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">[21]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[20]" type="logic">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">[20]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[19]" type="logic">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">[19]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[18]" type="logic">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">[18]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[17]" type="logic">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">[17]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[16]" type="logic">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">[16]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus371" type="vbus">
+      <obj_property name="label">i_in</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[15]" type="logic">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">[15]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[14]" type="logic">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">[14]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[13]" type="logic">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">[13]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[12]" type="logic">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">[12]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[11]" type="logic">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">[11]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[10]" type="logic">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">[10]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[9]" type="logic">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">[9]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[8]" type="logic">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">[8]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[7]" type="logic">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">[7]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[6]" type="logic">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">[6]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[5]" type="logic">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">[5]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[4]" type="logic">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">[4]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[3]" type="logic">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">[3]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[2]" type="logic">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[1]" type="logic">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata[0]" type="logic">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_pdti_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pdti_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_pdti_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pdti_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/s_axis_pdti_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_pdti_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pdti_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/pdti_tvalid" type="logic">
+      <obj_property name="ElementShortName">pdti_tvalid</obj_property>
+      <obj_property name="ObjectShortName">pdti_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pdti_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_pdti_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pdti_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/sat" type="logic">
+      <obj_property name="ElementShortName">sat</obj_property>
+      <obj_property name="ObjectShortName">sat</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/uut/multdvaldly[4]" type="logic">
+      <obj_property name="ElementShortName">[4]</obj_property>
+      <obj_property name="ObjectShortName">[4]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/gate" type="logic">
+      <obj_property name="ElementShortName">gate</obj_property>
+      <obj_property name="ObjectShortName">gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="vbus101" type="vbus">
+      <obj_property name="label">iout</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[15]" type="logic">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">[15]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[14]" type="logic">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">[14]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[13]" type="logic">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">[13]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[12]" type="logic">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">[12]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[11]" type="logic">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">[11]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[10]" type="logic">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">[10]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[9]" type="logic">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">[9]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[8]" type="logic">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">[8]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[7]" type="logic">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">[7]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[6]" type="logic">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">[6]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[5]" type="logic">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">[5]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[4]" type="logic">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">[4]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[3]" type="logic">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">[3]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[2]" type="logic">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[1]" type="logic">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[0]" type="logic">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus695" type="vbus">
+      <obj_property name="label">q_out</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[31]" type="logic">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">[31]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[30]" type="logic">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">[30]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[29]" type="logic">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">[29]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[28]" type="logic">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">[28]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[27]" type="logic">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">[27]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[26]" type="logic">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">[26]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[25]" type="logic">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">[25]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[24]" type="logic">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">[24]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[23]" type="logic">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">[23]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[22]" type="logic">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">[22]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[21]" type="logic">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">[21]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[20]" type="logic">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">[20]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[19]" type="logic">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">[19]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[18]" type="logic">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">[18]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[17]" type="logic">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">[17]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_px_axis_intfir32_1/m_axis_pdti_tdata[16]" type="logic">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">[16]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/clk_freq" type="other">
+      <obj_property name="ElementShortName">clk_freq</obj_property>
+      <obj_property name="ObjectShortName">clk_freq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/data_freq" type="other">
+      <obj_property name="ElementShortName">data_freq</obj_property>
+      <obj_property name="ObjectShortName">data_freq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/num_chan" type="other">
+      <obj_property name="ElementShortName">num_chan</obj_property>
+      <obj_property name="ObjectShortName">num_chan</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/out_res" type="other">
+      <obj_property name="ElementShortName">out_res</obj_property>
+      <obj_property name="ObjectShortName">out_res</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/interpolation" type="other">
+      <obj_property name="ElementShortName">interpolation</obj_property>
+      <obj_property name="ObjectShortName">interpolation</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/ddc_enable" type="logic">
+      <obj_property name="ElementShortName">ddc_enable</obj_property>
+      <obj_property name="ObjectShortName">ddc_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/clkperiod" type="other">
+      <obj_property name="ElementShortName">clkperiod</obj_property>
+      <obj_property name="ObjectShortName">clkperiod</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/sine_ph" type="other">
+      <obj_property name="ElementShortName">sine_ph</obj_property>
+      <obj_property name="ObjectShortName">sine_ph</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/sine_ph_incr" type="array">
+      <obj_property name="ElementShortName">sine_ph_incr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sine_ph_incr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/INTERP_REGISTER" type="array">
+      <obj_property name="ElementShortName">INTERP_REGISTER[12:0]</obj_property>
+      <obj_property name="ObjectShortName">INTERP_REGISTER[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/GAIN_REGISTER" type="array">
+      <obj_property name="ElementShortName">GAIN_REGISTER[12:0]</obj_property>
+      <obj_property name="ObjectShortName">GAIN_REGISTER[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/CTL_REGISTER" type="array">
+      <obj_property name="ElementShortName">CTL_REGISTER[12:0]</obj_property>
+      <obj_property name="ObjectShortName">CTL_REGISTER[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/LOAD_REGISTER" type="array">
+      <obj_property name="ElementShortName">LOAD_REGISTER[12:0]</obj_property>
+      <obj_property name="ObjectShortName">LOAD_REGISTER[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/gain" type="other">
+      <obj_property name="ElementShortName">gain</obj_property>
+      <obj_property name="ObjectShortName">gain</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/int2coef" type="array">
+      <obj_property name="ElementShortName">int2coef[0:63]</obj_property>
+      <obj_property name="ObjectShortName">int2coef[0:63]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_intfir32_1/int4coef" type="array">
+      <obj_property name="ElementShortName">int4coef[0:127]</obj_property>
+      <obj_property name="ObjectShortName">int4coef[0:127]</obj_property>
+   </wvobject>
+</wave_config>

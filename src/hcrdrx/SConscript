@@ -1,47 +1,52 @@
 # -*- python -*-
 
 tools = Split("""
-hcrpmc730client
-boost_date_time
-boost_program_options
-cmigitsdaemonrpcclient
-doxygen
-hcrdrxrpcclient
-logx
-lrose
-motioncontrol
-Pentek7142
-QFunctionWrapper
-qt4
-qtt_qtconfig
-QXmlRpcServerAbyss
-xmitdrpcclient
+    boost_date_time
+    boost_program_options
+    cmigitsdaemonrpcclient
+    doxygen
+    drxstatus
+    hcrdrxrpcclient
+    hcrexecutiveclient
+    hcrpmc730client
+    logx
+    lrose
+    motioncontrol
+    operationmode
+    Pentek_xx821
+    QFunctionWrapper
+    qt5
+    QXmlRpcServerAbyss
+    setuidprogram
+    xmitdrpcclient
 """)
-
 env = Environment(tools = ['default'] + tools)
-env.EnableQtModules(['QtCore'])
 
-# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
-# via the hcrdrxrpcclient tool
+# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp (which live
+# in this directory) are compiled via a load of the SCons hcrdrxrpcclient tool
+# (also in this directory).
 sources = Split("""
-hcrdrx.cpp
-HcrDrxConfig.cpp
-HcrDrxPub.cpp
-IwrfExport.cpp
-IwrfExportInsPoller.cpp
-PulseData.cpp
-StatusGrabber.cpp
+    hcrdrx.cpp
+    HcrDrxConfig.cpp
+    HCR_Pentek.cpp
+    StatusGrabber.cpp
+    IwrfExport.cpp
+    IwrfExportInsPoller.cpp
+    PulseData.cpp
 """)
 
 headers = Split("""
-DrxStatus.h
-HcrDrxConfig.h
-HcrDrxPub.h
-HcrdrxRpcClient.h
-IwrfExport.h
-IwrfExportInsPoller.h
-PulseData.h
-StatusGrabber.h
+    ChannelPulseData.h
+    CircBuffer.h
+    DrxStatus.h
+    HcrDrxConfig.h
+    HCR_Pentek.h
+    IwrfExport.h
+    IwrfExportInsPoller.h
+    PulseData.h
+    RadarController.h
+    StatusGrabber.h
+    xhcr_controller_hw.h
 """)
 
 hcrdrx = env.Program('hcrdrx', sources)

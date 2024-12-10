@@ -1,0 +1,55 @@
+#-----------------------------------------------------------
+# Vivado v2016.2 (64-bit)
+# SW Build 1577090 on Thu Jun  2 16:32:40 MDT 2016
+# IP Build 1577682 on Fri Jun  3 12:00:54 MDT 2016
+# Start of session at: Thu Jun 09 12:15:47 2016
+# Process ID: 4836
+# Current directory: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_test_sig_gen_48
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent7212 C:\Xilinx\Vivado\2016.2\data\ip\pentek\ip\px_test_sig_gen_48\px_test_sig_gen_48.xpr
+# Log file: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_test_sig_gen_48/vivado.log
+# Journal file: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_test_sig_gen_48\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_test_sig_gen_48/px_test_sig_gen_48.xpr
+INFO: [Project 1-313] Project file moved from 'C:/Xilinx/Vivado/2016.1/data/ip/pentek/ip/px_test_sig_gen_48' since last save.
+Scanning sources...
+Finished scanning sources
+INFO: [Project 1-230] Project 'px_test_sig_gen_48.xpr' upgraded for this version of Vivado.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip' may become invalid. A better location for the repostory would be in a path adjacent to the project. (Current project location is 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_test_sig_gen_48'.)
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/interface'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2016.2/data/ip'.
+WARNING: [IP_Flow 19-2162] IP 'px_axil_csr_tsig_48' is locked:
+* IP definition 'px_axil_csr_v1_0 (1.0)' for IP 'px_axil_csr_tsig_48' has a different revision in the IP Catalog.
+Please select 'Report IP Status' from the 'Tools/Report' menu or run Tcl command 'report_ip_status' for more information.
+WARNING: [IP_Flow 19-2162] IP 'px_test_sig_gen48_xclkfifo' is locked:
+* IP definition 'FIFO Generator (13.1)' for IP 'px_test_sig_gen48_xclkfifo' has a different revision in the IP Catalog.
+Please select 'Report IP Status' from the 'Tools/Report' menu or run Tcl command 'report_ip_status' for more information.
+WARNING: [IP_Flow 19-2162] IP 'px_test_sig_gen48_axiclkcnv' is locked:
+* IP definition 'AXI Clock Converter (2.1)' for IP 'px_test_sig_gen48_axiclkcnv' has a different revision in the IP Catalog.
+Please select 'Report IP Status' from the 'Tools/Report' menu or run Tcl command 'report_ip_status' for more information.
+open_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:10 . Memory (MB): peak = 951.246 ; gain = 243.105
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+export_ip_user_files -of_objects [get_ips  {px_axil_csr_tsig_48 px_test_sig_gen48_axiclkcnv px_test_sig_gen48_xclkfifo}] -no_script -reset -quiet
+upgrade_ip [get_ips  {px_axil_csr_tsig_48 px_test_sig_gen48_axiclkcnv px_test_sig_gen48_xclkfifo}] -log ip_upgrade.log
+Upgrading 'px_axil_csr_tsig_48'
+INFO: [IP_Flow 19-3422] Upgraded px_axil_csr_tsig_48 (px_axil_csr_v1_0 1.0) from revision 9 to revision 10
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'px_axil_csr_tsig_48'...
+Upgrading 'px_test_sig_gen48_axiclkcnv'
+INFO: [IP_Flow 19-3422] Upgraded px_test_sig_gen48_axiclkcnv (AXI Clock Converter 2.1) from revision 7 to revision 8
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'px_test_sig_gen48_axiclkcnv'...
+Upgrading 'px_test_sig_gen48_xclkfifo'
+INFO: [IP_Flow 19-3422] Upgraded px_test_sig_gen48_xclkfifo (FIFO Generator 13.1) from revision 0 to revision 1
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'px_test_sig_gen48_xclkfifo'...
+INFO: [Coretcl 2-1525] Wrote upgrade log to 'C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_test_sig_gen_48/ip_upgrade.log'.
+ipx::open_ipxact_file {C:\Xilinx\Vivado\2016.2\data\ip\pentek\ip\px_test_sig_gen_48\px_test_sig_gen_48.srcs\component.xml}
+set_property core_revision 24 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip'
+exit
+INFO: [Common 17-206] Exiting Vivado at Thu Jun 09 12:16:49 2016...

@@ -1,0 +1,5 @@
+set -tmpdir "/home/karboski/git/HCR_instrument/fpga/HMC_r5/xst/projnav.tmp"
+set -xsthdpdir "/home/karboski/git/HCR_instrument/fpga/HMC_r5/xst"
+elaborate
+-ifn HMC_src.prj
+-ifmt mixed

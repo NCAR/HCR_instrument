@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
+  <source>
+    <originFiles name="hcr_metadata_injector.cpp" path="/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector/hcr_metadata_injector.cpp"/>
+  </source>
+  <testbench>
+    <originFiles name="hcr_tb.cpp" path="/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_tb.cpp"/>
+    <originFiles name="hcr_controller.cpp" path="/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_controller/hcr_controller.cpp"/>
+  </testbench>
+</autopilotfilemapping:AutoPilotFileMapping>

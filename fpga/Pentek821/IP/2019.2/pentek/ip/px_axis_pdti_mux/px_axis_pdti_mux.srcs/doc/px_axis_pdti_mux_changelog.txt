@@ -1,0 +1,8 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release
+
+Version 1.1
+* data_byte_width originally limited to max 16 bytes. Changed to max 32 bytes
+

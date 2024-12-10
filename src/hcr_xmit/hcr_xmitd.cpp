@@ -49,8 +49,8 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
+#include <HcrSharedResources.h>
 #include "HcrXmitter.h"
-#include "../HcrSharedResources.h"
 
 namespace po = boost::program_options;
 

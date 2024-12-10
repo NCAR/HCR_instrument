@@ -1,0 +1,3073 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 17 10:39:29 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_pdti_fir_tweak_2'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_pdti_fir_tweak_2 (xilinx.com:module_ref:pdti_fir_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 17 10:39:29 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_pdti_fir_tweak_1'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_pdti_fir_tweak_1 (xilinx.com:module_ref:pdti_fir_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 17 10:39:29 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_pdti_fir_tweak_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_pdti_fir_tweak_0_0 (xilinx.com:module_ref:pdti_fir_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 17 10:39:29 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112986859) to (Rev. 2112991218)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 17 10:39:29 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112986859) to (Rev. 2112991218)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 17 10:39:29 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112986859) to (Rev. 2112991218)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Apr 14 09:44:40 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985809) to (Rev. 2112986859)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Apr 14 09:44:40 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985809) to (Rev. 2112986859)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Apr 14 09:44:40 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985809) to (Rev. 2112986859)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Apr 14 09:44:40 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2104112210) to (Rev. 2112986862)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 16:12:32 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985489) to (Rev. 2112985809)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 16:12:32 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985489) to (Rev. 2112985809)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 16:12:32 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985489) to (Rev. 2112985809)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 10:54:14 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985437) to (Rev. 2112985489)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 10:54:14 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985437) to (Rev. 2112985489)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 10:54:14 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2112985437) to (Rev. 2112985489)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 10:01:30 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104112215) to (Rev. 2112985437)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 10:01:30 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_metadata_injector_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104112215) to (Rev. 2112985437)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Apr 13 10:01:30 2023
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104112215) to (Rev. 2112985437)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 11 22:15:58 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_1'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_metadata_injector_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101071829) to (Rev. 2104112215)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_metadata_injector_1'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 952 differs from original width 856
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 11 22:15:58 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_metadata_injector_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_metadata_injector_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101071829) to (Rev. 2104112215)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_metadata_injector_0'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 952 differs from original width 856
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 11 22:15:58 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101071829) to (Rev. 2104112215)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 952 differs from original width 856
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Apr 11 22:15:58 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2101311549) to (Rev. 2104112210)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'user_block2_hcr_controller_0_0'.
+
+
+-Upgrade has added interface 'phase_sample_V' (xilinx.com:signal:data:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_controller_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_ch0_V_TDATA' width 952 differs from original width 856
+
+-Upgraded port 'pulse_metadata_ch1_V_TDATA' width 952 differs from original width 856
+
+-Upgraded port 'pulse_metadata_ch2_V_TDATA' width 952 differs from original width 856
+
+-Upgraded port 's_axi_cfg_bus_ARADDR' width 19 differs from original width 14
+
+-Upgraded port 's_axi_cfg_bus_AWADDR' width 19 differs from original width 14
+
+-Upgrade has added port 'phase_sample_V'
+
+-Upgrade has added port 'phase_sample_V_ap_vld'
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Mon Jan 31 15:51:12 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2101071530) to (Rev. 2101311549)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_controller_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'coef_ch0_V_V_TDATA' width 24 differs from original width 32
+
+-Upgraded port 'coef_ch1_V_V_TDATA' width 24 differs from original width 32
+
+-Upgraded port 'coef_ch2_V_V_TDATA' width 24 differs from original width 32
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 18:30:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101071527) to (Rev. 2101071829)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 18:30:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101071527) to (Rev. 2101071829)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 18:30:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101071527) to (Rev. 2101071829)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 15:35:44 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101061755) to (Rev. 2101071527)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 15:35:44 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101061755) to (Rev. 2101071527)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 15:35:44 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101061755) to (Rev. 2101071527)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jan  7 15:35:44 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2101051703) to (Rev. 2101071530)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Jan  6 18:02:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101051652) to (Rev. 2101061755)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Jan  6 18:02:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101051652) to (Rev. 2101061755)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Jan  6 18:02:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101051652) to (Rev. 2101061755)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 17:04:04 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2112011610) to (Rev. 2101051703)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_controller_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'coef_ch0_V_V_TDATA' width 32 differs from original width 24
+
+-Upgraded port 'coef_ch1_V_V_TDATA' width 32 differs from original width 24
+
+-Upgraded port 'coef_ch2_V_V_TDATA' width 32 differs from original width 24
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 16:55:29 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111192119) to (Rev. 2101051652)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_2'. These changes may impact your design.
+
+
+-Upgraded port 'i_data_TDATA' width 64 differs from original width 32
+
+-Upgraded port 'i_data_TKEEP' width 8 differs from original width 4
+
+-Upgraded port 'i_data_TSTRB' width 8 differs from original width 4
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 16:55:29 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111192119) to (Rev. 2101051652)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_1'. These changes may impact your design.
+
+
+-Upgraded port 'i_data_TDATA' width 64 differs from original width 32
+
+-Upgraded port 'i_data_TKEEP' width 8 differs from original width 4
+
+-Upgraded port 'i_data_TSTRB' width 8 differs from original width 4
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 16:55:29 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111192119) to (Rev. 2101051652)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'i_data_TDATA' width 64 differs from original width 32
+
+-Upgraded port 'i_data_TKEEP' width 8 differs from original width 4
+
+-Upgraded port 'i_data_TSTRB' width 8 differs from original width 4
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Dec  1 16:13:29 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2111240020) to (Rev. 2112011610)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Nov 24 00:23:59 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2107092146) to (Rev. 2111240020)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 21:21:09 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111191638) to (Rev. 2111192119)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 21:21:09 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111191638) to (Rev. 2111192119)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 21:21:09 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111191638) to (Rev. 2111192119)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 16:46:51 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111190033) to (Rev. 2111191638)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 16:46:51 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111190033) to (Rev. 2111191638)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 16:46:51 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111190033) to (Rev. 2111191638)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 00:34:52 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111122359) to (Rev. 2111190033)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 00:34:52 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111122359) to (Rev. 2111190033)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 00:34:52 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111122359) to (Rev. 2111190033)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Sat Nov 13 00:01:15 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2107092151) to (Rev. 2111122359)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Sat Nov 13 00:01:15 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2107092151) to (Rev. 2111122359)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Sat Nov 13 00:01:15 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2107092151) to (Rev. 2111122359)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jul  9 21:52:58 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104281250) to (Rev. 2107092151)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_2'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 856 differs from original width 824
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jul  9 21:52:58 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104281250) to (Rev. 2107092151)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_1'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 856 differs from original width 824
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jul  9 21:52:58 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104281250) to (Rev. 2107092151)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 856 differs from original width 824
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Jul  9 21:47:10 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2106231623) to (Rev. 2107092146)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'user_block2_hcr_controller_0_0'.
+
+
+-Upgrade has added interface 'control_hvn' (xilinx.com:signal:data:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_controller_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'filter_select_ch0_V' width 3 differs from original width 2
+
+-Upgraded port 'filter_select_ch1_V' width 3 differs from original width 2
+
+-Upgraded port 'filter_select_ch2_V' width 3 differs from original width 2
+
+-Upgraded port 'pulse_metadata_ch0_V_TDATA' width 856 differs from original width 824
+
+-Upgraded port 'pulse_metadata_ch1_V_TDATA' width 856 differs from original width 824
+
+-Upgraded port 'pulse_metadata_ch2_V_TDATA' width 856 differs from original width 824
+
+-Upgraded port 's_axi_cfg_bus_ARADDR' width 14 differs from original width 13
+
+-Upgraded port 's_axi_cfg_bus_AWADDR' width 14 differs from original width 13
+
+-Upgrade has added port 'control_hvn'
+
+-Upgrade has added port 'control_hvn_ap_vld'
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jun 23 16:28:32 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2104281247) to (Rev. 2106231623)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 19:51:41 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'dataio_intrfc_px_dac5688_intrfc_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the conversion of dataio_intrfc_px_dac5688_intrfc_0_0 (pentek.com:px_ip:px_dac5688_intrfc:1.1 (Rev. 18)) to Vivado generation flows.
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'dataio_intrfc_px_dac5688_intrfc_0_0'. These changes may impact your design.
+
+
+-Upgrade has added port 'dac_sync_in'
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 12:52:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104272203) to (Rev. 2104281250)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 12:52:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104272203) to (Rev. 2104281250)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 12:52:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104272203) to (Rev. 2104281250)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 12:52:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2104232021) to (Rev. 2104281247)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_xlslice_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_xlslice_0_1 (xilinx.com:ip:xlslice:1.0) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_xlslice_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_xlslice_0_0 (xilinx.com:ip:xlslice:1.0) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_xlconstant_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_xlconstant_0_1 (xilinx.com:ip:xlconstant:1.1) from (Rev. 3) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_xlconstant_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_xlconstant_0_0 (xilinx.com:ip:xlconstant:1.1) from (Rev. 3) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_validate_kludge_1_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_validate_kludge_1_0 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_validate_kludge_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_validate_kludge_0_0 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_px_vctr2scalar_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_px_vctr2scalar_0_1 (pentek.com:px_ip:px_vctr2scalar:1.0) from (Rev. 15) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_px_vctr2scalar_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_px_vctr2scalar_0_0 (pentek.com:px_ip:px_vctr2scalar:1.0) from (Rev. 15) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_px_axil_csr_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_px_axil_csr_0_0 (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 18) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_pulse_fir_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_pulse_fir_0_1 (xilinx.com:ip:fir_compiler:7.2) from (Rev. 8) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_pulse_fir_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_pulse_fir_0_0 (xilinx.com:ip:fir_compiler:7.2) from (Rev. 8) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_one_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_one_1 (xilinx.com:ip:xlconstant:1.1) from (Rev. 3) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_one_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_one_0 (xilinx.com:ip:xlconstant:1.1) from (Rev. 3) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_map_data_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_map_data_0_1 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_map_data_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_map_data_0_0 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_map_cfg_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_map_cfg_0_1 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_map_cfg_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_map_cfg_0_0 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_irq_placeholder_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_irq_placeholder_0 (xilinx.com:ip:xlconstant:1.1) from (Rev. 3) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_fir_compiler_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_fir_compiler_0_0 (xilinx.com:ip:fir_compiler:7.2) from (Rev. 8) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_fifo_0_1'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_fifo_0_1 from xilinx.com:ip:axis_data_fifo:1.1 (Rev. 14) to xilinx.com:ip:axis_data_fifo:2.0 (Rev. 2)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_fifo_0_1'. These changes may impact your design.
+
+
+-Upgrade has removed port 'axis_data_count'
+
+
+3. Upgrade messages
+-------------------
+
+Added parameter HAS_WR_DATA_COUNT with value 1 (source 'default')
+Added parameter HAS_RD_DATA_COUNT with value 1 (source 'default')
+
+4. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'SYNCHRONIZATION_STAGES' from '3' to '2' has been ignored for IP 'user_block2_fifo_0_1'
+
+
+5. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:axis_data_fifo:2.0 -user_name user_block2_fifo_0_1
+set_property -dict "\
+  CONFIG.ACLKEN_CONV_MODE {0} \
+  CONFIG.Component_Name {user_block2_fifo_0_1} \
+  CONFIG.FIFO_DEPTH {16} \
+  CONFIG.FIFO_MODE {1} \
+  CONFIG.HAS_RD_DATA_COUNT {1} \
+  CONFIG.HAS_TKEEP {0} \
+  CONFIG.HAS_TLAST {0} \
+  CONFIG.HAS_TREADY {1} \
+  CONFIG.HAS_TSTRB {0} \
+  CONFIG.HAS_WR_DATA_COUNT {1} \
+  CONFIG.IS_ACLK_ASYNC {0} \
+  CONFIG.M_AXIS.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.M_AXIS.FREQ_HZ {200000000} \
+  CONFIG.M_AXIS.HAS_TKEEP {0} \
+  CONFIG.M_AXIS.HAS_TLAST {0} \
+  CONFIG.M_AXIS.HAS_TREADY {1} \
+  CONFIG.M_AXIS.HAS_TSTRB {0} \
+  CONFIG.M_AXIS.LAYERED_METADATA {undef} \
+  CONFIG.M_AXIS.PHASE {0.000} \
+  CONFIG.M_AXIS.TDATA_NUM_BYTES {4} \
+  CONFIG.M_AXIS.TDEST_WIDTH {0} \
+  CONFIG.M_AXIS.TID_WIDTH {0} \
+  CONFIG.M_AXIS.TUSER_WIDTH {128} \
+  CONFIG.SYNCHRONIZATION_STAGES {2} \
+  CONFIG.S_AXIS.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.S_AXIS.FREQ_HZ {200000000} \
+  CONFIG.S_AXIS.HAS_TKEEP {0} \
+  CONFIG.S_AXIS.HAS_TLAST {0} \
+  CONFIG.S_AXIS.HAS_TREADY {1} \
+  CONFIG.S_AXIS.HAS_TSTRB {0} \
+  CONFIG.S_AXIS.LAYERED_METADATA {undef} \
+  CONFIG.S_AXIS.PHASE {0.000} \
+  CONFIG.S_AXIS.TDATA_NUM_BYTES {4} \
+  CONFIG.S_AXIS.TDEST_WIDTH {0} \
+  CONFIG.S_AXIS.TID_WIDTH {0} \
+  CONFIG.S_AXIS.TUSER_WIDTH {128} \
+  CONFIG.S_CLKIF.ASSOCIATED_BUSIF {S_AXIS:M_AXIS} \
+  CONFIG.S_CLKIF.ASSOCIATED_RESET {s_axis_aresetn} \
+  CONFIG.S_CLKIF.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.S_CLKIF.FREQ_HZ {200000000} \
+  CONFIG.S_CLKIF.PHASE {0.000} \
+  CONFIG.S_RSTIF.POLARITY {ACTIVE_LOW} \
+  CONFIG.TDATA_NUM_BYTES {4} \
+  CONFIG.TDEST_WIDTH {0} \
+  CONFIG.TID_WIDTH {0} \
+  CONFIG.TUSER_WIDTH {128} " [get_ips user_block2_fifo_0_1]
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_fifo_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_fifo_0_0 from xilinx.com:ip:axis_data_fifo:1.1 (Rev. 14) to xilinx.com:ip:axis_data_fifo:2.0 (Rev. 2)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_fifo_0_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'axis_data_count'
+
+
+3. Upgrade messages
+-------------------
+
+Added parameter HAS_WR_DATA_COUNT with value 1 (source 'default')
+Added parameter HAS_RD_DATA_COUNT with value 1 (source 'default')
+
+4. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'SYNCHRONIZATION_STAGES' from '3' to '2' has been ignored for IP 'user_block2_fifo_0_0'
+
+
+5. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:axis_data_fifo:2.0 -user_name user_block2_fifo_0_0
+set_property -dict "\
+  CONFIG.ACLKEN_CONV_MODE {0} \
+  CONFIG.Component_Name {user_block2_fifo_0_0} \
+  CONFIG.FIFO_DEPTH {16} \
+  CONFIG.FIFO_MODE {1} \
+  CONFIG.HAS_RD_DATA_COUNT {1} \
+  CONFIG.HAS_TKEEP {0} \
+  CONFIG.HAS_TLAST {0} \
+  CONFIG.HAS_TREADY {1} \
+  CONFIG.HAS_TSTRB {0} \
+  CONFIG.HAS_WR_DATA_COUNT {1} \
+  CONFIG.IS_ACLK_ASYNC {0} \
+  CONFIG.M_AXIS.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.M_AXIS.FREQ_HZ {200000000} \
+  CONFIG.M_AXIS.HAS_TKEEP {0} \
+  CONFIG.M_AXIS.HAS_TLAST {0} \
+  CONFIG.M_AXIS.HAS_TREADY {1} \
+  CONFIG.M_AXIS.HAS_TSTRB {0} \
+  CONFIG.M_AXIS.LAYERED_METADATA {undef} \
+  CONFIG.M_AXIS.PHASE {0.000} \
+  CONFIG.M_AXIS.TDATA_NUM_BYTES {4} \
+  CONFIG.M_AXIS.TDEST_WIDTH {0} \
+  CONFIG.M_AXIS.TID_WIDTH {0} \
+  CONFIG.M_AXIS.TUSER_WIDTH {128} \
+  CONFIG.SYNCHRONIZATION_STAGES {2} \
+  CONFIG.S_AXIS.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.S_AXIS.FREQ_HZ {200000000} \
+  CONFIG.S_AXIS.HAS_TKEEP {0} \
+  CONFIG.S_AXIS.HAS_TLAST {0} \
+  CONFIG.S_AXIS.HAS_TREADY {1} \
+  CONFIG.S_AXIS.HAS_TSTRB {0} \
+  CONFIG.S_AXIS.LAYERED_METADATA {undef} \
+  CONFIG.S_AXIS.PHASE {0.000} \
+  CONFIG.S_AXIS.TDATA_NUM_BYTES {4} \
+  CONFIG.S_AXIS.TDEST_WIDTH {0} \
+  CONFIG.S_AXIS.TID_WIDTH {0} \
+  CONFIG.S_AXIS.TUSER_WIDTH {128} \
+  CONFIG.S_CLKIF.ASSOCIATED_BUSIF {S_AXIS:M_AXIS} \
+  CONFIG.S_CLKIF.ASSOCIATED_RESET {s_axis_aresetn} \
+  CONFIG.S_CLKIF.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.S_CLKIF.FREQ_HZ {200000000} \
+  CONFIG.S_CLKIF.PHASE {0.000} \
+  CONFIG.S_RSTIF.POLARITY {ACTIVE_LOW} \
+  CONFIG.TDATA_NUM_BYTES {4} \
+  CONFIG.TDEST_WIDTH {0} \
+  CONFIG.TID_WIDTH {0} \
+  CONFIG.TUSER_WIDTH {128} " [get_ips user_block2_fifo_0_0]
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_bcast_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_bcast_0_1 (xilinx.com:ip:axis_broadcaster:1.1) from (Rev. 13) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_bcast_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_bcast_0_0 (xilinx.com:ip:axis_broadcaster:1.1) from (Rev. 13) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_1_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_1_0 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_7'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_7 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_6'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_6 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_5'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_5 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_4'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_4 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_3'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_3 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_2 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_1 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_subset_converter_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_subset_converter_0_0 (xilinx.com:ip:axis_subset_converter:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_register_slice_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_register_slice_0_0 (xilinx.com:ip:axis_register_slice:1.1) from (Rev. 13) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_data_fifo_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_axis_data_fifo_0_0 from xilinx.com:ip:axis_data_fifo:1.1 (Rev. 14) to xilinx.com:ip:axis_data_fifo:2.0 (Rev. 2)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_axis_data_fifo_0_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'axis_data_count'
+
+
+3. Upgrade messages
+-------------------
+
+Added parameter HAS_WR_DATA_COUNT with value 1 (source 'default')
+Added parameter HAS_RD_DATA_COUNT with value 1 (source 'default')
+
+4. Customization warnings
+-------------------------
+
+An attempt to modify the value of disabled parameter 'SYNCHRONIZATION_STAGES' from '3' to '2' has been ignored for IP 'user_block2_axis_data_fifo_0_0'
+
+
+5. Debug Commands
+-----------------
+
+  The following debug information can be passed to Vivado as Tcl commands,
+in order to validate or debug the output of the upgrade flow.
+  You may consult any warnings from within this upgrade, and alter or remove
+the configuration parameter(s) which caused the warning; then execute the Tcl
+commands, and use the IP Customization GUI to verify the IP configuration.
+
+create_ip -vlnv xilinx.com:ip:axis_data_fifo:2.0 -user_name user_block2_axis_data_fifo_0_0
+set_property -dict "\
+  CONFIG.ACLKEN_CONV_MODE {0} \
+  CONFIG.Component_Name {user_block2_axis_data_fifo_0_0} \
+  CONFIG.FIFO_DEPTH {16} \
+  CONFIG.FIFO_MODE {1} \
+  CONFIG.HAS_RD_DATA_COUNT {1} \
+  CONFIG.HAS_TKEEP {0} \
+  CONFIG.HAS_TLAST {0} \
+  CONFIG.HAS_TREADY {1} \
+  CONFIG.HAS_TSTRB {0} \
+  CONFIG.HAS_WR_DATA_COUNT {1} \
+  CONFIG.IS_ACLK_ASYNC {0} \
+  CONFIG.M_AXIS.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.M_AXIS.FREQ_HZ {200000000} \
+  CONFIG.M_AXIS.HAS_TKEEP {0} \
+  CONFIG.M_AXIS.HAS_TLAST {0} \
+  CONFIG.M_AXIS.HAS_TREADY {1} \
+  CONFIG.M_AXIS.HAS_TSTRB {0} \
+  CONFIG.M_AXIS.LAYERED_METADATA {undef} \
+  CONFIG.M_AXIS.PHASE {0.000} \
+  CONFIG.M_AXIS.TDATA_NUM_BYTES {4} \
+  CONFIG.M_AXIS.TDEST_WIDTH {0} \
+  CONFIG.M_AXIS.TID_WIDTH {0} \
+  CONFIG.M_AXIS.TUSER_WIDTH {128} \
+  CONFIG.SYNCHRONIZATION_STAGES {2} \
+  CONFIG.S_AXIS.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.S_AXIS.FREQ_HZ {200000000} \
+  CONFIG.S_AXIS.HAS_TKEEP {0} \
+  CONFIG.S_AXIS.HAS_TLAST {0} \
+  CONFIG.S_AXIS.HAS_TREADY {1} \
+  CONFIG.S_AXIS.HAS_TSTRB {0} \
+  CONFIG.S_AXIS.LAYERED_METADATA {undef} \
+  CONFIG.S_AXIS.PHASE {0.000} \
+  CONFIG.S_AXIS.TDATA_NUM_BYTES {4} \
+  CONFIG.S_AXIS.TDEST_WIDTH {0} \
+  CONFIG.S_AXIS.TID_WIDTH {0} \
+  CONFIG.S_AXIS.TUSER_WIDTH {128} \
+  CONFIG.S_CLKIF.ASSOCIATED_BUSIF {S_AXIS:M_AXIS} \
+  CONFIG.S_CLKIF.ASSOCIATED_RESET {s_axis_aresetn} \
+  CONFIG.S_CLKIF.CLK_DOMAIN {user_block2_s_axis_adc_pdti_aclk} \
+  CONFIG.S_CLKIF.FREQ_HZ {200000000} \
+  CONFIG.S_CLKIF.PHASE {0.000} \
+  CONFIG.S_RSTIF.POLARITY {ACTIVE_LOW} \
+  CONFIG.TDATA_NUM_BYTES {4} \
+  CONFIG.TDEST_WIDTH {0} \
+  CONFIG.TID_WIDTH {0} \
+  CONFIG.TUSER_WIDTH {128} " [get_ips user_block2_axis_data_fifo_0_0]
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axis_broadcaster_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axis_broadcaster_0_0 (xilinx.com:ip:axis_broadcaster:1.1) from (Rev. 13) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:40 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_axi_interc_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_axi_interc_0 (xilinx.com:ip:axi_interconnect:2.1) from (Rev. 14) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:20 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_xlslice_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block1_xlslice_0_0 (xilinx.com:ip:xlslice:1.0) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:20 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_xlconstant_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block1_xlconstant_0_0 (xilinx.com:ip:xlconstant:1.1) from (Rev. 3) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:20 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_vio_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block1_vio_0_1 (xilinx.com:ip:vio:3.0) from (Rev. 16) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:20 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_px_s_axil_plc_hldr_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block1_px_s_axil_plc_hldr_0_0 (pentek.com:px_ip:px_s_axil_plc_hldr:1.0) from (Rev. 15) to (Rev. 20)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Apr 28 01:49:20 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_px_lvl_trans_xclk_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block1_px_lvl_trans_xclk_0_0 (pentek.com:user:px_lvl_trans_xclk:1.0) from (Rev. 12) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:11:23 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104232016) to (Rev. 2104272203)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:11:23 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104232016) to (Rev. 2104272203)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:11:23 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2104232016) to (Rev. 2104272203)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:11:23 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_enable_mux_0_3'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_enable_mux_0_3 (eol:module_ref:enable_mux:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:11:23 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_enable_mux_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_enable_mux_0_2 (eol:module_ref:enable_mux:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:09:55 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_adc_tweak_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_adc_tweak_0_2 (eol:module_ref:pdti_adc_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:09:55 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_adc_tweak_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_adc_tweak_0_1 (eol:module_ref:pdti_adc_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Tue Apr 27 22:09:55 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_adc_tweak_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_adc_tweak_0_0 (eol:module_ref:pdti_adc_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_pdti_dac_pulse_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_pdti_dac_pulse_0_0 (eol:module_ref:pdti_dac_pulse:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2103091418) to (Rev. 2104232016)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_2'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 824 differs from original width 816
+
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2103091418) to (Rev. 2104232016)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_1'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 824 differs from original width 816
+
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2103091418) to (Rev. 2104232016)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_V_TDATA' width 824 differs from original width 816
+
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2103191540) to (Rev. 2104232021)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_controller_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'pulse_metadata_ch0_V_TDATA' width 824 differs from original width 816
+
+-Upgraded port 'pulse_metadata_ch1_V_TDATA' width 824 differs from original width 816
+
+-Upgraded port 'pulse_metadata_ch2_V_TDATA' width 824 differs from original width 816
+
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_enable_mux_0_3'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_enable_mux_0_3 (eol:module_ref:enable_mux:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:27:38 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_enable_mux_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block2_enable_mux_0_2 (eol:module_ref:enable_mux:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:26:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_dac_tweak_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_dac_tweak_0_0 (eol:module_ref:pdti_dac_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:26:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_adc_tweak_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_adc_tweak_0_2 (eol:module_ref:pdti_adc_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:26:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_adc_tweak_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_adc_tweak_0_1 (eol:module_ref:pdti_adc_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
+| Date         : Fri Apr 23 20:26:12 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block1_pdti_adc_tweak_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of user_block1_pdti_adc_tweak_0_0 (eol:module_ref:pdti_adc_tweak:1.0 (Rev. 1)) to Vivado generation flows.
+

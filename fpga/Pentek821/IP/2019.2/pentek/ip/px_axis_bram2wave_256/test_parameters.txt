@@ -1,0 +1,25 @@
+1
+1
+true
+00001000
+00000000
+0000001F
+00000000
+00000400
+0000
+
+
+Parameters:
+    MODE_SEL                  : std_ulogic_vector(3 downto 0); --  0x0 = Gate Mode  --  0x1 = Trig Mode  --  0x2 = Trig Hold Mode
+    DATA_MODE_SEL             : std_ulogic_vector(3 downto 0);
+    STAY_ARMED                : boolean; -- false - don't stay armed at end of triggered gate, true - Stay armed at end of triggered gate
+    TRIG_SPACE                : std_ulogic_vector(31 downto 0); -- space between triggers
+    BRAM_START_ADDRESS	      : std_ulogic_vector(31 downto 0);
+    BRAM_END_ADDRESS          : std_ulogic_vector(31 downto 0); -- Last address before returning to start address
+    TRIGGER_DLY_VALUE         : std_ulogic_vector(31 downto 0); -- Value to load to delay counter (value)
+    TRIGGER_LENGTH_VALUE      : std_ulogic_vector(31 downto 0); -- Value to load to sample counter (value) 
+  
+
+Enter logic vectors in hex format without 0x prefix -- example 0xC1234567 is entered C1234567.
+Enter logic vectors in hex format without 0x prefix -- example 0x3 is entered 3.
+Enter boolean values as true or false

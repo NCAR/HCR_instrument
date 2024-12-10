@@ -67,8 +67,10 @@ Pmc730Details::updateStatus(bool daemonResponding,
     _errState = false;
     
     // HMC mode
-    _ui.hmcModeValue->setText(HcrPmc730::HmcModeNames[status.hmcMode()].c_str());
-    
+    auto hmcModeString = toString(status.hmcMode()) + " (HMC mode " +
+            std::to_string(static_cast<int>(status.hmcMode())) + ")";
+    _ui.hmcModeValue->setText(hmcModeString.c_str());
+
     // temperatures
     _ui.ploTempValue->setText(QString::number(status.ploTemp(), 'f', 1));
     _ui.eikTempValue->setText(QString::number(status.eikTemp(), 'f', 1));

@@ -1,0 +1,37 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 14:33:07 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'tb_blk_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of tb_blk_ram from xilinx.com:ip:blk_mem_gen:8.2 (Rev. 6) to xilinx.com:ip:blk_mem_gen:8.3 (Rev. 1)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Thu Jul 02 10:14:38 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'tb_blk_ram'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of tb_blk_ram (xilinx.com:ip:blk_mem_gen:8.2) from (Rev. 5) to (Rev. 6)
+

@@ -40,10 +40,9 @@
 #include <QUdpSocket>
 
 #include <CmigitsStatusThread.h>
-#include <HcrPmc730StatusThread.h>
+#include <HcrPmc730StatusWorker.h>
 #include <HcrExecutiveStatusThread.h>
-#include <MotionControlStatusThread.h>
-
+#include <MotionControlStatusWorker.h>
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
@@ -238,8 +237,10 @@ private:
 //    SpectracomStatusThread _spectracomStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrExecutiveStatusThread _hcrExecutiveStatusThread;
-    MotionControlStatusThread _mcStatusThread;
-    HcrPmc730StatusThread _pmcStatusThread;
+    QThread _mcStatusThread;
+    MotionControlStatusWorker _mcStatusWorker;
+    QThread _pmcStatusThread;
+    HcrPmc730StatusWorker _pmcStatusWorker;
     XmitdStatusThread _xmitdStatusThread;
     
     // LED pixmaps
@@ -247,6 +248,7 @@ private:
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
+    QPixmap _notRespondingLED;
     
     /// Last status read from the transmitter
     XmitStatus _xmitStatus;
@@ -266,6 +268,8 @@ private:
     CmigitsStatus _ins2Status;
     /// Last status from hcrdrx
     DrxStatus _drxStatus;
+    /// OperationMode-s currently shown in the mode combo box
+    std::vector<OperationMode> _requestedModeComboItems;
     /// Last status from DataMapper
     DMAP_info_t _dmapStatus;
     /// Last status from HcrExecutive

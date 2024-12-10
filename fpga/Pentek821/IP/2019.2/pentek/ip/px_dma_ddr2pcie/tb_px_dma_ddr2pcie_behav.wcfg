@@ -1,0 +1,2514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_dma_ddr2pcie_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_dma_ddr2pcie" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="154220000fs"></ZoomStartTime>
+      <ZoomEndTime time="7066900858fs"></ZoomEndTime>
+      <Cursor1Time time="2888000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="251"></NameColumnWidth>
+      <ValueColumnWidth column_width="152"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="622" />
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/aclk" type="logic">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/aresetn" type="logic">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_pcie_rq_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_pcie_rq_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_pcie_rq_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_pcie_rq_tkeep" type="array">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_pcie_rq_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tuser[59:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tuser[59:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_pcie_rq_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/axis_ddr_aclk" type="logic">
+      <obj_property name="ElementShortName">axis_ddr_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_ddr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_rqst_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_rqst_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_rqst_tid" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_rqst_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/m_axis_rqst_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tuser[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tuser[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_rsp_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_rsp_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_rsp_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_rsp_tid" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_rsp_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_rsp_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tuser[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tuser[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/max_pcie_pkt_256" type="logic">
+      <obj_property name="ElementShortName">max_pcie_pkt_256</obj_property>
+      <obj_property name="ObjectShortName">max_pcie_pkt_256</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/reset_done" type="logic">
+      <obj_property name="ElementShortName">reset_done</obj_property>
+      <obj_property name="ObjectShortName">reset_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/wr_rsp_tvalid" type="logic">
+      <obj_property name="ElementShortName">wr_rsp_tvalid</obj_property>
+      <obj_property name="ObjectShortName">wr_rsp_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/wr_rsp_tuser" type="array">
+      <obj_property name="ElementShortName">wr_rsp_tuser[71:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_rsp_tuser[71:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_cntl_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_cntl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cntl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/s_axis_cntl_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_cntl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cntl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/rqst_in_tuser" type="array">
+      <obj_property name="ElementShortName">rqst_in_tuser[143:0]</obj_property>
+      <obj_property name="ObjectShortName">rqst_in_tuser[143:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/pcie_rq_tvalid" type="logic">
+      <obj_property name="ElementShortName">pcie_rq_tvalid</obj_property>
+      <obj_property name="ObjectShortName">pcie_rq_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/pcie_rq_tready" type="logic">
+      <obj_property name="ElementShortName">pcie_rq_tready</obj_property>
+      <obj_property name="ObjectShortName">pcie_rq_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/pcie_rq_tdata" type="array">
+      <obj_property name="ElementShortName">pcie_rq_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_rq_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/pcie_rq_tkeep" type="array">
+      <obj_property name="ElementShortName">pcie_rq_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_rq_tkeep[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/pcie_rq_tuser" type="array">
+      <obj_property name="ElementShortName">pcie_rq_tuser[59:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_rq_tuser[59:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/rqst_fifo_tuser" type="array">
+      <obj_property name="ElementShortName">rqst_fifo_tuser[59:0]</obj_property>
+      <obj_property name="ObjectShortName">rqst_fifo_tuser[59:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/rqst_size" type="array">
+      <obj_property name="ElementShortName">rqst_size[3:0]</obj_property>
+      <obj_property name="ObjectShortName">rqst_size[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/dcnt" type="array">
+      <obj_property name="ElementShortName">dcnt[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dcnt[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/pcie_channel" type="other">
+      <obj_property name="ElementShortName">pcie_channel</obj_property>
+      <obj_property name="ObjectShortName">pcie_channel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/ddr4_requestor_id" type="other">
+      <obj_property name="ElementShortName">ddr4_requestor_id</obj_property>
+      <obj_property name="ObjectShortName">ddr4_requestor_id</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/parameter_file_name" type="array">
+      <obj_property name="ElementShortName">parameter_file_name[1:28]</obj_property>
+      <obj_property name="ObjectShortName">parameter_file_name[1:28]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/out_file_name" type="array">
+      <obj_property name="ElementShortName">out_file_name[1:25]</obj_property>
+      <obj_property name="ObjectShortName">out_file_name[1:25]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_CTL_REG" type="array">
+      <obj_property name="ElementShortName">DMA_CTL_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_CTL_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_ADV_REG" type="array">
+      <obj_property name="ElementShortName">DMA_ADV_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_ADV_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_ABORT_REG" type="array">
+      <obj_property name="ElementShortName">DMA_ABORT_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_ABORT_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_LENGTH_REG" type="array">
+      <obj_property name="ElementShortName">DMA_LENGTH_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_LENGTH_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_FIFO_FLUSH_REG" type="array">
+      <obj_property name="ElementShortName">DMA_FIFO_FLUSH_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_FIFO_FLUSH_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_DEST_ADDR_L_REG" type="array">
+      <obj_property name="ElementShortName">DMA_DEST_ADDR_L_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_DEST_ADDR_L_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_DEST_ADDR_U_REG" type="array">
+      <obj_property name="ElementShortName">DMA_DEST_ADDR_U_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_DEST_ADDR_U_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_SRC_ADDR_REG" type="array">
+      <obj_property name="ElementShortName">DMA_SRC_ADDR_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_SRC_ADDR_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_STATUS_REG" type="array">
+      <obj_property name="ElementShortName">DMA_STATUS_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_STATUS_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/DMA_BYTES_XFERD_REG" type="array">
+      <obj_property name="ElementShortName">DMA_BYTES_XFERD_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_BYTES_XFERD_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/INTRPT_ENABLE_REG" type="array">
+      <obj_property name="ElementShortName">INTRPT_ENABLE_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">INTRPT_ENABLE_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/INTRPT_FLAG_REG" type="array">
+      <obj_property name="ElementShortName">INTRPT_FLAG_REG[15:0]</obj_property>
+      <obj_property name="ObjectShortName">INTRPT_FLAG_REG[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/NBSP" type="other">
+      <obj_property name="ElementShortName">NBSP</obj_property>
+      <obj_property name="ObjectShortName">NBSP</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/NUS" type="array">
+      <obj_property name="ElementShortName">NUS[2:1]</obj_property>
+      <obj_property name="ObjectShortName">NUS[2:1]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider201">
+      <obj_property name="label">uut</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/aclk" type="logic">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/aresetn" type="logic">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_pcie_rq_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_pcie_rq_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_pcie_rq_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_pcie_rq_tkeep" type="array">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_pcie_rq_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tuser[59:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tuser[59:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_pcie_rq_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_pcie_rq_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pcie_rq_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/axis_ddr_aclk" type="logic">
+      <obj_property name="ElementShortName">axis_ddr_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_ddr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_rqst_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_rqst_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_rqst_tid" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_rqst_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/m_axis_rqst_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tuser[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tuser[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_rsp_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_rsp_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_rsp_tid" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_rsp_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_rsp_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tuser[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tuser[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_cntl_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_cntl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cntl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/s_axis_cntl_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_cntl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cntl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/abort_cmplt" type="logic">
+      <obj_property name="ElementShortName">abort_cmplt</obj_property>
+      <obj_property name="ObjectShortName">abort_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_advance" type="logic">
+      <obj_property name="ElementShortName">dma_advance</obj_property>
+      <obj_property name="ObjectShortName">dma_advance</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_waiting_for_adv" type="logic">
+      <obj_property name="ElementShortName">dma_waiting_for_adv</obj_property>
+      <obj_property name="ObjectShortName">dma_waiting_for_adv</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_active" type="logic">
+      <obj_property name="ElementShortName">dma_active</obj_property>
+      <obj_property name="ObjectShortName">dma_active</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_paused" type="logic">
+      <obj_property name="ElementShortName">dma_paused</obj_property>
+      <obj_property name="ObjectShortName">dma_paused</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rd_complete" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_rst_n" type="logic">
+      <obj_property name="ElementShortName">t1_rst_n</obj_property>
+      <obj_property name="ObjectShortName">t1_rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_restart" type="logic">
+      <obj_property name="ElementShortName">dma_restart</obj_property>
+      <obj_property name="ObjectShortName">dma_restart</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_abort_busy" type="logic">
+      <obj_property name="ElementShortName">dma_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">dma_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_abort" type="logic">
+      <obj_property name="ElementShortName">dma_abort</obj_property>
+      <obj_property name="ObjectShortName">dma_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/buffer_actual_bytes" type="array">
+      <obj_property name="ElementShortName">buffer_actual_bytes[31:0]</obj_property>
+      <obj_property name="ObjectShortName">buffer_actual_bytes[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/buffer_actual_bytes_valid" type="logic">
+      <obj_property name="ElementShortName">buffer_actual_bytes_valid</obj_property>
+      <obj_property name="ObjectShortName">buffer_actual_bytes_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/bytes_last_transferred" type="array">
+      <obj_property name="ElementShortName">bytes_last_transferred[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_last_transferred[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/buffer_wr_rqst_valid" type="logic">
+      <obj_property name="ElementShortName">buffer_wr_rqst_valid</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_rqst_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/buffer_wr_rqst_ready" type="logic">
+      <obj_property name="ElementShortName">buffer_wr_rqst_ready</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_rqst_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/buffer_wr_rqst_data" type="array">
+      <obj_property name="ElementShortName">buffer_wr_rqst_data[135:0]</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_rqst_data[135:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rd_rqst_valid" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_rqst_valid</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_rqst_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rd_rqst_ready" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_rqst_ready</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_rqst_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rd_rqst_data" type="array">
+      <obj_property name="ElementShortName">ddr_rd_rqst_data[135:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_rqst_data[135:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_flush" type="logic">
+      <obj_property name="ElementShortName">fifo_flush</obj_property>
+      <obj_property name="ObjectShortName">fifo_flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/abort_all_out" type="logic">
+      <obj_property name="ElementShortName">abort_all_out</obj_property>
+      <obj_property name="ObjectShortName">abort_all_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_reader_abort_busy" type="logic">
+      <obj_property name="ElementShortName">t1_reader_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">t1_reader_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_abort_busy" type="logic">
+      <obj_property name="ElementShortName">reader_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">reader_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fe_abort_busy" type="logic">
+      <obj_property name="ElementShortName">fe_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">fe_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_rqst_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">pcie_rqst_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">pcie_rqst_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_rqst_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">pcie_rqst_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">pcie_rqst_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/byte_swap" type="logic">
+      <obj_property name="ElementShortName">byte_swap</obj_property>
+      <obj_property name="ObjectShortName">byte_swap</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/int_m_axis_pcie_rq_tkeep" type="array">
+      <obj_property name="ElementShortName">int_m_axis_pcie_rq_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">int_m_axis_pcie_rq_tkeep[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/int_s_axis_pcie_rc_tkeep" type="array">
+      <obj_property name="ElementShortName">int_s_axis_pcie_rc_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">int_s_axis_pcie_rc_tkeep[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/source_addr" type="array">
+      <obj_property name="ElementShortName">source_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">source_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dest_addr" type="array">
+      <obj_property name="ElementShortName">dest_addr[63:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_addr[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/length" type="array">
+      <obj_property name="ElementShortName">length[31:0]</obj_property>
+      <obj_property name="ObjectShortName">length[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_at" type="array">
+      <obj_property name="ElementShortName">pcie_at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_at[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_wr_complete" type="logic">
+      <obj_property name="ElementShortName">ddr_wr_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr_wr_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_end" type="logic">
+      <obj_property name="ElementShortName">dma_end</obj_property>
+      <obj_property name="ObjectShortName">dma_end</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/consec_access" type="array">
+      <obj_property name="ElementShortName">consec_access[5:0]</obj_property>
+      <obj_property name="ObjectShortName">consec_access[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rqsts_complete" type="logic">
+      <obj_property name="ElementShortName">ddr_rqsts_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqsts_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rqst_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rqst_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/abort_state" type="other">
+      <obj_property name="ElementShortName">abort_state</obj_property>
+      <obj_property name="ObjectShortName">abort_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_abort" type="logic">
+      <obj_property name="ElementShortName">reader_abort</obj_property>
+      <obj_property name="ObjectShortName">reader_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">t1_s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_max_payload_size" type="array">
+      <obj_property name="ElementShortName">pcie_max_payload_size[2:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_max_payload_size[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/buffer_wr_complete" type="logic">
+      <obj_property name="ElementShortName">buffer_wr_complete</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_tvalid" type="logic">
+      <obj_property name="ElementShortName">fifo_tvalid</obj_property>
+      <obj_property name="ObjectShortName">fifo_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_tready" type="logic">
+      <obj_property name="ElementShortName">fifo_tready</obj_property>
+      <obj_property name="ObjectShortName">fifo_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_tdata" type="array">
+      <obj_property name="ElementShortName">fifo_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_tlast" type="logic">
+      <obj_property name="ElementShortName">fifo_tlast</obj_property>
+      <obj_property name="ObjectShortName">fifo_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_tuser" type="array">
+      <obj_property name="ElementShortName">fifo_tuser[7:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_tuser[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_out_tvalid" type="logic">
+      <obj_property name="ElementShortName">fifo_out_tvalid</obj_property>
+      <obj_property name="ObjectShortName">fifo_out_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_out_tready" type="logic">
+      <obj_property name="ElementShortName">fifo_out_tready</obj_property>
+      <obj_property name="ObjectShortName">fifo_out_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_out_tdata" type="array">
+      <obj_property name="ElementShortName">fifo_out_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_out_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_out_tlast" type="logic">
+      <obj_property name="ElementShortName">fifo_out_tlast</obj_property>
+      <obj_property name="ObjectShortName">fifo_out_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_out_tuser" type="array">
+      <obj_property name="ElementShortName">fifo_out_tuser[7:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_out_tuser[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">in_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">in_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">in_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">in_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">reader_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">reader_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/packetizer_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">packetizer_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">packetizer_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/payload_tvalid" type="logic">
+      <obj_property name="ElementShortName">payload_tvalid</obj_property>
+      <obj_property name="ObjectShortName">payload_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/payload_tlast" type="logic">
+      <obj_property name="ElementShortName">payload_tlast</obj_property>
+      <obj_property name="ObjectShortName">payload_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/payload_tdata" type="array">
+      <obj_property name="ElementShortName">payload_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">payload_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/payload_tuser" type="array">
+      <obj_property name="ElementShortName">payload_tuser[95:0]</obj_property>
+      <obj_property name="ObjectShortName">payload_tuser[95:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/payload_tkeep" type="array">
+      <obj_property name="ElementShortName">payload_tkeep[15:0]</obj_property>
+      <obj_property name="ObjectShortName">payload_tkeep[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_afl" type="logic">
+      <obj_property name="ElementShortName">pcie_afl</obj_property>
+      <obj_property name="ObjectShortName">pcie_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fe_pcie_abort_busy" type="logic">
+      <obj_property name="ElementShortName">fe_pcie_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">fe_pcie_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_abort_ff" type="logic">
+      <obj_property name="ElementShortName">pcie_abort_ff</obj_property>
+      <obj_property name="ObjectShortName">pcie_abort_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_abortbusy_fe" type="logic">
+      <obj_property name="ElementShortName">pcie_abortbusy_fe</obj_property>
+      <obj_property name="ObjectShortName">pcie_abortbusy_fe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_pcie_abort" type="logic">
+      <obj_property name="ElementShortName">t1_pcie_abort</obj_property>
+      <obj_property name="ObjectShortName">t1_pcie_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_abortbusy" type="logic">
+      <obj_property name="ElementShortName">pcie_abortbusy</obj_property>
+      <obj_property name="ObjectShortName">pcie_abortbusy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_pcie_abortbusy" type="logic">
+      <obj_property name="ElementShortName">t1_pcie_abortbusy</obj_property>
+      <obj_property name="ObjectShortName">t1_pcie_abortbusy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_abort_re" type="logic">
+      <obj_property name="ElementShortName">pcie_abort_re</obj_property>
+      <obj_property name="ObjectShortName">pcie_abort_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_abort_busy" type="logic">
+      <obj_property name="ElementShortName">pcie_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">pcie_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_pcie_abort_busy" type="logic">
+      <obj_property name="ElementShortName">t1_pcie_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">t1_pcie_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fe_reader_abort_busy" type="logic">
+      <obj_property name="ElementShortName">fe_reader_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">fe_reader_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rqst_fifo_aflx" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_aflx</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_aflx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rqst_fifo_emptyx" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_emptyx</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_emptyx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/fifo_flushx" type="logic">
+      <obj_property name="ElementShortName">fifo_flushx</obj_property>
+      <obj_property name="ObjectShortName">fifo_flushx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_in_fifo_flush_n" type="logic">
+      <obj_property name="ElementShortName">t1_in_fifo_flush_n</obj_property>
+      <obj_property name="ObjectShortName">t1_in_fifo_flush_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/t1_in_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">t1_in_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">t1_in_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr4_requestor_id" type="other">
+      <obj_property name="ElementShortName">ddr4_requestor_id</obj_property>
+      <obj_property name="ObjectShortName">ddr4_requestor_id</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_channel" type="other">
+      <obj_property name="ElementShortName">pcie_channel</obj_property>
+      <obj_property name="ObjectShortName">pcie_channel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/pcie_chan_num" type="array">
+      <obj_property name="ElementShortName">pcie_chan_num[2:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_chan_num[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider261">
+      <obj_property name="label">ddr4 reader</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_tuser[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_tuser[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/abort" type="logic">
+      <obj_property name="ElementShortName">abort</obj_property>
+      <obj_property name="ObjectShortName">abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/ddr_read_cmplt" type="logic">
+      <obj_property name="ElementShortName">ddr_read_cmplt</obj_property>
+      <obj_property name="ObjectShortName">ddr_read_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/axis_ddr_aclk" type="logic">
+      <obj_property name="ElementShortName">axis_ddr_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_ddr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_rqst_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_rqst_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_rqst_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_rqst_tid" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_rqst_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_rqst_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_rqst_tuser[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_rqst_tuser[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_rsp_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_rsp_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_rsp_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_rsp_tid" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_rsp_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_rsp_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_rsp_tuser[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_rsp_tuser[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_tuser[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tuser[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/pcie_afl" type="logic">
+      <obj_property name="ElementShortName">pcie_afl</obj_property>
+      <obj_property name="ObjectShortName">pcie_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/consec_access" type="array">
+      <obj_property name="ElementShortName">consec_access[5:0]</obj_property>
+      <obj_property name="ObjectShortName">consec_access[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/ddr_rqst_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/ddr_rqst_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/tvalid" type="logic">
+      <obj_property name="ElementShortName">tvalid</obj_property>
+      <obj_property name="ObjectShortName">tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/tready" type="logic">
+      <obj_property name="ElementShortName">tready</obj_property>
+      <obj_property name="ObjectShortName">tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/tdata" type="array">
+      <obj_property name="ElementShortName">tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/tuser" type="array">
+      <obj_property name="ElementShortName">tuser[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tuser[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/m_aresetn" type="logic">
+      <obj_property name="ElementShortName">m_aresetn</obj_property>
+      <obj_property name="ObjectShortName">m_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/rqst_tlast" type="logic">
+      <obj_property name="ElementShortName">rqst_tlast</obj_property>
+      <obj_property name="ObjectShortName">rqst_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/rqst_tdata" type="array">
+      <obj_property name="ElementShortName">rqst_tdata[127:0]</obj_property>
+      <obj_property name="ObjectShortName">rqst_tdata[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/len_cntr" type="array">
+      <obj_property name="ElementShortName">len_cntr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">len_cntr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/afl" type="logic">
+      <obj_property name="ElementShortName">afl</obj_property>
+      <obj_property name="ObjectShortName">afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/rqstout_tdata" type="array">
+      <obj_property name="ElementShortName">rqstout_tdata[127:0]</obj_property>
+      <obj_property name="ObjectShortName">rqstout_tdata[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_s_axis_rsp_tvalid" type="logic">
+      <obj_property name="ElementShortName">t1_s_axis_rsp_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_rsp_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_s_axis_rsp_tlast" type="logic">
+      <obj_property name="ElementShortName">t1_s_axis_rsp_tlast</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_rsp_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_s_axis_rsp_tid" type="array">
+      <obj_property name="ElementShortName">t1_s_axis_rsp_tid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_rsp_tid[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_s_axis_rsp_tdata" type="array">
+      <obj_property name="ElementShortName">t1_s_axis_rsp_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_rsp_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_s_axis_rsp_tuser" type="array">
+      <obj_property name="ElementShortName">t1_s_axis_rsp_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_rsp_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/tk" type="array">
+      <obj_property name="ElementShortName">tk[15:0]</obj_property>
+      <obj_property name="ObjectShortName">tk[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/read_cmplt" type="logic">
+      <obj_property name="ElementShortName">read_cmplt</obj_property>
+      <obj_property name="ObjectShortName">read_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/axis_ddr_areset" type="logic">
+      <obj_property name="ElementShortName">axis_ddr_areset</obj_property>
+      <obj_property name="ObjectShortName">axis_ddr_areset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/axis_ddr_aresetn" type="logic">
+      <obj_property name="ElementShortName">axis_ddr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">axis_ddr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_pcie_afl" type="logic">
+      <obj_property name="ElementShortName">t1_pcie_afl</obj_property>
+      <obj_property name="ObjectShortName">t1_pcie_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/t1_consec_access" type="array">
+      <obj_property name="ElementShortName">t1_consec_access[5:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_consec_access[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/access_cntr" type="array">
+      <obj_property name="ElementShortName">access_cntr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">access_cntr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/abortx" type="logic">
+      <obj_property name="ElementShortName">abortx</obj_property>
+      <obj_property name="ObjectShortName">abortx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/s_axis_ddr_cmd_areset" type="logic">
+      <obj_property name="ElementShortName">s_axis_ddr_cmd_areset</obj_property>
+      <obj_property name="ObjectShortName">s_axis_ddr_cmd_areset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/sm_rstn" type="logic">
+      <obj_property name="ElementShortName">sm_rstn</obj_property>
+      <obj_property name="ObjectShortName">sm_rstn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/fifo_rstn" type="logic">
+      <obj_property name="ElementShortName">fifo_rstn</obj_property>
+      <obj_property name="ObjectShortName">fifo_rstn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/int_m_axis_rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">int_m_axis_rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">int_m_axis_rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/ddr_rdr_inst/ddr4_requestor_id" type="other">
+      <obj_property name="ElementShortName">ddr4_requestor_id</obj_property>
+      <obj_property name="ObjectShortName">ddr4_requestor_id</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider396">
+      <obj_property name="label">in fifo</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/axis_prog_full" type="logic">
+      <obj_property name="ElementShortName">axis_prog_full</obj_property>
+      <obj_property name="ObjectShortName">axis_prog_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/m_aclk" type="logic">
+      <obj_property name="ElementShortName">m_aclk</obj_property>
+      <obj_property name="ObjectShortName">m_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/m_axis_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/m_axis_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/m_axis_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/m_axis_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_tuser[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tuser[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_aclk" type="logic">
+      <obj_property name="ElementShortName">s_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_axis_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_axis_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_axis_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_axis_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_tuser[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tuser[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/s_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_almost_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_almost_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_almost_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_almost_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_almost_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_almost_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_prog_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_prog_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_prog_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_prog_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_prog_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_prog_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_prog_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_prog_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_prog_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_prog_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_prog_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_prog_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_prog_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_prog_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_prog_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axis_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axis_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axis_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axis_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_axis_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_dbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_dbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_dbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arvalid_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arvalid_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arvalid_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awvalid_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awvalid_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awvalid_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_bready_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_bready_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_bready_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_rready_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_rready_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_rready_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_wlast_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_wlast_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_wlast_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_wvalid_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_wvalid_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_wvalid_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_overflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_overflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_overflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_prog_empty_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_prog_empty_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_prog_empty_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_prog_full_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_prog_full_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_prog_full_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_rd_rst_busy_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_rd_rst_busy_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_rd_rst_busy_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_arready_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_arready_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_arready_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_awready_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_awready_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_awready_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_bvalid_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_bvalid_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_bvalid_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_rlast_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_rlast_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_rlast_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_rvalid_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_rvalid_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_rvalid_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_wready_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_wready_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_wready_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_sbiterr_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_sbiterr_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_sbiterr_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_underflow_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_underflow_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_underflow_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_valid_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_valid_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_valid_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_wr_ack_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_wr_ack_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_wr_ack_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_wr_rst_busy_UNCONNECTED" type="logic">
+      <obj_property name="ElementShortName">NLW_U0_wr_rst_busy_UNCONNECTED</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_wr_rst_busy_UNCONNECTED</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_rd_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_rd_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_ar_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_ar_wr_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_ar_wr_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_rd_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_rd_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_aw_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_aw_wr_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_aw_wr_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_rd_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_rd_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_b_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_b_wr_data_count_UNCONNECTED[4:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_b_wr_data_count_UNCONNECTED[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_data_count_UNCONNECTED[10:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_data_count_UNCONNECTED[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_rd_data_count_UNCONNECTED[10:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_rd_data_count_UNCONNECTED[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_r_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_r_wr_data_count_UNCONNECTED[10:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_r_wr_data_count_UNCONNECTED[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_data_count_UNCONNECTED[10:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_data_count_UNCONNECTED[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_rd_data_count_UNCONNECTED[10:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_rd_data_count_UNCONNECTED[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axi_w_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axi_w_wr_data_count_UNCONNECTED[10:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axi_w_wr_data_count_UNCONNECTED[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axis_data_count_UNCONNECTED[9:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_data_count_UNCONNECTED[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axis_rd_data_count_UNCONNECTED[9:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_rd_data_count_UNCONNECTED[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_axis_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_axis_wr_data_count_UNCONNECTED[9:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_axis_wr_data_count_UNCONNECTED[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_data_count_UNCONNECTED[9:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_data_count_UNCONNECTED[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_dout_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_dout_UNCONNECTED[17:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_dout_UNCONNECTED[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_araddr_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_araddr_UNCONNECTED[31:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_araddr_UNCONNECTED[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arburst_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arburst_UNCONNECTED[1:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arburst_UNCONNECTED[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arcache_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arcache_UNCONNECTED[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arcache_UNCONNECTED[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arid_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arid_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arid_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arlen_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arlen_UNCONNECTED[7:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arlen_UNCONNECTED[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arlock_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arlock_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arlock_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arprot_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arprot_UNCONNECTED[2:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arprot_UNCONNECTED[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arqos_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arqos_UNCONNECTED[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arqos_UNCONNECTED[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arregion_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arregion_UNCONNECTED[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arregion_UNCONNECTED[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_arsize_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_arsize_UNCONNECTED[2:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_arsize_UNCONNECTED[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_aruser_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_aruser_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_aruser_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awaddr_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awaddr_UNCONNECTED[31:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awaddr_UNCONNECTED[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awburst_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awburst_UNCONNECTED[1:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awburst_UNCONNECTED[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awcache_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awcache_UNCONNECTED[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awcache_UNCONNECTED[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awid_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awid_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awid_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awlen_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awlen_UNCONNECTED[7:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awlen_UNCONNECTED[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awlock_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awlock_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awlock_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awprot_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awprot_UNCONNECTED[2:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awprot_UNCONNECTED[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awqos_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awqos_UNCONNECTED[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awqos_UNCONNECTED[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awregion_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awregion_UNCONNECTED[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awregion_UNCONNECTED[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awsize_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awsize_UNCONNECTED[2:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awsize_UNCONNECTED[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_awuser_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_awuser_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_awuser_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_wdata_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_wdata_UNCONNECTED[63:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_wdata_UNCONNECTED[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_wid_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_wid_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_wid_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_wstrb_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_wstrb_UNCONNECTED[7:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_wstrb_UNCONNECTED[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axi_wuser_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axi_wuser_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axi_wuser_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axis_tdest_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axis_tdest_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axis_tdest_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axis_tid_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axis_tid_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axis_tid_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axis_tkeep_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axis_tkeep_UNCONNECTED[63:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axis_tkeep_UNCONNECTED[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_m_axis_tstrb_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_m_axis_tstrb_UNCONNECTED[63:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_m_axis_tstrb_UNCONNECTED[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_rd_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_rd_data_count_UNCONNECTED[9:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_rd_data_count_UNCONNECTED[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_bid_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_bid_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_bid_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_bresp_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_bresp_UNCONNECTED[1:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_bresp_UNCONNECTED[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_buser_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_buser_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_buser_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_rdata_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_rdata_UNCONNECTED[63:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_rdata_UNCONNECTED[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_rid_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_rid_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_rid_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_rresp_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_rresp_UNCONNECTED[1:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_rresp_UNCONNECTED[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_s_axi_ruser_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_s_axi_ruser_UNCONNECTED[0:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_s_axi_ruser_UNCONNECTED[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/in_fifo_inst/NLW_U0_wr_data_count_UNCONNECTED" type="array">
+      <obj_property name="ElementShortName">NLW_U0_wr_data_count_UNCONNECTED[9:0]</obj_property>
+      <obj_property name="ObjectShortName">NLW_U0_wr_data_count_UNCONNECTED[9:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider752">
+      <obj_property name="label">Reader</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/a" type="array">
+      <obj_property name="ElementShortName">a[10:0]</obj_property>
+      <obj_property name="ObjectShortName">a[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/c" type="array">
+      <obj_property name="ElementShortName">c[10:0]</obj_property>
+      <obj_property name="ObjectShortName">c[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/d" type="array">
+      <obj_property name="ElementShortName">d[10:0]</obj_property>
+      <obj_property name="ObjectShortName">d[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/d_large" type="logic">
+      <obj_property name="ElementShortName">d_large</obj_property>
+      <obj_property name="ObjectShortName">d_large</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/x" type="array">
+      <obj_property name="ElementShortName">x[10:0]</obj_property>
+      <obj_property name="ObjectShortName">x[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/index" type="array">
+      <obj_property name="ElementShortName">index[1:0]</obj_property>
+      <obj_property name="ObjectShortName">index[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/aeqb" type="logic">
+      <obj_property name="ElementShortName">aeqb</obj_property>
+      <obj_property name="ObjectShortName">aeqb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/bgta" type="logic">
+      <obj_property name="ElementShortName">bgta</obj_property>
+      <obj_property name="ObjectShortName">bgta</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/cgta" type="logic">
+      <obj_property name="ElementShortName">cgta</obj_property>
+      <obj_property name="ObjectShortName">cgta</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/dgta" type="logic">
+      <obj_property name="ElementShortName">dgta</obj_property>
+      <obj_property name="ObjectShortName">dgta</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/cgtb" type="logic">
+      <obj_property name="ElementShortName">cgtb</obj_property>
+      <obj_property name="ObjectShortName">cgtb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/dgtb" type="logic">
+      <obj_property name="ElementShortName">dgtb</obj_property>
+      <obj_property name="ObjectShortName">dgtb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/dgtc" type="logic">
+      <obj_property name="ElementShortName">dgtc</obj_property>
+      <obj_property name="ObjectShortName">dgtc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/alt16" type="logic">
+      <obj_property name="ElementShortName">alt16</obj_property>
+      <obj_property name="ObjectShortName">alt16</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/clt16" type="logic">
+      <obj_property name="ElementShortName">clt16</obj_property>
+      <obj_property name="ObjectShortName">clt16</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/dlt16" type="logic">
+      <obj_property name="ElementShortName">dlt16</obj_property>
+      <obj_property name="ObjectShortName">dlt16</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/alt8" type="logic">
+      <obj_property name="ElementShortName">alt8</obj_property>
+      <obj_property name="ObjectShortName">alt8</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/clt8" type="logic">
+      <obj_property name="ElementShortName">clt8</obj_property>
+      <obj_property name="ObjectShortName">clt8</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/dlt8" type="logic">
+      <obj_property name="ElementShortName">dlt8</obj_property>
+      <obj_property name="ObjectShortName">dlt8</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/concat" type="array">
+      <obj_property name="ElementShortName">concat[2:0]</obj_property>
+      <obj_property name="ObjectShortName">concat[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/leastof4/lite" type="other">
+      <obj_property name="ElementShortName">lite</obj_property>
+      <obj_property name="ObjectShortName">lite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/buffer_rd_rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">buffer_rd_rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">buffer_rd_rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/buffer_rd_rqst_tready" type="logic">
+      <obj_property name="ElementShortName">buffer_rd_rqst_tready</obj_property>
+      <obj_property name="ObjectShortName">buffer_rd_rqst_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/buffer_rd_rqst_tdata" type="array">
+      <obj_property name="ElementShortName">buffer_rd_rqst_tdata[135:0]</obj_property>
+      <obj_property name="ObjectShortName">buffer_rd_rqst_tdata[135:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/buffer_rd_complete" type="logic">
+      <obj_property name="ElementShortName">buffer_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">buffer_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/fifo_empty" type="logic">
+      <obj_property name="ElementShortName">fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/ddr_rd_rqst_tvalid" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_rqst_tvalid</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_rqst_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/ddr_rd_rqst_tready" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_rqst_tready</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_rqst_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/ddr_rd_rqst_tdata" type="array">
+      <obj_property name="ElementShortName">ddr_rd_rqst_tdata[135:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_rqst_tdata[135:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/s_axis_data_in_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_data_in_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_data_in_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/s_axis_data_in_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_data_in_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_data_in_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/s_axis_data_in_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_data_in_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_data_in_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/s_axis_data_in_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_data_in_tuser[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_data_in_tuser[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/s_axis_data_in_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_data_in_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_data_in_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/pcie_afl" type="logic">
+      <obj_property name="ElementShortName">pcie_afl</obj_property>
+      <obj_property name="ObjectShortName">pcie_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/m_axis_payload_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_payload_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_payload_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/m_axis_payload_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_payload_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_payload_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/m_axis_payload_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_payload_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_payload_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/m_axis_payload_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_payload_tuser[95:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_payload_tuser[95:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/m_axis_payload_tkeep" type="array">
+      <obj_property name="ElementShortName">m_axis_payload_tkeep[15:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_payload_tkeep[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/pcie_max_payload_size" type="array">
+      <obj_property name="ElementShortName">pcie_max_payload_size[2:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_max_payload_size[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/abort" type="logic">
+      <obj_property name="ElementShortName">abort</obj_property>
+      <obj_property name="ObjectShortName">abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/abort_busy" type="logic">
+      <obj_property name="ElementShortName">abort_busy</obj_property>
+      <obj_property name="ObjectShortName">abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/eop_reached" type="logic">
+      <obj_property name="ElementShortName">eop_reached</obj_property>
+      <obj_property name="ObjectShortName">eop_reached</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/actual_bytes" type="array">
+      <obj_property name="ElementShortName">actual_bytes[31:0]</obj_property>
+      <obj_property name="ObjectShortName">actual_bytes[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/actual_bytes_valid" type="logic">
+      <obj_property name="ElementShortName">actual_bytes_valid</obj_property>
+      <obj_property name="ObjectShortName">actual_bytes_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/int_abort_busy" type="logic">
+      <obj_property name="ElementShortName">int_abort_busy</obj_property>
+      <obj_property name="ObjectShortName">int_abort_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t1_abort" type="logic">
+      <obj_property name="ElementShortName">t1_abort</obj_property>
+      <obj_property name="ObjectShortName">t1_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t2_abort" type="logic">
+      <obj_property name="ElementShortName">t2_abort</obj_property>
+      <obj_property name="ObjectShortName">t2_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/abort_re" type="logic">
+      <obj_property name="ElementShortName">abort_re</obj_property>
+      <obj_property name="ObjectShortName">abort_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/max_loop" type="other">
+      <obj_property name="ElementShortName">max_loop</obj_property>
+      <obj_property name="ObjectShortName">max_loop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/dw_to_pcie4k_boundary" type="array">
+      <obj_property name="ElementShortName">dw_to_pcie4k_boundary[10:0]</obj_property>
+      <obj_property name="ObjectShortName">dw_to_pcie4k_boundary[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/valid_dw" type="array">
+      <obj_property name="ElementShortName">valid_dw[5:0]</obj_property>
+      <obj_property name="ObjectShortName">valid_dw[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/index_of_smallest" type="array">
+      <obj_property name="ElementShortName">index_of_smallest[1:0]</obj_property>
+      <obj_property name="ObjectShortName">index_of_smallest[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/smallest_dw_rslt" type="array">
+      <obj_property name="ElementShortName">smallest_dw_rslt[10:0]</obj_property>
+      <obj_property name="ObjectShortName">smallest_dw_rslt[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/smallest_dw" type="array">
+      <obj_property name="ElementShortName">smallest_dw[4:0]</obj_property>
+      <obj_property name="ObjectShortName">smallest_dw[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/in_sm_abort_safe" type="logic">
+      <obj_property name="ElementShortName">in_sm_abort_safe</obj_property>
+      <obj_property name="ObjectShortName">in_sm_abort_safe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t1_in_sm_abort_safe" type="logic">
+      <obj_property name="ElementShortName">t1_in_sm_abort_safe</obj_property>
+      <obj_property name="ObjectShortName">t1_in_sm_abort_safe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t2_in_sm_abort_safe" type="logic">
+      <obj_property name="ElementShortName">t2_in_sm_abort_safe</obj_property>
+      <obj_property name="ObjectShortName">t2_in_sm_abort_safe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t3_in_sm_abort_safe" type="logic">
+      <obj_property name="ElementShortName">t3_in_sm_abort_safe</obj_property>
+      <obj_property name="ObjectShortName">t3_in_sm_abort_safe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t4_in_sm_abort_safe" type="logic">
+      <obj_property name="ElementShortName">t4_in_sm_abort_safe</obj_property>
+      <obj_property name="ObjectShortName">t4_in_sm_abort_safe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t1_rst" type="logic">
+      <obj_property name="ElementShortName">t1_rst</obj_property>
+      <obj_property name="ObjectShortName">t1_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t2_rst" type="logic">
+      <obj_property name="ElementShortName">t2_rst</obj_property>
+      <obj_property name="ObjectShortName">t2_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t3_rst" type="logic">
+      <obj_property name="ElementShortName">t3_rst</obj_property>
+      <obj_property name="ObjectShortName">t3_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/out_state" type="other">
+      <obj_property name="ElementShortName">out_state</obj_property>
+      <obj_property name="ObjectShortName">out_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/buffer_rd_rqst_tready_int" type="logic">
+      <obj_property name="ElementShortName">buffer_rd_rqst_tready_int</obj_property>
+      <obj_property name="ObjectShortName">buffer_rd_rqst_tready_int</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/loop_cnt" type="array">
+      <obj_property name="ElementShortName">loop_cnt[3:0]</obj_property>
+      <obj_property name="ObjectShortName">loop_cnt[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/left_over_data_valid" type="logic">
+      <obj_property name="ElementShortName">left_over_data_valid</obj_property>
+      <obj_property name="ObjectShortName">left_over_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/out_sm_abort_safe" type="logic">
+      <obj_property name="ElementShortName">out_sm_abort_safe</obj_property>
+      <obj_property name="ObjectShortName">out_sm_abort_safe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/dest_start_address" type="array">
+      <obj_property name="ElementShortName">dest_start_address[63:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_start_address[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/dest_meta_address" type="array">
+      <obj_property name="ElementShortName">dest_meta_address[63:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_meta_address[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/buf_size" type="array">
+      <obj_property name="ElementShortName">buf_size[31:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_size[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/wr_meta" type="logic">
+      <obj_property name="ElementShortName">wr_meta</obj_property>
+      <obj_property name="ObjectShortName">wr_meta</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/start_on_sop" type="logic">
+      <obj_property name="ElementShortName">start_on_sop</obj_property>
+      <obj_property name="ObjectShortName">start_on_sop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/end_on_eop" type="logic">
+      <obj_property name="ElementShortName">end_on_eop</obj_property>
+      <obj_property name="ObjectShortName">end_on_eop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/at" type="array">
+      <obj_property name="ElementShortName">at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">at[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/out_fifo_tdata" type="array">
+      <obj_property name="ElementShortName">out_fifo_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">out_fifo_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/out_fifo_tvalid" type="logic">
+      <obj_property name="ElementShortName">out_fifo_tvalid</obj_property>
+      <obj_property name="ObjectShortName">out_fifo_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/out_fifo_tlast" type="logic">
+      <obj_property name="ElementShortName">out_fifo_tlast</obj_property>
+      <obj_property name="ObjectShortName">out_fifo_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/pkt_hdr_tvalid" type="logic">
+      <obj_property name="ElementShortName">pkt_hdr_tvalid</obj_property>
+      <obj_property name="ObjectShortName">pkt_hdr_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/pkt_hdr" type="array">
+      <obj_property name="ElementShortName">pkt_hdr[87:0]</obj_property>
+      <obj_property name="ObjectShortName">pkt_hdr[87:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/pkt_hdr_tdata" type="array">
+      <obj_property name="ElementShortName">pkt_hdr_tdata[127:0]</obj_property>
+      <obj_property name="ObjectShortName">pkt_hdr_tdata[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/dest_addr_cntr" type="array">
+      <obj_property name="ElementShortName">dest_addr_cntr[61:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_addr_cntr[61:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/dest_meta_addr_cntr" type="array">
+      <obj_property name="ElementShortName">dest_meta_addr_cntr[61:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_meta_addr_cntr[61:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/actual_cntr" type="array">
+      <obj_property name="ElementShortName">actual_cntr[29:0]</obj_property>
+      <obj_property name="ObjectShortName">actual_cntr[29:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/data_buf_cntr" type="array">
+      <obj_property name="ElementShortName">data_buf_cntr[29:0]</obj_property>
+      <obj_property name="ObjectShortName">data_buf_cntr[29:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/pcie_pkt_cntr" type="array">
+      <obj_property name="ElementShortName">pcie_pkt_cntr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_pkt_cntr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/fifo_rst_n" type="logic">
+      <obj_property name="ElementShortName">fifo_rst_n</obj_property>
+      <obj_property name="ObjectShortName">fifo_rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/afl" type="logic">
+      <obj_property name="ElementShortName">afl</obj_property>
+      <obj_property name="ObjectShortName">afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/left_over_data" type="array">
+      <obj_property name="ElementShortName">left_over_data[511:0]</obj_property>
+      <obj_property name="ObjectShortName">left_over_data[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/left_over_data_dw" type="array">
+      <obj_property name="ElementShortName">left_over_data_dw[7:0]</obj_property>
+      <obj_property name="ObjectShortName">left_over_data_dw[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/left_over_data_offset" type="array">
+      <obj_property name="ElementShortName">left_over_data_offset[4:0]</obj_property>
+      <obj_property name="ObjectShortName">left_over_data_offset[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/last_is_eop" type="logic">
+      <obj_property name="ElementShortName">last_is_eop</obj_property>
+      <obj_property name="ObjectShortName">last_is_eop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/reg_smallest_dw" type="array">
+      <obj_property name="ElementShortName">reg_smallest_dw[4:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_smallest_dw[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/reg_s_axis_data_in_tdata" type="array">
+      <obj_property name="ElementShortName">reg_s_axis_data_in_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_s_axis_data_in_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/sec_last_is_eop" type="logic">
+      <obj_property name="ElementShortName">sec_last_is_eop</obj_property>
+      <obj_property name="ObjectShortName">sec_last_is_eop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/payload_fifo_tvalid" type="logic">
+      <obj_property name="ElementShortName">payload_fifo_tvalid</obj_property>
+      <obj_property name="ObjectShortName">payload_fifo_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/payload_fifo_tready" type="logic">
+      <obj_property name="ElementShortName">payload_fifo_tready</obj_property>
+      <obj_property name="ObjectShortName">payload_fifo_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/payload_fifo_tlast" type="logic">
+      <obj_property name="ElementShortName">payload_fifo_tlast</obj_property>
+      <obj_property name="ObjectShortName">payload_fifo_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/payload_fifo_tdata" type="array">
+      <obj_property name="ElementShortName">payload_fifo_tdata[511:0]</obj_property>
+      <obj_property name="ObjectShortName">payload_fifo_tdata[511:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/header_fifo_tvalid" type="logic">
+      <obj_property name="ElementShortName">header_fifo_tvalid</obj_property>
+      <obj_property name="ObjectShortName">header_fifo_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/header_fifo_tready" type="logic">
+      <obj_property name="ElementShortName">header_fifo_tready</obj_property>
+      <obj_property name="ObjectShortName">header_fifo_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/header_fifo_tdata" type="array">
+      <obj_property name="ElementShortName">header_fifo_tdata[127:0]</obj_property>
+      <obj_property name="ObjectShortName">header_fifo_tdata[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/reg_header" type="array">
+      <obj_property name="ElementShortName">reg_header[87:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_header[87:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/keep_sum" type="array">
+      <obj_property name="ElementShortName">keep_sum[3:0]</obj_property>
+      <obj_property name="ObjectShortName">keep_sum[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/reg_keep_sum" type="array">
+      <obj_property name="ElementShortName">reg_keep_sum[3:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_keep_sum[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t1_buffer_rd_complete" type="logic">
+      <obj_property name="ElementShortName">t1_buffer_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">t1_buffer_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t2_buffer_rd_complete" type="logic">
+      <obj_property name="ElementShortName">t2_buffer_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">t2_buffer_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t3_buffer_rd_complete" type="logic">
+      <obj_property name="ElementShortName">t3_buffer_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">t3_buffer_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/t4_buffer_rd_complete" type="logic">
+      <obj_property name="ElementShortName">t4_buffer_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">t4_buffer_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/p_buffer_rd_complete" type="logic">
+      <obj_property name="ElementShortName">p_buffer_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">p_buffer_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/large_data_buf_cntr" type="logic">
+      <obj_property name="ElementShortName">large_data_buf_cntr</obj_property>
+      <obj_property name="ObjectShortName">large_data_buf_cntr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/meta_cntr" type="array">
+      <obj_property name="ElementShortName">meta_cntr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">meta_cntr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/xvalid_dw" type="array">
+      <obj_property name="ElementShortName">xvalid_dw[10:0]</obj_property>
+      <obj_property name="ObjectShortName">xvalid_dw[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/xdata_buf_cntr" type="array">
+      <obj_property name="ElementShortName">xdata_buf_cntr[10:0]</obj_property>
+      <obj_property name="ObjectShortName">xdata_buf_cntr[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/aeqb" type="logic">
+      <obj_property name="ElementShortName">aeqb</obj_property>
+      <obj_property name="ObjectShortName">aeqb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/reader_inst/abort_fifo_flush" type="logic">
+      <obj_property name="ElementShortName">abort_fifo_flush</obj_property>
+      <obj_property name="ObjectShortName">abort_fifo_flush</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider839">
+      <obj_property name="label">csr</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dest_addr" type="array">
+      <obj_property name="ElementShortName">dest_addr[63:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_addr[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/source_addr" type="array">
+      <obj_property name="ElementShortName">source_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">source_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/length" type="array">
+      <obj_property name="ElementShortName">length[31:0]</obj_property>
+      <obj_property name="ObjectShortName">length[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dma_restart" type="logic">
+      <obj_property name="ElementShortName">dma_restart</obj_property>
+      <obj_property name="ObjectShortName">dma_restart</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dma_advance" type="logic">
+      <obj_property name="ElementShortName">dma_advance</obj_property>
+      <obj_property name="ObjectShortName">dma_advance</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dma_abort" type="logic">
+      <obj_property name="ElementShortName">dma_abort</obj_property>
+      <obj_property name="ObjectShortName">dma_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/fifo_flush" type="logic">
+      <obj_property name="ElementShortName">fifo_flush</obj_property>
+      <obj_property name="ObjectShortName">fifo_flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/pcie_at" type="array">
+      <obj_property name="ElementShortName">pcie_at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_at[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/consec_access" type="array">
+      <obj_property name="ElementShortName">consec_access[5:0]</obj_property>
+      <obj_property name="ObjectShortName">consec_access[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/bytes_last_transferred" type="array">
+      <obj_property name="ElementShortName">bytes_last_transferred[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_last_transferred[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dma_aborting" type="logic">
+      <obj_property name="ElementShortName">dma_aborting</obj_property>
+      <obj_property name="ObjectShortName">dma_aborting</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dma_active" type="logic">
+      <obj_property name="ElementShortName">dma_active</obj_property>
+      <obj_property name="ObjectShortName">dma_active</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/ddr_rqst_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/ddr_rqst_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">ddr_rqst_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqst_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/pcie_rqst_fifo_afl" type="logic">
+      <obj_property name="ElementShortName">pcie_rqst_fifo_afl</obj_property>
+      <obj_property name="ObjectShortName">pcie_rqst_fifo_afl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/pcie_rqst_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">pcie_rqst_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">pcie_rqst_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/all_pcie_wr_cmplt" type="logic">
+      <obj_property name="ElementShortName">all_pcie_wr_cmplt</obj_property>
+      <obj_property name="ObjectShortName">all_pcie_wr_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/all_pcie_rqsts_cmplt" type="logic">
+      <obj_property name="ElementShortName">all_pcie_rqsts_cmplt</obj_property>
+      <obj_property name="ObjectShortName">all_pcie_rqsts_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/ddr_rqsts_complete" type="logic">
+      <obj_property name="ElementShortName">ddr_rqsts_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr_rqsts_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/ddr_rd_complete" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/abort_cmplt" type="logic">
+      <obj_property name="ElementShortName">abort_cmplt</obj_property>
+      <obj_property name="ObjectShortName">abort_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/dma_end" type="logic">
+      <obj_property name="ElementShortName">dma_end</obj_property>
+      <obj_property name="ObjectShortName">dma_end</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg0" type="array">
+      <obj_property name="ElementShortName">cntl_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg1" type="array">
+      <obj_property name="ElementShortName">cntl_reg1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg2" type="array">
+      <obj_property name="ElementShortName">cntl_reg2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg3" type="array">
+      <obj_property name="ElementShortName">cntl_reg3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg3[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg4" type="array">
+      <obj_property name="ElementShortName">cntl_reg4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg5" type="array">
+      <obj_property name="ElementShortName">cntl_reg5[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg5[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg6" type="array">
+      <obj_property name="ElementShortName">cntl_reg6[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg6[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/cntl_reg7" type="array">
+      <obj_property name="ElementShortName">cntl_reg7[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg7[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/stat_reg0" type="array">
+      <obj_property name="ElementShortName">stat_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/stat_reg1" type="array">
+      <obj_property name="ElementShortName">stat_reg1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/stat_reg2" type="array">
+      <obj_property name="ElementShortName">stat_reg2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/stat_reg3" type="array">
+      <obj_property name="ElementShortName">stat_reg3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg3[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/stat_reg4" type="array">
+      <obj_property name="ElementShortName">stat_reg4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/int_src_stat" type="array">
+      <obj_property name="ElementShortName">int_src_stat[15:0]</obj_property>
+      <obj_property name="ObjectShortName">int_src_stat[15:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/t1_cntl_reg0_0" type="logic">
+      <obj_property name="ElementShortName">t1_cntl_reg0_0</obj_property>
+      <obj_property name="ObjectShortName">t1_cntl_reg0_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/t1_cntl_reg1_0" type="logic">
+      <obj_property name="ElementShortName">t1_cntl_reg1_0</obj_property>
+      <obj_property name="ObjectShortName">t1_cntl_reg1_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/t1_cntl_reg2_0" type="logic">
+      <obj_property name="ElementShortName">t1_cntl_reg2_0</obj_property>
+      <obj_property name="ObjectShortName">t1_cntl_reg2_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/DMA_CTL_REG_INIT_VAL" type="array">
+      <obj_property name="ElementShortName">DMA_CTL_REG_INIT_VAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_CTL_REG_INIT_VAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/DMA_ADVANCE_REG_INIT_VAL" type="array">
+      <obj_property name="ElementShortName">DMA_ADVANCE_REG_INIT_VAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_ADVANCE_REG_INIT_VAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/DMA_ABORT_REG_INIT_VAL" type="array">
+      <obj_property name="ElementShortName">DMA_ABORT_REG_INIT_VAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_ABORT_REG_INIT_VAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/csr_inst/DMA_LENGTH_REG_INIT_VAL" type="array">
+      <obj_property name="ElementShortName">DMA_LENGTH_REG_INIT_VAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DMA_LENGTH_REG_INIT_VAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1221">
+      <obj_property name="label">dma sm</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/buffer_wr_rqst_valid" type="logic">
+      <obj_property name="ElementShortName">buffer_wr_rqst_valid</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_rqst_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/buffer_wr_rqst_ready" type="logic">
+      <obj_property name="ElementShortName">buffer_wr_rqst_ready</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_rqst_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/buffer_wr_rqst_data" type="array">
+      <obj_property name="ElementShortName">buffer_wr_rqst_data[135:0]</obj_property>
+      <obj_property name="ObjectShortName">buffer_wr_rqst_data[135:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/pcie_wr_complete" type="logic">
+      <obj_property name="ElementShortName">pcie_wr_complete</obj_property>
+      <obj_property name="ObjectShortName">pcie_wr_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/ddr_rd_complete" type="logic">
+      <obj_property name="ElementShortName">ddr_rd_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr_rd_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/buffer_actual_bytes" type="array">
+      <obj_property name="ElementShortName">buffer_actual_bytes[31:0]</obj_property>
+      <obj_property name="ObjectShortName">buffer_actual_bytes[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/buffer_actual_bytes_valid" type="logic">
+      <obj_property name="ElementShortName">buffer_actual_bytes_valid</obj_property>
+      <obj_property name="ObjectShortName">buffer_actual_bytes_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/reader_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">reader_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">reader_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/packetizer_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">packetizer_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">packetizer_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/dma_restart" type="logic">
+      <obj_property name="ElementShortName">dma_restart</obj_property>
+      <obj_property name="ObjectShortName">dma_restart</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/dma_advance" type="logic">
+      <obj_property name="ElementShortName">dma_advance</obj_property>
+      <obj_property name="ObjectShortName">dma_advance</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/dma_abort" type="logic">
+      <obj_property name="ElementShortName">dma_abort</obj_property>
+      <obj_property name="ObjectShortName">dma_abort</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/abort_all_out" type="logic">
+      <obj_property name="ElementShortName">abort_all_out</obj_property>
+      <obj_property name="ObjectShortName">abort_all_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/abort_all_done" type="logic">
+      <obj_property name="ElementShortName">abort_all_done</obj_property>
+      <obj_property name="ObjectShortName">abort_all_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/source_addr" type="array">
+      <obj_property name="ElementShortName">source_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">source_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/dest_addr" type="array">
+      <obj_property name="ElementShortName">dest_addr[63:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_addr[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/length" type="array">
+      <obj_property name="ElementShortName">length[31:0]</obj_property>
+      <obj_property name="ObjectShortName">length[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/pcie_at" type="array">
+      <obj_property name="ElementShortName">pcie_at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_at[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/abort_cmplt" type="logic">
+      <obj_property name="ElementShortName">abort_cmplt</obj_property>
+      <obj_property name="ObjectShortName">abort_cmplt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/dma_active" type="logic">
+      <obj_property name="ElementShortName">dma_active</obj_property>
+      <obj_property name="ObjectShortName">dma_active</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/dma_end" type="logic">
+      <obj_property name="ElementShortName">dma_end</obj_property>
+      <obj_property name="ObjectShortName">dma_end</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/bytes_last_transferred" type="array">
+      <obj_property name="ElementShortName">bytes_last_transferred[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_last_transferred[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/t1_start_link_descr_addr" type="array">
+      <obj_property name="ElementShortName">t1_start_link_descr_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_start_link_descr_addr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/first_time" type="logic">
+      <obj_property name="ElementShortName">first_time</obj_property>
+      <obj_property name="ObjectShortName">first_time</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/t1_rst" type="logic">
+      <obj_property name="ElementShortName">t1_rst</obj_property>
+      <obj_property name="ObjectShortName">t1_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/t2_rst" type="logic">
+      <obj_property name="ElementShortName">t2_rst</obj_property>
+      <obj_property name="ObjectShortName">t2_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/t1_dma_restart" type="logic">
+      <obj_property name="ElementShortName">t1_dma_restart</obj_property>
+      <obj_property name="ObjectShortName">t1_dma_restart</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/descriptor_src_addr" type="array">
+      <obj_property name="ElementShortName">descriptor_src_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">descriptor_src_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/descriptor_bytes_to_transfer" type="array">
+      <obj_property name="ElementShortName">descriptor_bytes_to_transfer[31:0]</obj_property>
+      <obj_property name="ObjectShortName">descriptor_bytes_to_transfer[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/descriptor_dest_addr" type="array">
+      <obj_property name="ElementShortName">descriptor_dest_addr[63:0]</obj_property>
+      <obj_property name="ObjectShortName">descriptor_dest_addr[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/descriptor_incr_value" type="array">
+      <obj_property name="ElementShortName">descriptor_incr_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">descriptor_incr_value[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/abort_ff" type="logic">
+      <obj_property name="ElementShortName">abort_ff</obj_property>
+      <obj_property name="ObjectShortName">abort_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/abort_ex_out" type="logic">
+      <obj_property name="ElementShortName">abort_ex_out</obj_property>
+      <obj_property name="ObjectShortName">abort_ex_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/t1_actual_bytes" type="array">
+      <obj_property name="ElementShortName">t1_actual_bytes[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_actual_bytes[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_dma_ddr2pcie/uut/dma_sm_inst/descriptor_at" type="array">
+      <obj_property name="ElementShortName">descriptor_at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">descriptor_at[1:0]</obj_property>
+   </wvobject>
+</wave_config>

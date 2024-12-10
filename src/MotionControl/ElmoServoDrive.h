@@ -167,6 +167,25 @@ public:
     /// Optical encoder counts per degree
     float countsPerDegree() const { return(countsPerCircle() / 360.0); }
 
+    /// @brief Cushion applied to narrow pointing limits relative to the hard
+    /// motor limits.
+    ///
+    /// This cushion is intended to keep small overshoots in positioning from
+    /// triggering motor faults.
+    static constexpr float OVERSHOOT_CUSHION_DEG = 0.5;
+
+    /// @brief Return the cushioned lower pointing limit in counts, i.e., (hard
+    /// lower limit + overshoot cushion)
+    float cushionedLowerLimitCounts() const {
+        return(_lowerLimitCounts + OVERSHOOT_CUSHION_DEG * countsPerDegree());
+    }
+
+    /// @brief Return the cushioned upper pointing limit in counts, i.e., (hard
+    /// upper limit - overshoot cushion)
+    float cushionedUpperLimitCounts() const {
+        return(_upperLimitCounts - OVERSHOOT_CUSHION_DEG * countsPerDegree());
+    }
+
     // Static methods to unpack status register values
 
     /// @brief Return true iff status register reports drive OK.

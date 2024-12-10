@@ -29,8 +29,7 @@
  */
 
 #include "DrxStatus.h"
-#include <p7142sd3c.h>
-#include <p7142sd3cDn.h>
+#include "HCR_Pentek.h"
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <iomanip>
@@ -44,23 +43,8 @@ DrxStatus::DrxStatus() :
     _prt(0.0),
     _nGates(0),
     _gateSpacing(0.0),
-    _motorZeroPositionSet(false) {
-}
-
-DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
-    _pentekFpgaTemp = pentek.fpgaTemp();
-    _pentekBoardTemp = pentek.circuitBoardTemp();
-    _nGates = pentek.gates();
-    _prt = pentek.prt();
-    _xmitPulseWidth = pentek.txPulseWidth();
-    // Search channel-by-channel until we find a downconverter, then query it
-    // to find gate spacing.
-    const Pentek::p7142sd3cDn* downconverter = NULL;
-    for (int chan = 0; chan < 4 && downconverter == NULL; chan++) {
-        downconverter = dynamic_cast<const Pentek::p7142sd3cDn*>(pentek.downconverter(chan));
-    }
-    _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
-    _motorZeroPositionSet = pentek.motorZeroPositionSet();
+    _motorZeroPositionSet(false),
+    _supportedOpsModes(OperationMode::DefaultModeList()) {
 }
 
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
@@ -70,7 +54,8 @@ DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
     _prt(0.0),
     _nGates(0),
     _gateSpacing(0.0),
-    _motorZeroPositionSet(false) {
+    _motorZeroPositionSet(false),
+    _supportedOpsModes(OperationMode::DefaultModeList()) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>452</width>
-    <height>648</height>
+    <width>453</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,7 +24,16 @@
     <property name="spacing">
      <number>4</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>4</number>
+    </property>
+    <property name="topMargin">
+     <number>4</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
+    <property name="bottomMargin">
      <number>4</number>
     </property>
     <item>
@@ -36,7 +45,16 @@
        </sizepolicy>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -48,7 +66,16 @@
           </sizepolicy>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,0">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -115,7 +142,7 @@
              <item row="6" column="3">
               <widget class="QLabel" name="fireflydStatusLabel">
                <property name="text">
-                <string>FireFly-IIA</string>
+                <string>GPS-Oscillator</string>
                </property>
               </widget>
              </item>
@@ -329,7 +356,7 @@
              <item row="5" column="3">
               <widget class="QLabel" name="pmc730StatusLabel">
                <property name="text">
-                <string>PMC-730</string>
+                <string>Monitoriong</string>
                </property>
               </widget>
              </item>
@@ -430,7 +457,16 @@
              <property name="sizeConstraint">
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
-             <property name="margin">
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
               <number>9</number>
              </property>
              <property name="horizontalSpacing">
@@ -685,11 +721,23 @@
           </sizepolicy>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
            <widget class="QGroupBox" name="dataBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -717,7 +765,7 @@
               </spacer>
              </item>
              <item row="1" column="0">
-              <widget class="QLabel" name="hmcModeLabel">
+              <widget class="QLabel" name="opsModeLabel">
                <property name="text">
                 <string>Current
 Ops Mode</string>
@@ -743,7 +791,16 @@ Ops Mode</string>
              <item row="4" column="1">
               <widget class="QWidget" name="writeRateWidget" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <property name="margin">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item>
@@ -821,7 +878,7 @@ Ops Mode</string>
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLabel" name="hmcModeValue">
+              <widget class="QLabel" name="opsModeValue">
                <property name="text">
                 <string>---</string>
                </property>
@@ -1009,13 +1066,31 @@ Ops Mode</string>
              <string>Reflector</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
-             <property name="margin">
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
               <number>9</number>
              </property>
              <item>
               <widget class="QWidget" name="attitudeCorrectionWidget" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <property name="margin">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item>
@@ -1196,7 +1271,16 @@ Ops Mode</string>
        </sizepolicy>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>

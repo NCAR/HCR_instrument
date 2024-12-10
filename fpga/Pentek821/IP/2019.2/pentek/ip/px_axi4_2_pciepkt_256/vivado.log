@@ -1,0 +1,823 @@
+#-----------------------------------------------------------
+# Vivado v2019.1_AR72445 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Tue Nov  5 11:56:09 2019
+# Process ID: 18864
+# Current directory: C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11108 C:\Pentek\IP\2019.1\pentek\ip\px_axi4_2_pciepkt_256\px_axi4_2_pciepkt_256.xpr
+# Log file: C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/vivado.log
+# Journal file: C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256\vivado.jou
+#-----------------------------------------------------------
+INFO: [Common 17-1460] Use of init.tcl in C:/Users/Rich/AppData/Roaming/Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl 
+Sourcing tcl script 'C:/Users/Rich/AppData/Roaming/Xilinx/Vivado/init.tcl'
+start_gui
+open_project C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.1/data/ip'.
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:an_lt_ctrl_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/an_lt_ctrl_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/an_lt_ctrl_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:ctrl_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/ctrl_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/ctrl_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:drp_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/drp_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/drp_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:flowctrl_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/flowctrl_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/flowctrl_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:gt_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/gt_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/gt_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:ieee_1588_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/ieee_1588_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/ieee_1588_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:lbus_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/lbus_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/lbus_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:otn_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/otn_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/otn_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:rs_fec_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/rs_fec_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/rs_fec_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:shared_logic_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/shared_logic_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/shared_logic_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:statistics_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/statistics_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/statistics_ports_int.xml'
+open_project: Time (s): cpu = 00:00:11 ; elapsed = 00:00:06 . Memory (MB): peak = 822.133 ; gain = 117.961
+update_compile_order -fileset sources_1
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'tb_px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_cdc_sync_rst(INIT=0,INIT_SYN...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=1...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=9...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=9...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=9...
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_WRITE_DEPTH=5...
+Compiling module xpm.xpm_fifo_axis(CLOCKING_MODE="com...
+Compiling module xpm.xpm_fifo_rst_default_1
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_fifo_base(FIFO_WRITE_DEPTH=5...
+Compiling module xpm.xpm_fifo_axis(CLOCKING_MODE="com...
+Compiling module xpm.xpm_fifo_rst_default_2
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_fifo_base(FIFO_WRITE_DEPTH=5...
+Compiling module xpm.xpm_fifo_axis(CLOCKING_MODE="com...
+Compiling architecture behavioral of entity xil_defaultlib.px_axi4_2_pciepkt_256 [\px_axi4_2_pciepkt_256(channel_i...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axi4_2_pciepkt_256
+Built simulation snapshot tb_px_axi4_2_pciepkt_256_behav
+
+****** Webtalk v2019.1_AR72445 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim/xsim.dir/tb_px_axi4_2_pciepkt_256_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Nov  5 11:57:39 2019...
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 877.699 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '5' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_axi4_2_pciepkt_256_behav -key {Behavioral:sim_1:Functional:tb_px_axi4_2_pciepkt_256} -tclbatch {tb_px_axi4_2_pciepkt_256.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+source tb_px_axi4_2_pciepkt_256.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_axi4_2_pciepkt_256_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:08 ; elapsed = 00:00:14 . Memory (MB): peak = 938.219 ; gain = 60.520
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:11 . Memory (MB): peak = 970.957 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 970.957 ; gain = 0.000
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run 10 us
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+restart: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 970.957 ; gain = 0.000
+run 10 us
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_axi4_2_pciepkt_256_behav -key {Behavioral:sim_1:Functional:tb_px_axi4_2_pciepkt_256} -tclbatch {tb_px_axi4_2_pciepkt_256.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+source tb_px_axi4_2_pciepkt_256.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_axi4_2_pciepkt_256_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 970.957 ; gain = 0.000
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+restart: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 970.957 ; gain = 0.000
+run 10 us
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+add_bp {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} 248
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+restart: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 970.957 ; gain = 0.000
+run 10 us
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Stopped at time : 206 ns : File "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" Line 248
+add_bp {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} 250
+remove_bps -file {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} -line 248
+run 10 us
+Stopped at time : 206 ns : File "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" Line 250
+add_bp {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} 256
+remove_bps -file {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} -line 250
+run 10 us
+Stopped at time : 206 ns : File "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" Line 256
+add_bp {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} 261
+remove_bps -file {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} -line 256
+run 10 us
+Stopped at time : 210 ns : File "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" Line 261
+remove_bps -file {C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd} -line 261
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+restart: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 970.957 ; gain = 0.000
+run 10 us
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 970.957 ; gain = 0.000
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+export_ip_user_files -of_objects  [get_files C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd] -no_script -reset -force -quiet
+remove_files  C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd
+add_files -norecurse C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd
+update_compile_order -fileset sources_1
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_axi4_2_pciepkt_256_behav -key {Behavioral:sim_1:Functional:tb_px_axi4_2_pciepkt_256} -tclbatch {tb_px_axi4_2_pciepkt_256.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+source tb_px_axi4_2_pciepkt_256.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_axi4_2_pciepkt_256_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 970.957 ; gain = 0.000
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '4' seconds
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:13 . Memory (MB): peak = 970.957 ; gain = 0.000
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 970.957 ; gain = 0.000
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:12 . Memory (MB): peak = 970.957 ; gain = 0.000
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 970.957 ; gain = 0.000
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd:]
+WARNING: [filemgmt 56-199] Attempt to get parsing info during refresh. "On-the-fly" syntax checking information may be incorrect. [C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd:]
+ERROR: [Common 17-180] Spawn failed: No error
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2019.1/data/xsim/xsim.ini' copied to run dir:'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axi4_2_pciepkt_256' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axi4_2_pciepkt_256_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+"xvhdl --incr --relax -prj tb_px_axi4_2_pciepkt_256_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'px_axi4_2_pciepkt_256'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'tb_px_axi4_2_pciepkt_256'
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+"xelab -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 3b3d8b2c6254402fa84c3e886e6fbc24 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axi4_2_pciepkt_256_behav xil_defaultlib.tb_px_axi4_2_pciepkt_256 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_cdc_sync_rst(INIT=0,INIT_SYN...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=1...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=9...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=9...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=9...
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_WRITE_DEPTH=5...
+Compiling module xpm.xpm_fifo_axis(CLOCKING_MODE="com...
+Compiling module xpm.xpm_fifo_rst_default_1
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_fifo_base(FIFO_WRITE_DEPTH=5...
+Compiling module xpm.xpm_fifo_axis(CLOCKING_MODE="com...
+Compiling module xpm.xpm_fifo_rst_default_2
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_fifo_base(FIFO_WRITE_DEPTH=5...
+Compiling module xpm.xpm_fifo_axis(CLOCKING_MODE="com...
+Compiling architecture behavioral of entity xil_defaultlib.px_axi4_2_pciepkt_256 [\px_axi4_2_pciepkt_256(channel_i...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axi4_2_pciepkt_256
+Built simulation snapshot tb_px_axi4_2_pciepkt_256_behav
+
+****** Webtalk v2019.1_AR72445 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim/xsim.dir/tb_px_axi4_2_pciepkt_256_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Nov  5 12:58:21 2019...
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 970.957 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_axi4_2_pciepkt_256_behav -key {Behavioral:sim_1:Functional:tb_px_axi4_2_pciepkt_256} -tclbatch {tb_px_axi4_2_pciepkt_256.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+source tb_px_axi4_2_pciepkt_256.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_axi4_2_pciepkt_256_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:03 ; elapsed = 00:00:12 . Memory (MB): peak = 970.957 ; gain = 0.000
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+restart: Time (s): cpu = 00:00:06 ; elapsed = 00:00:05 . Memory (MB): peak = 970.957 ; gain = 0.000
+run 10 us
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_28  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.payload_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/payload_fifo_inst/Initial2396_8  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.addr_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/addr_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_94  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial290_151  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost full flag option is not enabled (USE_ADV_FEATURES[3] = 0) but Packet FIFO mode requires almost_full to be enabled. XPM_FIFO_AXIS enables the Almost full flag automatically. You may ignore almost_full port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Info: [XPM_FIFO_AXIS 21-1] Almost empty flag option is not enabled (USE_ADV_FEATURES[11] = 0) but Packet FIFO mode requires almost_empty to be enabled. XPM_FIFO_AXIS enables the Almost empty flag automatically. You may ignore almost_empty port if not required tb_px_axi4_2_pciepkt_256.uut.pkt_fifo_inst.config_drc_axis
+Time: 1 ps  Iteration: 0  Process: /tb_px_axi4_2_pciepkt_256/uut/pkt_fifo_inst/Initial2396_131  File: /wrk/2019.1/continuous/2019_05_24_2552052/packages/customer/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+ipx::open_ipxact_file {C:\Pentek\IP\2019.1\pentek\ip\px_axi4_2_pciepkt_256\px_axi4_2_pciepkt_256.srcs\component.xml}
+WARNING: [IP_Flow 19-5226] Project source file 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/component.xml' ignored by IP packager.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagesynthesis (Synthesis)': File 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_anylanguagebehavioralsimulation (Simulation)': File 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sources_1/new/px_axi4_2_pciepkt_256.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_testbench (Test Bench)': File 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/sim_1/new/tb_px_axi4_2_pciepkt_256.vhd' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+ipx::merge_project_changes hdl_parameters [ipx::current_core]
+WARNING: [IP_Flow 19-5226] Project source file 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs/component.xml' ignored by IP packager.
+INFO: [IP_Flow 19-3166] Bus Interface 's_axi_mm2s': References existing memory map 's_axi_mm2s'.
+set_property core_revision 6 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Pentek/IP/2019.1/pentek/ip/px_axi4_2_pciepkt_256/px_axi4_2_pciepkt_256.srcs'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:an_lt_ctrl_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/an_lt_ctrl_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/an_lt_ctrl_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:ctrl_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/ctrl_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/ctrl_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:drp_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/drp_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/drp_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:flowctrl_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/flowctrl_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/flowctrl_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:gt_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/gt_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/gt_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:ieee_1588_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/ieee_1588_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/ieee_1588_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:lbus_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/lbus_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/lbus_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:otn_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/otn_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/otn_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:rs_fec_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/rs_fec_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/rs_fec_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:shared_logic_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/shared_logic_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/shared_logic_ports_int.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_cmac_usplus:statistics_ports_int:2.0'. The one found in location 'c:/Xilinx/Vivado/2019.1/patches/AR72445/vivado/data/ip/xilinx/cmac_usplus_v2_6/interfaces/statistics_ports_int.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2019.1/data/ip/xilinx/cmac_usplus_v2_4/interfaces/statistics_ports_int.xml'
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Nov  5 13:18:22 2019...

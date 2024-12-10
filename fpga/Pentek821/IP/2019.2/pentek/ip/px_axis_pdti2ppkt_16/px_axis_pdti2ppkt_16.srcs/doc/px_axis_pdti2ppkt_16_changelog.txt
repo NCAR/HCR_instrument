@@ -1,0 +1,7 @@
+Version 1.0
+* Core Created
+* Derived from px_axis_pdti2ppkt_8 IP Core Version 1.1
+Version 1.1
+* 5/5/20 Fixed false barrel shift at falling edge of trigger when barrel shift at beginning of trigger is not 0.  
+         Data was repeated in trigger mode near the falling edge of the trigger pulse
+ 

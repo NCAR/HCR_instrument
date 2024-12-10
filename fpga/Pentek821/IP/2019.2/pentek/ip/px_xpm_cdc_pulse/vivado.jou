@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# Vivado v2017.3_AR70218_AR69964 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Tue Jan  2 08:38:09 2018
+# Process ID: 13132
+# Current directory: C:/Pentek/IP/2017.3/pentek/ip/px_xpm_cdc_pulse
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent9244 C:\Pentek\IP\2017.3\pentek\ip\px_xpm_cdc_pulse\px_xpm_cdc_pulse.xpr
+# Log file: C:/Pentek/IP/2017.3/pentek/ip/px_xpm_cdc_pulse/vivado.log
+# Journal file: C:/Pentek/IP/2017.3/pentek/ip/px_xpm_cdc_pulse\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.3/pentek/ip/px_xpm_cdc_pulse/px_xpm_cdc_pulse.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2017.3\pentek\ip\px_xpm_cdc_pulse\px_xpm_cdc_pulse.srcs\sources_1\new\component.xml}
+set_property value_format long [ipx::get_user_parameters DEST_SYNC_FF -of_objects [ipx::current_core]]
+set_property value 3 [ipx::get_user_parameters DEST_SYNC_FF -of_objects [ipx::current_core]]
+set_property widget {textEdit} [ipgui::get_guiparamspec -name "DEST_SYNC_FF" -component [ipx::current_core] ]
+set_property value_validation_type range_long [ipx::get_user_parameters DEST_SYNC_FF -of_objects [ipx::current_core]]
+set_property value_validation_range_minimum 1 [ipx::get_user_parameters DEST_SYNC_FF -of_objects [ipx::current_core]]
+set_property value_validation_range_maximum 5 [ipx::get_user_parameters DEST_SYNC_FF -of_objects [ipx::current_core]]
+ipx::merge_project_changes hdl_parameters [ipx::current_core]
+set_property core_revision 10 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2017.3/pentek/ip/px_xpm_cdc_pulse/px_xpm_cdc_pulse.srcs/sources_1/new
+close_project
+open_project C:/Pentek/IP/2017.3/pentek/ip/px_pcie_irq_ctlr/px_pcie_irq_ctlr.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2017.3\pentek\ip\px_pcie_irq_ctlr\px_pcie_irq_ctlr.srcs\component.xml}
+set_property layout {horizontal} [ipgui::get_guiparamspec -name "ku" -component [ipx::current_core] ]
+set_property value_validation_list {0 1 2} [ipx::get_user_parameters ku -of_objects [ipx::current_core]]
+set_property layout {horizontal} [ipgui::get_guiparamspec -name "ku" -component [ipx::current_core] ]
+set_property value_validation_list {0 1} [ipx::get_user_parameters ku -of_objects [ipx::current_core]]

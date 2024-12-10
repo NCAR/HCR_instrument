@@ -1,24 +1,26 @@
 # -*- python -*-
 
-# Beware tool ordering here! In particular, rapradar must be *after* 
-# xmitdrpcclient. Reasons are unclear...
 hcrguiTools = Split("""
 boost_date_time
 hcrpmc730client
 cmigitsdaemonrpcclient
 doxygen
+drxstatus
 fireflydRpcClient
 hcrdrxrpcclient
-hcrexecutive
+hcrexecutiveclient
 logx
 lrose
 motioncontrol
-qt4
+operationmode
+qt5
+qtcore
+qtgui
+qtwidgets
 SpectracomRpcClient
 xmitdrpcclient
 """)
 hcrguiEnv = Environment(tools = ['default'] + hcrguiTools)
-hcrguiEnv.EnableQtModules(['QtCore', 'QtGui'])
 
 hcrgui_sources = Split("""
 hcrgui.cpp

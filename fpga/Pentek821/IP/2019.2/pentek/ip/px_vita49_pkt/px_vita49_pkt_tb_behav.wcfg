@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="px_vita49_pkt_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="px_vita49_pkt_tb" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="766399463fs"></ZoomStartTime>
+      <ZoomEndTime time="1724070771fs"></ZoomEndTime>
+      <Cursor1Time time="1000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="257"></NameColumnWidth>
+      <ValueColumnWidth column_width="487"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject fp_name="group3508" type="group">
+      <obj_property name="label">tb</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/axis_aclk" type="logic">
+         <obj_property name="ElementShortName">axis_aclk</obj_property>
+         <obj_property name="ObjectShortName">axis_aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/axis_aresetn" type="logic">
+         <obj_property name="ElementShortName">axis_aresetn</obj_property>
+         <obj_property name="ObjectShortName">axis_aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/s_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/s_axis_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/s_axis_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_tdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/s_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">s_axis_tkeep[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/s_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/s_axis_tuser" type="array">
+         <obj_property name="ElementShortName">s_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/count" type="other">
+         <obj_property name="ElementShortName">count</obj_property>
+         <obj_property name="ObjectShortName">count</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/loops" type="other">
+         <obj_property name="ElementShortName">loops</obj_property>
+         <obj_property name="ObjectShortName">loops</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/m_axis_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group707" type="group">
+      <obj_property name="label">slice</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/aclk" type="logic">
+         <obj_property name="ElementShortName">aclk</obj_property>
+         <obj_property name="ObjectShortName">aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/aresetn" type="logic">
+         <obj_property name="ElementShortName">aresetn</obj_property>
+         <obj_property name="ObjectShortName">aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/aclken" type="logic">
+         <obj_property name="ElementShortName">aclken</obj_property>
+         <obj_property name="ObjectShortName">aclken</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/s_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/s_axis_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/s_axis_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_tdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/s_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">s_axis_tkeep[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/s_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/s_axis_tuser" type="array">
+         <obj_property name="ElementShortName">s_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/m_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/m_axis_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/m_axis_tdata" type="array">
+         <obj_property name="ElementShortName">m_axis_tdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/m_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">m_axis_tkeep[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tkeep[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/m_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_axis_slice_inst/m_axis_tuser" type="array">
+         <obj_property name="ElementShortName">m_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tuser[79:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group708" type="group">
+      <obj_property name="label">header sm</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/aclk" type="logic">
+         <obj_property name="ElementShortName">aclk</obj_property>
+         <obj_property name="ObjectShortName">aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/aresetn" type="logic">
+         <obj_property name="ElementShortName">aresetn</obj_property>
+         <obj_property name="ObjectShortName">aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/aclken" type="logic">
+         <obj_property name="ElementShortName">aclken</obj_property>
+         <obj_property name="ObjectShortName">aclken</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/time_mode" type="logic">
+         <obj_property name="ElementShortName">time_mode</obj_property>
+         <obj_property name="ObjectShortName">time_mode</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/head_error" type="logic">
+         <obj_property name="ElementShortName">head_error</obj_property>
+         <obj_property name="ObjectShortName">head_error</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/data_len_max" type="array">
+         <obj_property name="ElementShortName">data_len_max[15:0]</obj_property>
+         <obj_property name="ObjectShortName">data_len_max[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/counter" type="array">
+         <obj_property name="ElementShortName">counter[15:0]</obj_property>
+         <obj_property name="ObjectShortName">counter[15:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_tdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">s_axis_tkeep[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tuser" type="array">
+         <obj_property name="ElementShortName">s_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_tdata" type="array">
+         <obj_property name="ElementShortName">m_axis_tdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">m_axis_tkeep[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tkeep[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_tuser" type="array">
+         <obj_property name="ElementShortName">m_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_smheader_tvalid" type="logic">
+         <obj_property name="ElementShortName">m_axis_smheader_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_smheader_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_smheader_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_smheader_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_smheader_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_smheader_tdata" type="array">
+         <obj_property name="ElementShortName">m_axis_smheader_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_smheader_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/m_axis_smheader_tuser" type="array">
+         <obj_property name="ElementShortName">m_axis_smheader_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_smheader_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/tuser_latched" type="logic">
+         <obj_property name="ElementShortName">tuser_latched</obj_property>
+         <obj_property name="ObjectShortName">tuser_latched</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/packet_count" type="array">
+         <obj_property name="ElementShortName">packet_count[3:0]</obj_property>
+         <obj_property name="ObjectShortName">packet_count[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/packet_size" type="array">
+         <obj_property name="ElementShortName">packet_size[15:0]</obj_property>
+         <obj_property name="ObjectShortName">packet_size[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/s_axis_tuser_first" type="array">
+         <obj_property name="ElementShortName">s_axis_tuser_first[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser_first[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/context_header" type="array">
+         <obj_property name="ElementShortName">context_header[31:0]</obj_property>
+         <obj_property name="ObjectShortName">context_header[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/stream_identifier" type="array">
+         <obj_property name="ElementShortName">stream_identifier[31:0]</obj_property>
+         <obj_property name="ObjectShortName">stream_identifier[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/class_identifier1" type="array">
+         <obj_property name="ElementShortName">class_identifier1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">class_identifier1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/class_identifier2" type="array">
+         <obj_property name="ElementShortName">class_identifier2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">class_identifier2[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/integer_timestamp" type="array">
+         <obj_property name="ElementShortName">integer_timestamp[31:0]</obj_property>
+         <obj_property name="ObjectShortName">integer_timestamp[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/fractional_timestamp1" type="array">
+         <obj_property name="ElementShortName">fractional_timestamp1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">fractional_timestamp1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_creator_inst/fractional_timestamp2" type="array">
+         <obj_property name="ElementShortName">fractional_timestamp2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">fractional_timestamp2[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group709" type="group">
+      <obj_property name="label">header fifo</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/s_aclk" type="logic">
+         <obj_property name="ElementShortName">s_aclk</obj_property>
+         <obj_property name="ObjectShortName">s_aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/s_aresetn" type="logic">
+         <obj_property name="ElementShortName">s_aresetn</obj_property>
+         <obj_property name="ObjectShortName">s_aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/s_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/s_axis_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/s_axis_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/s_axis_tuser" type="array">
+         <obj_property name="ElementShortName">s_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/m_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/m_axis_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/m_axis_tdata" type="array">
+         <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/m_axis_tuser" type="array">
+         <obj_property name="ElementShortName">m_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_header_fifo_inst/axis_data_count" type="array">
+         <obj_property name="ElementShortName">axis_data_count[7:0]</obj_property>
+         <obj_property name="ObjectShortName">axis_data_count[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group711" type="group">
+      <obj_property name="label">upsizer</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/aclk" type="logic">
+         <obj_property name="ElementShortName">aclk</obj_property>
+         <obj_property name="ObjectShortName">aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/aresetn" type="logic">
+         <obj_property name="ElementShortName">aresetn</obj_property>
+         <obj_property name="ObjectShortName">aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/s_axis_ppkt_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_ppkt_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_ppkt_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/s_axis_ppkt_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_ppkt_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_ppkt_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/s_axis_ppkt_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_ppkt_tdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_ppkt_tdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/s_axis_ppkt_tuser" type="array">
+         <obj_property name="ElementShortName">s_axis_ppkt_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_ppkt_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/s_axis_ppkt_tkeep" type="array">
+         <obj_property name="ElementShortName">s_axis_ppkt_tkeep[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_ppkt_tkeep[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/s_axis_ppkt_tlast" type="logic">
+         <obj_property name="ElementShortName">s_axis_ppkt_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_ppkt_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/m_axis_ppkt_tvalid" type="logic">
+         <obj_property name="ElementShortName">m_axis_ppkt_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_ppkt_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/m_axis_ppkt_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_ppkt_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_ppkt_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/m_axis_ppkt_tdata" type="array">
+         <obj_property name="ElementShortName">m_axis_ppkt_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_ppkt_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/m_axis_ppkt_tuser" type="array">
+         <obj_property name="ElementShortName">m_axis_ppkt_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_ppkt_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/m_axis_ppkt_tkeep" type="array">
+         <obj_property name="ElementShortName">m_axis_ppkt_tkeep[15:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_ppkt_tkeep[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_ppkt_upsizer_inst/m_axis_ppkt_tlast" type="logic">
+         <obj_property name="ElementShortName">m_axis_ppkt_tlast</obj_property>
+         <obj_property name="ObjectShortName">m_axis_ppkt_tlast</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group710" type="group">
+      <obj_property name="label">payload fifo</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_aclk" type="logic">
+         <obj_property name="ElementShortName">s_aclk</obj_property>
+         <obj_property name="ObjectShortName">s_aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_aresetn" type="logic">
+         <obj_property name="ElementShortName">s_aresetn</obj_property>
+         <obj_property name="ObjectShortName">s_aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_axis_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_axis_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">s_axis_tkeep[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/s_axis_tuser" type="array">
+         <obj_property name="ElementShortName">s_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/m_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/m_axis_tready" type="logic">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/m_axis_tdata" type="array">
+         <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/m_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">m_axis_tkeep[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tkeep[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/m_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/m_axis_tuser" type="array">
+         <obj_property name="ElementShortName">m_axis_tuser[79:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tuser[79:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/px_vita49_pkt_payload_fifo_inst/axis_data_count" type="array">
+         <obj_property name="ElementShortName">axis_data_count[12:0]</obj_property>
+         <obj_property name="ObjectShortName">axis_data_count[12:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group712" type="group">
+      <obj_property name="label">sm</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/aclk" type="logic">
+         <obj_property name="ElementShortName">aclk</obj_property>
+         <obj_property name="ObjectShortName">aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/state" type="other">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_header_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_header_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_header_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_payload_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_payload_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tready_local" type="logic">
+         <obj_property name="ElementShortName">s_axis_payload_tready_local</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tready_local</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_payload_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tvalid_p1" type="logic">
+         <obj_property name="ElementShortName">s_axis_payload_tvalid_p1</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tvalid_p1</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tvalid_p2" type="logic">
+         <obj_property name="ElementShortName">s_axis_payload_tvalid_p2</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tvalid_p2</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tdata_p1" type="array">
+         <obj_property name="ElementShortName">s_axis_payload_tdata_p1[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tdata_p1[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/s_axis_payload_tdata_p2" type="array">
+         <obj_property name="ElementShortName">s_axis_payload_tdata_p2[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_payload_tdata_p2[255:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/counter" type="array">
+         <obj_property name="ElementShortName">counter[15:0]</obj_property>
+         <obj_property name="ObjectShortName">counter[15:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider2811">
+      <obj_property name="label">out</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/aclk" type="logic">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/px_vita49_pkt_tb/m_axis_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/m_axis_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/m_axis_tkeep" type="array">
+      <obj_property name="ElementShortName">m_axis_tkeep[15:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tkeep[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/px_vita49_pkt_tb/uut/packet_sm_inst/m_axis_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+   </wvobject>
+</wave_config>

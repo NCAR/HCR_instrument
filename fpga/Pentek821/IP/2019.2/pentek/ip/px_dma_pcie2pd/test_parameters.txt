@@ -1,0 +1,91 @@
+2
+0000
+00000000C0000000
+00000000D0000000
+1024
+4
+00000000E0000000
+00000000F0000000
+10000
+1024
+true
+false
+false
+true
+true
+false
+5
+00000400
+true
+false
+false
+false
+true
+true
+5
+00000810
+
+the values in test_parameters.txt will be used to fill values in 
+param_record_type in the test bench. The parameters are listed as follows.  Each value must be in the format specified with no comma after it.
+Eample list is shown below. Boolean values are true or false. All ulogic vector values are to entered in as hex values with no leading 0x. For example
+0xFE would be FE.
+
+parameter fields:
+    
+    PCIE_RQST_SIZE      : std_ulogic_vector(3 downto 0);  -- Maximum PCIe Read Request Size (Determined by PCIe Host, usually 512) 0x0=128 0x1=256 0x2= 512 0x3=1024 0x4=2048 0x5=4096
+    LINK_START_ADDRESS  : std_ulogic_vector(15 downto 0); -- First Linked List Descriptor address (must be on 64 byte boundaries)  
+    PCIE_A_Address      : std_ulogic_vector(63 downto 0); -- PCIe Destination Start Address to program in first descriptor (DWORD address boundary) 
+    PCIE_A_MetaAddress  : std_ulogic_vector(63 downto 0); -- PCIe Meta Data Destination Start Address to program in first descriptor (must be DWORD address boundary)   
+    BufferA_ByteSize    : integer range 1 to 16383;      -- Buffer A bytes to transfer. (limited in size for test) to program first descriptor with
+    META_LENGTHA        : integer range 1 to 16383;      -- Buffer A bytes to transfer in meta data. (limited in size for test)
+    PCIE_B_Address      : std_ulogic_vector(63 downto 0); -- PCIe Destination Start Address to program in second descriptor (DWORD address boundary)               
+    PCIE_B_MetaAddress  : std_ulogic_vector(63 downto 0); -- PCIe Meta Data Destination Start Address to program in second descriptor (must be DWORD address boundary)   
+    BufferB_ByteSize    : integer range 1 to 16383;      -- Buffer B bytes to transfer. (limited in size for test) to program second descriptor with                       
+    META_LENGTHB        : integer range 1 to 16383;      -- Buffer B bytes to transfer in meta data. (limited in size for test)                                           
+    A_AUTO              : boolean;                     -- First Descriptor Auto Mode (test does not yet support manual setting '0')
+    A_INCR_MODE         : boolean;                     -- First Descriptor Loop Increment Mode
+    A_USE_META_LEN      : boolean;                     -- First Descriptor Use Meta Data Length Mode
+    A_LINK_END_INT_EN   : boolean;                     -- First Descriptor Enable Link End Interrupt 
+    A_CHAIN_END_INT_EN  : boolean;                     -- First Descriptor Enable Chain End Interrupt 
+    A_CHAIN_END         : boolean;                     -- First Descriptor Is End of Chain. 
+    A_LOOP_LENGTH       : integer range 0 to 16383;      -- First Descriptor number of times to loop in Loop Increment Mode (# loops -1)
+    A_LOOP_ADDR_INCR    : std_ulogic_vector(31 downto 0); -- First Descriptor number of bytes to increment address in loop increment mode.          
+    B_AUTO              : boolean;                     -- Second Descriptor Auto Mode (test does not yet support manual setting '0')         
+    B_INCR_MODE         : boolean;                     -- Second Descriptor Loop Increment Mode                                            
+    B_USE_META_LEN      : boolean;                     -- Second Descriptor Use Meta Data Length Mode                                                                                         
+    B_LINK_END_INT_EN   : boolean;                     -- Second Descriptor Enable Link End Interrupt                                        
+    B_CHAIN_END_INT_EN  : boolean;                     -- Second Descriptor Enable Chain End Interrupt                                       
+    B_CHAIN_END         : boolean;                     -- Second Descriptor Is End of Chain.                                                                                                   
+    B_LOOP_LENGTH       : integer range 0 to 16383;      -- Second Descriptor number of times to loop in Loop Increment Mode (# loops -1)      
+    B_LOOP_ADDR_INCR    : std_ulogic_vector(31 downto 0); -- Second Descriptor number of bytes to increment address in loop increment mode.      "00";
+
+
+Example:
+
+2
+0000
+00000000C0000000
+00000000D0000000
+1024
+4
+00000000E0000000
+00000000F0000000
+10000
+1024
+true
+false
+false
+true
+true
+false
+5
+00000400
+true
+false
+false
+true
+true
+true
+5
+00000810
+

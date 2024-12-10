@@ -1,0 +1,3 @@
+* Core Created
+-- Revision 1.0 - First Release
+-- Revision 1.1 - 5/1/2020 Fixed bug where VITA49 modes would not work unless you run non-VITA49 mode first.

@@ -1,0 +1,540 @@
+{
+    "ltx_root": {
+        "version": 4,
+        "minor": 0,
+        "ltx_data": [
+            {
+                "name": "EDA_PROBESET",
+                "active": true,
+                "debug_cores": [
+                    {
+                        "type": "XSDB_V3",
+                        "name": "dbg_hub",
+                        "spec": "labtools_xsdbm_v3",
+                        "clk_input_freq_hz": "250000007"
+                    },
+                    {
+                        "type": "VIO_V2",
+                        "name": "user_block1_i/user_block1_i/dac/vio_0",
+                        "spec": "labtools_vio_v3",
+                        "ipName": "vio",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 0,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "F861F29E7B5C59EDB94D1791384F6C63",
+                        "pins": [
+                            {
+                                "name": "probe_in0",
+                                "id": 0,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "user_block1_i/user_block1_i/dac/px_lvl_trans_xclk_0_out_sig",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe_out0",
+                                "id": 1,
+                                "type": "DATA",
+                                "direction": "OUT",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "user_block1_i/user_block1_i/dac/vio_0_probe_out0",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "u_ila_0",
+                        "spec": "labtools_ila_v6",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 1,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "23e7d65a79bc59f7bc47406c1714dfae",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 2,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 1,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/ctl_reg",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/ctl_reg[1]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/ctl_reg[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 3,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/status_flags",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "gpio_regs/status_flags[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "mt_pulse",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "mt_pulse[7]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[6]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[5]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[4]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[3]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[2]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[1]"
+                                            },
+                                            {
+                                                "name": "mt_pulse[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 5,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 18,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[18]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[17]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[16]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[15]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[14]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[13]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[12]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[11]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[10]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[9]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[8]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[7]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[6]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[5]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[4]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[3]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[2]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[1]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 6,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 18,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[18]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[17]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[16]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[15]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[14]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[13]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[12]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[11]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[10]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[9]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[8]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[7]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[6]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[5]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[4]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[3]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[2]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[1]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 7,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/aresetn",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 8,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/control_hvn",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 9,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "user_block1_i/user_block1_i/controller_running",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 10,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/ext_clk",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 11,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TVALID",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 12,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/pps_edge",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 13,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/PPS_TO_CONTROLLER_OUT_i_1_n_0",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 14,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/ROT_A",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 15,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/ROT_B",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe14",
+                                "id": 16,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/sync_pulse_clk",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
+                                "id": 17,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 15,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/TILT_A",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 18,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/TILT_A",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 19,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/TILT_B",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe18",
+                                "id": 20,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 18,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/TILT_B",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

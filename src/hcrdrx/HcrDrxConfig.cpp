@@ -1,349 +1,255 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-/*
- * HcrDrxConfig.cpp
- *
- *  Created on: Jun 11, 2010
- *      Author: burghart
- */
-
-#include "HcrDrxConfig.h"
+// HcrDrxConfig.cpp
+//
+//
+// Copyright © 2020 University Corporation for Atmospheric Research
+// All rights reserved.
 
 #include <algorithm>
-#include <iostream>
 #include <fstream>
-#include <sstream>
-#include <cerrno>
-#include <climits>
-#include <cmath>
-#include <cstring>
+#include <string>
+#include <boost/algorithm/string.hpp>
+#include <boost/program_options.hpp>
 #include <logx/Logging.h>
+#include "HcrDrxConfig.h"
 
-LOGGING("HcrDrxConfig");
+LOGGING("HcrDrxConfig")
 
-const double HcrDrxConfig::UNSET_DOUBLE = -INFINITY;
-const int HcrDrxConfig::UNSET_INT = INT_MIN;
-const std::string HcrDrxConfig::UNSET_STRING("<unset string>");
-const int HcrDrxConfig::UNSET_BOOL = UNSET_INT;
+namespace po = boost::program_options;
 
-// Keys for floating point values we'll accept
-std::set<std::string> HcrDrxConfig::_DoubleLegalKeys(_createDoubleLegalKeys());
-std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
-    std::set<std::string> keys;
-    keys.insert("prt1");
-    keys.insert("prt2");
-    keys.insert("tx_delay");
-    keys.insert("tx_latency");
-    keys.insert("tx_pulse_width");
-    keys.insert("tx_pulse_mod_delay");
-    keys.insert("digitizer_gate0_delay");
-    keys.insert("digitizer_sample_width");
-    keys.insert("range_to_gate0_m");
-    keys.insert("latitude");
-    keys.insert("longitude");
-    keys.insert("altitude");
-    keys.insert("iqcount_scale_for_mw");
-    keys.insert("sim_start_elev");
-    keys.insert("sim_delta_elev");
-    keys.insert("sim_az_rate");
-    return keys;
+// Singleton default configuration instance
+HcrDrxConfig * HcrDrxConfig::DefaultConfig_;
+
+namespace po = boost::program_options;
+
+/// @brief Macro to build a boost::program_options option which will set a
+/// member variable
+/// @param optName the option name to use on the command line or in the
+/// config file
+/// @param description the description for the option
+/// @param default_val the default value for the option
+///
+/// The macro will generate an option entry with the given name which will
+/// set the value of the private member of the same name with an underscore
+/// appended. The default_val will be applied to the member if the user does
+/// not supply the option.
+///
+/// E.g., if a class has a private member of type int named "nWidgets_", which
+/// should have default value 100, the macro call would be:
+///
+///     MAKE_OPT(nWidgets, "the number of widgets to build", 100)
+///
+/// which the macros translates to the somewhat opaque option definition:
+///
+///     ("nWidgets", po::value<decltype(nWidgets_)>(& nWidgets_)->default_value(100), "the number of widgets to build")
+///
+/// The user could then set the nWidgets_ member to 5 from the command line
+/// with the option "--nWidgets 5"
+///
+#define MEMBER_PROGOPT(optName, description, default_val) \
+    ( \
+        #optName,   \
+        po::value<decltype(optName##_)>(& optName##_)->default_value(default_val), \
+        description \
+    )
+
+/// @brief Output the given option name and the value of its associated member
+/// to a stream with format "<optName>: <optValue>". If the option's current
+/// value is not the default value, " *" will be appended to the output.
+///
+/// Note that the macro explicitly displays bool values as "true" or "false"
+/// rather than "1" or "0"
+#define STREAM_OPT_AND_MEMBER(optName) \
+    #optName << ": " << std::boolalpha << optName##_ \
+             << ((optName##_ == HcrDrxConfig::DefaultConfig().optName##_) ? "" : " *") \
+             << '\n'
+
+HcrDrxConfig::HcrDrxConfig(int argc, char * argv[]) : HcrDrxConfig()
+{
+    // For command line use, add non-configuration option --configFileName
+    // to those in configVarsDesc_
+    std::string configFileName;
+    po::options_description optsDesc("Configuration options");
+    optsDesc.add(configVarsDesc_).add_options()
+            ("help,h", "show HcrDrxConfig command line options")
+            ("configFile", po::value<std::string>(&configFileName), "HCR config file path")
+            ;
+
+    // We also allow a config file name to be given on the command line
+    // without --configFile, i.e., as a "positional" argument
+    po::positional_options_description posDesc;
+    posDesc.add("configFile", 1);
+
+    // The default constructor was already applied, so we have the default
+    // configuration values in place. Now parse the command line and apply
+    // any options set there
+    po::variables_map vm;
+    po::store(po::command_line_parser(argc, argv)
+        .options(optsDesc).positional(posDesc).run(), vm);
+    notify(vm);
+
+    // If the help option was selected, print our help information and return
+    // now.
+    if (vm.count("help") > 0)
+    {
+        std::cerr << optsDesc << "\n";
+        return;
+    }
+
+    // Finally, if a config file was given on the command line, parse that
+    // now. Note that although the config file is loaded last, any command
+    // line options parsed above have precedence over the same options
+    // given in the config file!
+    if (! configFileName.empty()) {
+        DLOG << "Loading config file " << configFileName;
+        po::store(po::parse_config_file<char>(configFileName.c_str(), configVarsDesc_), vm);
+        notify(vm);
+    }
+};
+
+HcrDrxConfig::~HcrDrxConfig() {};
+
+const HcrDrxConfig &
+HcrDrxConfig::DefaultConfig()
+{
+    // Instantiate the singleton default configuration on first access
+    if (! DefaultConfig_) {
+        DefaultConfig_ = new HcrDrxConfig;
+    }
+    return(*DefaultConfig_);
 }
 
-// Keys for integer values we'll accept
-std::set<std::string> HcrDrxConfig::_IntLegalKeys(_createIntLegalKeys());
-std::set<std::string> HcrDrxConfig::_createIntLegalKeys() {
-    std::set<std::string> keys;
-    keys.insert("gates");
-    keys.insert("merge_queue_size");
-    keys.insert("iwrf_fmq_nslots");
-    keys.insert("iwrf_fmq_bufsize");
-    keys.insert("iwrf_fmq_report_interval");
-    keys.insert("iwrf_fmq_npackets_per_message"); 
-    keys.insert("iwrf_server_tcp_port");
-    keys.insert("pulse_interval_per_iwrf_meta_data");
-    keys.insert("sim_n_elev");
-    return keys;
+const std::string HcrDrxConfig::pulse_filter_file(uint chan) const
+{
+    switch(chan) {
+        case 0: return pulse_filter_file_ch_0();
+        case 1: return pulse_filter_file_ch_1();
+        case 2: return pulse_filter_file_ch_2();
+    }
+    throw std::runtime_error("Unknown channel.");
 }
 
-// Keys for boolean values we'll accept
-std::set<std::string> HcrDrxConfig::_BoolLegalKeys(_createBoolLegalKeys());
-std::set<std::string> HcrDrxConfig::_createBoolLegalKeys() {
-    std::set<std::string> keys;
-    keys.insert("staggered_prt");
-    keys.insert("export_iwrf_via_fmq");
-    keys.insert("simulate_antenna_angles");
-    keys.insert("simulate_pmc730");
-    keys.insert("start_on_1pps");
-    return keys;
+bool HcrDrxConfig::enable_rx(uint chan) const
+{
+    switch(chan) {
+        case 0: return enable_rx_ch_0();
+        case 1: return enable_rx_ch_1();
+        case 2: return enable_rx_ch_2();
+    }
+    throw std::runtime_error("Unknown channel.");
 }
 
-// Keys for string values we'll accept
-std::set<std::string> HcrDrxConfig::_StringLegalKeys(_createStringLegalKeys());
-std::set<std::string> HcrDrxConfig::_createStringLegalKeys() {
-    std::set<std::string> keys;
-    keys.insert("radar_id");
-    keys.insert("calibration_file");
-    keys.insert("iwrf_fmq_path");
-    return keys;
+HcrDrxConfig::HcrDrxConfig() :
+        configVarsDesc_("Direct configuration variable setters")
+{
+    // Assemble command line / configuration file options for each of our
+    // configuration variables
+    configVarsDesc_.add_options()
+        MEMBER_PROGOPT( latitude,                          "description",                                  40.03794 )
+        MEMBER_PROGOPT( longitude,                         "description",                                  -105.24127 )
+        MEMBER_PROGOPT( altitude,                          "description",                                  1609 )
+        MEMBER_PROGOPT( iqcount_scale_for_mw,              "description",                                  780446 )
+        MEMBER_PROGOPT( simulate_antenna_angles,           "description",                                  false )
+        MEMBER_PROGOPT( sim_start_elev,                    "description",                                  0.0 )
+        MEMBER_PROGOPT( sim_delta_elev,                    "description",                                  0.0 )
+        MEMBER_PROGOPT( sim_az_rate,                       "description",                                  0.0 )
+        MEMBER_PROGOPT( sim_n_elev,                        "description",                                  0 )
+        MEMBER_PROGOPT( merge_queue_size,                  "description",                                  100000 )
+        MEMBER_PROGOPT( iwrf_fmq_nslots,                   "description",                                  100 )
+        MEMBER_PROGOPT( iwrf_fmq_bufsize,                  "description",                                  1000000000 )
+        MEMBER_PROGOPT( iwrf_fmq_report_interval,          "description",                                  1 )
+        MEMBER_PROGOPT( iwrf_fmq_npackets_per_message,     "description",                                  1000 )
+        MEMBER_PROGOPT( iwrf_server_tcp_port,              "description",                                  12000 )
+        MEMBER_PROGOPT( pulse_interval_per_iwrf_meta_data, "description",                                  5000 )
+        MEMBER_PROGOPT( export_iwrf_via_fmq,               "description",                                  true )
+        MEMBER_PROGOPT( instance,                          "description",                                  "ops" )
+        MEMBER_PROGOPT( radar_id,                          "description",                                  "HCR" )
+        MEMBER_PROGOPT( calibration_file,                  "description",                                  "defaultCal.xml" )
+        MEMBER_PROGOPT( iwrf_fmq_path,                     "URL for the time series FMQ",                  "/tmp/fmq/ts/wband/shmem_10000")
+        MEMBER_PROGOPT( range_to_gate0_m,                  "distance to the 0th range cell",               -198.0 )
+        MEMBER_PROGOPT( start_on_1pps,                     "wait for timing pulse to start",               true )
+        MEMBER_PROGOPT( ems_pulse_width,                   "time that the T/R switch is set to T",         4160e-9 )
+        MEMBER_PROGOPT( tx_pulse_offset,                   "transmit pulse delay/advance from TR",         -656e-9 )
+        MEMBER_PROGOPT( mod_pulse_offset,                  "modulator pulse delay/advance from TR",        -386e-9 )
+        MEMBER_PROGOPT( rx_offset,                         "sample collection delay/advance from TR",      0 )
+        MEMBER_PROGOPT( use_internal_clock,                "use internal synth (w/ external reference)",   true )
+        MEMBER_PROGOPT( clock_mode_125,                    "false = experimental",                         true )
+        MEMBER_PROGOPT( refclk_frequency,                  "frequency of external reference clock",        10.0e6 )
+        MEMBER_PROGOPT( rx_frequency,                      "ddc center (IF) frequency, rx",                156.25e6 )
+        MEMBER_PROGOPT( tx_frequency,                      "ddc center (IF) frequency, tx",                156.25e6 )
+        MEMBER_PROGOPT( use_mag_phase,                     "output data in dB mag / phase format",         1 )
+        MEMBER_PROGOPT( extra_ddc_gain,                    "adjustment to default ddc filter gain",        0.015625 )
+        MEMBER_PROGOPT( extra_pulse_gain,                  "adjustment to default gaussian filter gain",   16.0 )
+        MEMBER_PROGOPT( final_decimation,                  "decimation after the last rx filter",          2 )
+        MEMBER_PROGOPT( pulses_to_run,                     "number of pulses to schedule before exiting",  INFINITY )
+        MEMBER_PROGOPT( pulses_per_xfer,                   "ratio of pulses to interrupts",                150 )
+        MEMBER_PROGOPT( pulse_filter_file_ch_0,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( pulse_filter_file_ch_1,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( pulse_filter_file_ch_2,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( phase_code_file,                   "phase coding coefs",                           "default_phase_codes.csv" )
+        MEMBER_PROGOPT( enable_rx_ch_0,                    "enable ADC channel",                           true )
+        MEMBER_PROGOPT( enable_rx_ch_1,                    "enable ADC channel",                           true )
+        MEMBER_PROGOPT( enable_rx_ch_2,                    "enable ADC channel",                           false )
+        MEMBER_PROGOPT( mode_definition_file,              "file containing mode definitions",             "modes.json" )
+        ;
+
+    // Apply the command_line_parser with no arguments to initialize the
+    // configuration members to the default values shown above
+    po::variables_map vm;
+    std::vector<std::string> noArgs;
+    po::store(po::command_line_parser(noArgs).options(configVarsDesc_).run(), vm);
+    notify(vm);
 }
 
-// Return a copy of a string, without comments and leading and trailing whitespace
-static std::string
-trimmedString(const std::string& str) {
-    std::string s(str);
-    // strip comment (from first '#' to end of line)
-    if (s.find('#') != s.npos)
-        s.erase(s.find('#'));
-    // strip leading whitespace
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), 
-            std::not1(std::ptr_fun<int,int>(std::isspace))));
-    // strip trailing whitespace
-    s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int,int>(std::isspace))).base(), 
-            s.end());
-    return s;
+std::string
+HcrDrxConfig::configString() const {
+    std::ostringstream os;
+    os << STREAM_OPT_AND_MEMBER( latitude );
+    os << STREAM_OPT_AND_MEMBER( longitude );
+    os << STREAM_OPT_AND_MEMBER( altitude );
+    os << STREAM_OPT_AND_MEMBER( iqcount_scale_for_mw );
+    os << STREAM_OPT_AND_MEMBER( simulate_antenna_angles );
+    os << STREAM_OPT_AND_MEMBER( sim_start_elev );
+    os << STREAM_OPT_AND_MEMBER( sim_delta_elev );
+    os << STREAM_OPT_AND_MEMBER( sim_az_rate );
+    os << STREAM_OPT_AND_MEMBER( sim_n_elev );
+    os << STREAM_OPT_AND_MEMBER( merge_queue_size );
+    os << STREAM_OPT_AND_MEMBER( iwrf_fmq_nslots );
+    os << STREAM_OPT_AND_MEMBER( iwrf_fmq_bufsize );
+    os << STREAM_OPT_AND_MEMBER( iwrf_fmq_report_interval );
+    os << STREAM_OPT_AND_MEMBER( iwrf_fmq_npackets_per_message );
+    os << STREAM_OPT_AND_MEMBER( iwrf_server_tcp_port );
+    os << STREAM_OPT_AND_MEMBER( pulse_interval_per_iwrf_meta_data );
+    os << STREAM_OPT_AND_MEMBER( export_iwrf_via_fmq );
+    os << STREAM_OPT_AND_MEMBER( instance );
+    os << STREAM_OPT_AND_MEMBER( radar_id );
+    os << STREAM_OPT_AND_MEMBER( calibration_file );
+    os << STREAM_OPT_AND_MEMBER( iwrf_fmq_path );
+    os << STREAM_OPT_AND_MEMBER( range_to_gate0_m );
+    os << STREAM_OPT_AND_MEMBER( start_on_1pps );
+    os << STREAM_OPT_AND_MEMBER( ems_pulse_width );
+    os << STREAM_OPT_AND_MEMBER( tx_pulse_offset );
+    os << STREAM_OPT_AND_MEMBER( mod_pulse_offset );
+    os << STREAM_OPT_AND_MEMBER( rx_offset );
+    os << STREAM_OPT_AND_MEMBER( use_internal_clock );
+    os << STREAM_OPT_AND_MEMBER( clock_mode_125 );
+    os << STREAM_OPT_AND_MEMBER( refclk_frequency );
+    os << STREAM_OPT_AND_MEMBER( rx_frequency );
+    os << STREAM_OPT_AND_MEMBER( tx_frequency );
+    os << STREAM_OPT_AND_MEMBER( use_mag_phase );
+    os << STREAM_OPT_AND_MEMBER( extra_ddc_gain );
+    os << STREAM_OPT_AND_MEMBER( extra_pulse_gain );
+    os << STREAM_OPT_AND_MEMBER( final_decimation );
+    os << STREAM_OPT_AND_MEMBER( pulses_to_run );
+    os << STREAM_OPT_AND_MEMBER( pulses_per_xfer );
+    os << STREAM_OPT_AND_MEMBER( pulse_filter_file_ch_0 );
+    os << STREAM_OPT_AND_MEMBER( pulse_filter_file_ch_1 );
+    os << STREAM_OPT_AND_MEMBER( pulse_filter_file_ch_2 );
+    os << STREAM_OPT_AND_MEMBER( phase_code_file );
+    os << STREAM_OPT_AND_MEMBER( enable_rx_ch_0 );
+    os << STREAM_OPT_AND_MEMBER( enable_rx_ch_1 );
+    os << STREAM_OPT_AND_MEMBER( enable_rx_ch_2 );
+    os << STREAM_OPT_AND_MEMBER( mode_definition_file );
+
+    return(os.str());
 }
 
-// Return the contents of the given key/value line *before* the first whitespace
-static std::string
-keyFromLine(const std::string& line) {
-    std::string s(line);
-    s.erase(std::find_if(s.begin(), s.end(), std::ptr_fun<int,int>(std::isspace)), 
-            s.end());
-    return s;
-}
-
-// Return the contents of the given key/value line *after* the first whitespace.
-static std::string
-valueFromLine(const std::string& line) {
-    std::string s(line);
-    // erase up to the first space, then again up to the first non-space
-    s.erase(s.begin(), 
-            std::find_if(s.begin(), s.end(), std::ptr_fun<int,int>(std::isspace)));
-    s.erase(s.begin(), 
-            std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int,int>(std::isspace))));
-    return s;
-}
-
-
-HcrDrxConfig::HcrDrxConfig(std::string configFile) {
-    std::fstream infile(configFile.c_str(), std::ios_base::in);
-    if (infile.fail()) {
-        ELOG << "Error opening config file '" << configFile << "': " <<
-            strerror(errno);
-        exit(1);
-    }
-    // Read each line from the file, discarding empty lines and lines
-    // beginning with '#'.
-    // 
-    // Other lines are parsed as "<key> <value>", and saved into
-    // our dictionaries. Unknown keys will cause error exit.
-    ILOG << "Using hcrdrx config file '" << configFile << "'";
-    ILOG << "Config file contents: ";
-    std::string line;
-    while (true) {
-        std::getline(infile, line);
-        if (infile.eof())
-            break;
-        ILOG << "    " << line;
-        // Trim comments and leading and trailing space from the line
-        line = trimmedString(line);
-        // If there's nothing left, move to the next line
-        if (! line.length())
-            continue;
-        
-        std::string key = keyFromLine(line);
-        std::string strValue = valueFromLine(line);
-        std::istringstream valueStream(strValue);
-        if (_DoubleLegalKeys.find(key) != _DoubleLegalKeys.end()) {
-            double fVal;
-            if ((valueStream >> fVal).fail()) {
-                WLOG << "Bad double value '" << strValue << "' for key " <<
-                    key << " in config file";
-                exit(1);
-            }
-            _doubleVals[key] = fVal;
-        } else if (_IntLegalKeys.find(key) != _IntLegalKeys.end()) {
-            int iVal;
-            if ((valueStream >> iVal).fail()) {
-                WLOG << "Bad int value '" << strValue << "' for key " <<
-                    key << " in config file";
-                exit(1);
-            }
-            _intVals[key] = iVal;
-        } else if (_BoolLegalKeys.find(key) != _BoolLegalKeys.end()) {
-            bool bVal;
-            if ((valueStream >> bVal).fail()) {
-                WLOG << "Bad bool value '" << strValue << "' for key " <<
-                    key << " in config file";
-                exit(1);
-            }
-            _boolVals[key] = bVal;
-        } else if (_StringLegalKeys.find(key) != _StringLegalKeys.end()) {
-            _stringVals[key] = strValue;
-        } else {
-            WLOG << "Illegal key '" << key << "' in config file";
-            exit(1);
-        }
-    }
-    ILOG << "End of config file";
-}
-
-HcrDrxConfig::~HcrDrxConfig() {
-}
-
-bool
-HcrDrxConfig::isValid(bool verbose) const {
-    bool valid = true;
-    if (radar_id() == UNSET_STRING) {
-        if (verbose)
-            WLOG << "'radar_id' unset in DRX configuration";
-        valid = false;
-    }
-    if (calibration_file() == UNSET_STRING) {
-        if (verbose)
-            WLOG << "'calibration_file' unset in DRX configuration";
-        valid = false;
-    }
-    if (gates() == UNSET_INT) {
-        if (verbose)
-            WLOG << "'gates' unset in DRX configuration";
-        valid = false;
-    }
-    if (staggered_prt() == UNSET_BOOL) {
-        if (verbose)
-            WLOG << "'staggered_prt' unset in DRX configuration";
-        valid = false;
-    }
-    if (prt1() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'prt1' unset in DRX configuration";
-        valid = false;
-    }
-    if (staggered_prt() == 1 && prt2() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'prt2' unset in DRX configuration when "
-                "'staggered_prt' is true";
-        valid = false;
-    }
-    if (digitizer_gate0_delay() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'rcvr_gate0_delay' unset in DRX configuration";
-        valid = false;
-    }
-    if (digitizer_sample_width() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'digitizer_sample_width' unset in DRX configuration";
-        valid = false;
-    }
-    if (tx_pulse_width() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'tx_pulse_width' unset in DRX configuration";
-        valid = false;
-    }
-    if (tx_delay() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'tx_delay' unset in DRX configuration";
-        valid = false;
-    }
-    if (tx_latency() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'tx_latency' unset in DRX configuration";
-        valid = false;
-    }
-    if (tx_pulse_mod_delay() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'tx_pulse_mod_delay' unset in DRX configuration";
-        valid = false;
-    }
-    if (iqcount_scale_for_mw() == UNSET_DOUBLE) {
-        if (verbose)
-            WLOG << "'iqcount_scale_for_mw' unset in DRX configuration";
-        valid = false;
-    }
-    if (merge_queue_size() == UNSET_INT) {
-        if (verbose)
-            WLOG << "'merge_queue_size' not set";
-        valid = false;
-    }
-    if (iwrf_server_tcp_port() == UNSET_INT) {
-        if (verbose)
-            WLOG << "'iwrf_server_tcp_port' not set";
-        valid = false;
-    }
-    if (pulse_interval_per_iwrf_meta_data() == UNSET_INT) {
-        if (verbose)
-            WLOG << "'pulse_interval_per_iwrf_meta_data' not set";
-        valid = false;
-    }
-    if (simulate_antenna_angles() == UNSET_BOOL) {
-        if (verbose)
-            WLOG << "'simulate_antenna_angles' unset in DRX configuration";
-        valid = false;
-    }
-    if (simulate_antenna_angles() == 1) {
-        if (sim_n_elev() == UNSET_INT) {
-            if (verbose)
-                WLOG << "'simulate_antenna_angles' is true, but "
-                    "'sim_n_elev' is unset in DRX configuration";
-            valid = false;
-        }
-        if (sim_start_elev() == UNSET_DOUBLE) {
-            if (verbose)
-                WLOG << "'simulate_antenna_angles' is true, but "
-                    "'sim_start_elev' is unset in DRX configuration";
-            valid = false;
-        }
-        if (sim_delta_elev() == UNSET_DOUBLE) {
-            if (verbose)
-                WLOG << "'simulate_antenna_angles' is true, but "
-                    "'sim_delta_elev' is unset in DRX configuration";
-            valid = false;
-        }
-        if (sim_az_rate() == UNSET_DOUBLE) {
-            if (verbose)
-                WLOG << "'simulate_antenna_angles' is true, but "
-                    "'sim_az_rate' is unset in DRX configuration";
-            valid = false;
-        }
-    }
-    if (start_on_1pps() == UNSET_BOOL) {
-        if (verbose)
-            WLOG << "'start_on_1pps' unset in DRX configuration";
-        valid = false;
-    }
-
-    return valid;
-}
-
-#ifdef NOT_ANY_MORE
-double
-HcrDrxConfig::range_to_gate0() const {
-  const double SpeedOfLight = 2.9979245e8; // m/s
-  double gateSpacing = 0.5 * SpeedOfLight * digitizer_sample_width();
-  double rangeToStartGate0 =
-    (digitizer_gate0_delay() - tx_delay() - tx_latency()) * SpeedOfLight * -0.5;
-  double rangeToCenterGate0 = rangeToStartGate0 + gateSpacing * 0.5;
-  return rangeToCenterGate0;
-}
-#endif

@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * HcrPmc730.h
  *
@@ -32,10 +32,12 @@
 #define HCRPMC730_H_
 
 #include "Pmc730.h"
+#include <OperationMode.h>
+#include <Archive_xmlrpc_c.h>
 #include <exception>
 
 /// Control a singleton instance of Pmc730 for the one PMC730 card on the
-/// HCR DRX machine. 
+/// HCR DRX machine.
 class HcrPmc730 : public Pmc730 {
 public:
     /// @brief Return a reference to HCR's singleton Pmc730 instance.
@@ -52,32 +54,6 @@ public:
         std::string _desc;
     };
 
-    /// Enumerated type for HMC operation modes
-    typedef enum _HmcOperationMode {
-        /// 0 = transmit H, receive H and V
-        HMC_MODE_H_HV = 0,
-        /// 1 = transmit V, receive H and V
-        HMC_MODE_V_HV = 1,
-        /// 2 = transmit alternating H and V, receive H and V
-        HMC_MODE_HV_HV = 2,
-        /// 3 = transmit H, receive H and V (attenuated)
-        HMC_MODE_H_HV_ATTENUATED = 3,
-        /// 4 = noise source calibration
-        HMC_MODE_NOISE_SOURCE_CAL = 4,
-        /// 5 = transmit V, receive H and V (attenuated)
-        HMC_MODE_V_HV_ATTENUATED = 5,
-        /// 6 = bench test
-        HMC_MODE_BENCH_TEST = 6,
-        /// 7 = unused
-        HMC_MODE_UNUSED_7 = 7,
-        /// mode count (and a representation for an invalid mode)
-        HMC_NMODES = 8,
-        HMC_MODE_INVALID = HMC_NMODES
-    } HmcOperationMode;
-
-    /// Mode name strings mapped to the HmcOperationMode enum
-    static std::string HmcModeNames[];
-
     /// @brief Static method to change whether the singleton instance will be created
     /// as a simulated PMC-730. This must be called before the singleton is
     /// instantiated.
@@ -87,24 +63,24 @@ public:
 
     /// @brief Read and store voltage values from all 32 analog input channels.
     /// These stored values will be used will be used by accessor methods which
-    /// refer to values derived from the analog input channels: detectedRfPower(), 
+    /// refer to values derived from the analog input channels: detectedRfPower(),
     /// ploTemperature(), locked15_5GHzPLO(), and many others.
-    /// 
-    /// Documentation for accessor methods affected by this method will mention 
+    ///
+    /// Documentation for accessor methods affected by this method will mention
     /// their dependency on updateAnalogValues().
     static void UpdateAnalogValues() {
         TheHcrPmc730()._updateAnalogValues();
     }
-    
+
     /// @brief Is the modulation pulse signal blocked at the HMC?
     /// @return true iff the modulation pulse signal is blocked at the HMC
     static bool ModPulseDisabled() {
         return(TheHcrPmc730().getDioLine(_HCR_DIN_HMC_MODPULSE_DISABLED));
     }
 
-    /// @brief Return the detected RF power in dBm at the last call to 
-    /// updateAnalogValues(), adjusted to reflect power at the antenna port. 
-    /// @return the detected RF power in dBm at the last call to 
+    /// @brief Return the detected RF power in dBm at the last call to
+    /// updateAnalogValues(), adjusted to reflect power at the antenna port.
+    /// @return the detected RF power in dBm at the last call to
     /// updateAnalogValues(), adjusted to reflect power at the antenna port.
     static double DetectedRfPower() {
         // The HCR breakout board provides a factor of 2 gain on the voltage
@@ -114,11 +90,11 @@ public:
 
         // Convert to power at the detector
         double detectorPower = _MillitechDET10Power(detV);
-        
+
         // Coupling losses between antenna port and detector. This is an
         // empirically determined value measured from the components.
         static const double DETECTOR_COUPLING_LOSSES = 66.5; // dB
-        
+
         // Add the coupling losses into the detected power to obtain power at
         // the antenna port.
         double powerAtFeed = detectorPower + DETECTOR_COUPLING_LOSSES;
@@ -129,26 +105,26 @@ public:
         } else if (powerAtFeed > 100) {
             powerAtFeed = 100;
         }
-            
+
         return(powerAtFeed);
     }
 
     /// @brief Return the pressure vessel aft sensor pressure in hPa at the last
     /// call to updateAnalogValues().
-    /// @return the pressure vessel aft sensor pressure in hPa at the last call 
+    /// @return the pressure vessel aft sensor pressure in hPa at the last call
     /// to updateAnalogValues().
     static double PvAftPressure() {
         double voltage = TheHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE];
-        return(_30PSI_A_4V_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
+        return(_Honeywell_030PA_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
     }
 
     /// @brief Return the pressure vessel fore sensor pressure in hPa at the last
     /// call to updateAnalogValues().
-    /// @return the pressure vessel fore sensor pressure in hPa at the last call 
+    /// @return the pressure vessel fore sensor pressure in hPa at the last call
     /// to updateAnalogValues().
     static double PvForePressure() {
         double voltage = TheHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE];
-        return(_30PSI_A_4V_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
+        return(_Honeywell_030PA_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
     }
 
     /// @brief Convert pressure in PSI to hPa
@@ -188,117 +164,117 @@ public:
         return TheHcrPmc730()._analogValues[_HCR_AIN_VOLTAGE_PS_5V];
     }
 
-    /// @brief Return the PLO temperature in deg C at the last call to 
+    /// @brief Return the PLO temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the PLO temperature in deg C at the last call to 
+    /// @return the PLO temperature in deg C at the last call to
     /// updateAnalogValues().
     static double PloTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_PLO];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the EIK temperature in deg C at the last call to 
+    /// @brief Return the EIK temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the EIK temperature in deg C at the last call to 
+    /// @return the EIK temperature in deg C at the last call to
     /// updateAnalogValues().
     static double EikTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_EIK];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the V LNA temperature in deg C at the last call to 
+    /// @brief Return the V LNA temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the V LNA temperature in deg C at the last call to 
+    /// @return the V LNA temperature in deg C at the last call to
     /// updateAnalogValues().
     static double VLnaTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_VLNA];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the H LNA temperature in deg C at the last call to 
+    /// @brief Return the H LNA temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the H LNA temperature in deg C at the last call to 
+    /// @return the H LNA temperature in deg C at the last call to
     /// updateAnalogValues().
     static double HLnaTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_HLNA];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the polarization switch temperature in deg C at the last 
+    /// @brief Return the polarization switch temperature in deg C at the last
     /// call to updateAnalogValues().
-    /// @return the polarization switch temperature in deg C at the last call to 
+    /// @return the polarization switch temperature in deg C at the last call to
     /// updateAnalogValues().
     static double PolSwitchTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_POL_SWITCH];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the RF detector temperature in deg C at the last call to 
+    /// @brief Return the RF detector temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the RF detector temperature in deg C at the last call to 
+    /// @return the RF detector temperature in deg C at the last call to
     /// updateAnalogValues().
     static double RfDetectorTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_RF_DETECTOR];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the noise source temperature in deg C at the last call to 
+    /// @brief Return the noise source temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the noise source temperature in deg C at the last call to 
+    /// @return the noise source temperature in deg C at the last call to
     /// updateAnalogValues().
     static double NoiseSourceTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_NOISE_SOURCE];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the 28V power supply temperature in deg C at the last call 
+    /// @brief Return the 28V power supply temperature in deg C at the last call
     /// to updateAnalogValues().
-    /// @return the 28V power supply temperature in deg C at the last call to 
+    /// @return the 28V power supply temperature in deg C at the last call to
     /// updateAnalogValues().
     static double Ps28vTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_PS_28V];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the RDS in duct temperature in deg C at the last call to 
+    /// @brief Return the RDS in duct temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the RDS in duct temperature in deg C at the last call to 
+    /// @return the RDS in duct temperature in deg C at the last call to
     /// updateAnalogValues().
     static double RdsInDuctTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_RDS_IN_DUCT];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the tilt motor temperature in deg C at the last call to 
+    /// @brief Return the tilt motor temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the tilt motor temperature in deg C at the last call to 
+    /// @return the tilt motor temperature in deg C at the last call to
     /// updateAnalogValues().
     static double TiltMotorTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_TILT_MOTOR];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the rotation motor temperature in deg C at the last call to 
+    /// @brief Return the rotation motor temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the rotation motor temperature in deg C at the last call to 
+    /// @return the rotation motor temperature in deg C at the last call to
     /// updateAnalogValues().
     static double RotMotorTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_ROT_MOTOR];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the tailcone temperature in deg C at the last call to 
+    /// @brief Return the tailcone temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the tailcone temperature in deg C at the last call to 
+    /// @return the tailcone temperature in deg C at the last call to
     /// updateAnalogValues().
     static double TailconeTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_TAILCONE];
         return _Pt1000Temperature(Ps5vVoltage(), pulldownVolts);
     }
 
-    /// @brief Return the INS temperature in deg C at the last call to 
+    /// @brief Return the INS temperature in deg C at the last call to
     /// updateAnalogValues().
-    /// @return the INS temperature in deg C at the last call to 
+    /// @return the INS temperature in deg C at the last call to
     /// updateAnalogValues().
     static double InsTemperature() {
         float pulldownVolts = TheHcrPmc730()._analogValues[_HCR_AIN_TEMP_INS];
@@ -341,33 +317,33 @@ public:
     /// call to updateAnalogValues().
     static bool WaveguideSwitchError();
 
-    /// @brief Return true iff EMS error 1 was indicated at the last call to 
+    /// @brief Return true iff EMS error 1 was indicated at the last call to
     /// updateAnalogValues().
-    /// @return true iff EMS error 1 was indicated at the last call to 
+    /// @return true iff EMS error 1 was indicated at the last call to
     /// updateAnalogValues().
     static bool EmsError1();
 
-    /// @brief Return true iff EMS error 2 was indicated at the last call to 
+    /// @brief Return true iff EMS error 2 was indicated at the last call to
     /// updateAnalogValues().
-    /// @return true iff EMS error 2 was indicated at the last call to 
+    /// @return true iff EMS error 2 was indicated at the last call to
     /// updateAnalogValues().
     static bool EmsError2();
 
-    /// @brief Return true iff EMS error 3 was indicated at the last call to 
+    /// @brief Return true iff EMS error 3 was indicated at the last call to
     /// updateAnalogValues().
-    /// @return true iff EMS error 3 was indicated at the last call to 
+    /// @return true iff EMS error 3 was indicated at the last call to
     /// updateAnalogValues().
     static bool EmsError3();
 
-    /// @brief Return true iff EMS error 4 or 5 was indicated at the last call to 
+    /// @brief Return true iff EMS error 4 or 5 was indicated at the last call to
     /// updateAnalogValues().
-    /// @return true iff EMS error 4 or 5 was indicated at the last call to 
+    /// @return true iff EMS error 4 or 5 was indicated at the last call to
     /// updateAnalogValues().
     static bool EmsError4Or5();
 
-    /// @brief Return true iff EMS error 6 or 7 was indicated at the last call to 
+    /// @brief Return true iff EMS error 6 or 7 was indicated at the last call to
     /// updateAnalogValues().
-    /// @return true iff EMS error 6 or 7 was indicated at the last call to 
+    /// @return true iff EMS error 6 or 7 was indicated at the last call to
     /// updateAnalogValues().
     static bool EmsError6Or7();
 
@@ -399,17 +375,15 @@ public:
         return(! TheHcrPmc730().getDioLine(_HCR_DOUT_TX_HV_OFF));
     }
 
-    /// @brief Return the current HMC operating mode as a value from the
-    /// HmcOperationMode enumerated type.
+    /// @brief Return the current 3-bit HMC mode
     /// @return the current HMC operating mode as a value from the
-    /// HmcOperationMode enum.
-    static HmcOperationMode HmcMode() {
-        int mode;
-        mode = TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT2) << 2 |
-                TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1 |
-                TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
+    /// OperationMode enum.
+    static HmcMode GetHmcMode() {
+        int iMode = TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT2) << 2 |
+                    TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1 |
+                    TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
 
-        return(HmcOperationMode(mode));
+        return static_cast<HmcMode>(iMode);
     }
 
     /// @brief Set the state Active Pressurization System valve.
@@ -440,14 +414,14 @@ public:
         TheHcrPmc730()._ackHmcStatus();
     }
 
-    /// @brief Set the HMC operation mode
-    static void SetHmcOperationMode(HmcOperationMode mode);
+    /// @brief Set the HMC mode
+    static void SetHmcMode(const HmcMode& mode);
 
     /// @brief Update and return the current count of EMS errors.
     static uint32_t EmsErrorCount() {
         return TheHcrPmc730()._emsErrorCount();
     }
-    
+
     /// @brief Set correction for pressure vessel pressures. Correct absolute
     /// pressure is the calculated pressure from the A/D voltage + the
     /// correction value.
@@ -487,7 +461,7 @@ private:
         /// digital in line 7: HMC signal for mod pulse disabled
         _HCR_DIN_HMC_MODPULSE_DISABLED = 7
     } DinLine_t;
-    
+
     /// Output DIO lines
     typedef enum {
         /// digital out line 9: open Active Pressurization System valve
@@ -505,7 +479,7 @@ private:
         /// digital out line 15: HMC operation mode bit 1
         _HCR_DOUT_HMC_OPS_MODE_BIT1 = 15,
     } DoutLine_t;
-    
+
     /// Analog input lines (note that many of these lines are actually used
     /// for TTL level digital input).
     typedef enum {
@@ -574,12 +548,12 @@ private:
         /// analog input 31: Active Pressurization System low side pressure (50 PSI transducer)
         _HCR_AIN_APS_LOW_SIDE_PRESSURE = 31
     } AinLine_t;
-    
+
     /// @brief Set the selected bit in the source byte and return the result.
     /// @param src the source byte
     /// @param bitnum the number of the bit to set; 0 for least significant bit
     /// @return a byte copied from src, but with the selected bit set
-    static uint8_t 
+    static uint8_t
     _TurnBitOn(uint8_t src, unsigned int bitnum) {
         uint8_t mask = (1 << bitnum);
         return(src | mask);
@@ -594,20 +568,20 @@ private:
         uint8_t mask = (1 << bitnum);
         return(src & ~mask);
     }
-    
+
     /// @brief Read and store voltage values from all 32 analog input channels.
     /// These stored values will be used will be used by accessor methods which
-    /// refer to values derived from the analog input channels: detectedRfPower(), 
+    /// refer to values derived from the analog input channels: detectedRfPower(),
     /// ploTemperature(), locked15_5GHzPLO(), and many others.
     ///
-    /// Documentation for accessor methods affected by this method will mention 
+    /// Documentation for accessor methods affected by this method will mention
     /// their dependency on updateAnalogValues().
     void _updateAnalogValues() {
         _analogValues = readAnalogChannels(0, 31);
     }
-    
-    /// @brief Convert the voltage from the selected Analog In channel to a 
-    /// digital value of 0 or 1, using TTL signal levels: voltage less than 
+
+    /// @brief Convert the voltage from the selected Analog In channel to a
+    /// digital value of 0 or 1, using TTL signal levels: voltage less than
     /// 0.8 V => 0 and voltage greater than 2.0 V => 1. The channel's voltage
     /// stored at the last call to updateAnalogValues() is used.
     /// A BadTtlVoltage exception is thrown for voltages outside the legal
@@ -618,7 +592,7 @@ private:
     /// channel's voltage is greter than 2.0 V.
     /// @throws BadTtlVoltage if the incoming voltage is in range (0.8, 2.0).
     int _ttlBinaryForChannel(int channel);
-    
+
     /// @brief Calculate temperature of a Pt1000 RTD temperature sensor connected
     /// in series with a 1 kOhm pulldown resistor across a known voltage.
     /// @param psVolts the voltage of the power supply feeding the divider, V
@@ -638,18 +612,24 @@ private:
     /// @return the pressure at the 30PSI-A-4V-MIL sensor
     static double _30PSI_A_4V_Pres(double sensorVolts);
 
+    /// @brief Calculate the pressure based on the voltage from a
+    /// Honeywell SSCSNBN030PAAA5 sensor.
+    /// @param sensorVolts the potential across the sensor, V
+    /// @return the pressure at the SSCSNBN030PAAA5 sensor in hPa
+    static double _Honeywell_030PA_Pres(double sensorVolts);
+
     /// @brief Convert the given voltage to measured RF power from
     /// Mi-Wave 950W RF detector.
     /// @param voltage the voltage measured at the Mi-Wave 950W detector
     /// @return the RF power measured at the Mi-Wave 950W detector, dBm
     static double _MiWv950WPower(double voltage);
-    
+
     /// @brief Convert the given voltage to measured RF power from
     /// Millitech DET-10 RF detector.
     /// @param voltage the voltage measured at the Millitech DET-10 detector
     /// @return the RF power measured at the Millitech DET-10 detector, dBm
     static double _MillitechDET10Power(double voltage);
-    
+
     /// @brief Initialize the PMC730 for event counting using DIO channel 2.
     void _initEventCounter();
 
@@ -657,11 +637,11 @@ private:
     /// of radar pulses for which one or more EMS errors was recorded.
     /// @return the count of pulses with EMS errors.
     uint32_t _emsErrorCount() const;
-    
+
     /// @brief Raise the HMC's 'status_ack' line momentarily to reset the state of
     /// its sense-and-hold values.
     void _ackHmcStatus();
-    
+
     /// @brief Set correction for pressure vessel pressures. Correct absolute
     /// pressure is the calculated pressure from the A/D voltage + the
     /// correction value.
@@ -682,11 +662,12 @@ private:
     /// calculated pressure from the associated A/D voltage + the
     /// correction value.
     ///
-    /// We need this because for unknown reasons, the pressure transducers
-    /// appear to be damaged and consistently read lower than actual pressure.
-    /// @brief The singleton instance of HcrPmc730.
+    /// We need this to compensate for absolute pressure transducers
+    /// damaged during helium purging of the pressure vessel and
+    // reading lower than actual pressure.
     double _pvPresCorrection;
 
+    /// @brief The singleton instance of HcrPmc730.
     static HcrPmc730 * _TheHcrPmc730;
 };
 

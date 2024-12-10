@@ -5,7 +5,9 @@ import os
 
 tools = Split("""
     archive_xmlrpc_c
+    boost_serialization
     logx
+    operationmode
     pmc730
 """)
 env = Environment(tools=['default'] + tools)
@@ -29,7 +31,7 @@ doxref = env.Apidocs(sources + headers)
     
 def hcrpmc730(env):
     env.AppendUnique(CPPPATH = [includeDir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
     env.AppendDoxref(doxref[0])
     env.Require(tools)
 

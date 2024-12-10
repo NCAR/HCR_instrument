@@ -1,0 +1,26 @@
+2
+00000000C0000000
+D0000000
+516
+
+the values in test_parameters.txt will be used to fill values in 
+param_record_type in the test bench. The parameters are listed as follows.  Each value must be in the format specified with no comma after it.
+Eample list is shown below. Boolean values are true or false. All ulogic vector values are to entered in as hex values with no leading 0x. For example
+0xFE would be FE.
+
+parameter fields:
+    
+    PCIE_RQST_SIZE      : std_ulogic_vector(3 downto 0);  -- Maximum PCIe Read Request Size (Determined by PCIe Host, usually 512) 0x0=128 0x1=256 0x2= 512 0x3=1024 0x4=2048 0x5=4096
+    PCIE_Address        : std_ulogic_vector(63 downto 0); -- PCIe Destination Start Address (DWORD address boundary) 
+    DDR4_Address        : std_ulogic_vector(31 downto 0); -- DDR4 Destination Start Address (must be DWORD address boundary)   
+    Buffer_ByteSize     : integer range 1 to 16383;      -- Buffer A bytes to transfer. (limited in size for test) to program first descriptor with
+
+
+Example:
+
+2
+00000000C0000000
+D0000000
+512
+
+

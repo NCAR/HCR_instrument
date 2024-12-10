@@ -1,0 +1,56 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 15:35:28 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_ppkt2pcie_rdr_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_ppkt2pcie_rdr_fifo from xilinx.com:ip:fifo_generator:12.0 (Rev. 4) to xilinx.com:ip:fifo_generator:13.0 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Added parameter Output_Register_Type with value Embedded_Reg (source 'default')
+Added parameter Enable_Safety_Circuit with value false (source 'default')
+Added parameter Enable_ECC_Type with value Hard_ECC (source 'default')
+Set parameter Slave_interface_Clock_enable_memory_mapped to value false (source 'default')
+Set parameter Master_interface_Clock_enable_memory_mapped to value false (source 'default')
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.1 (win64) Build 1215546 Mon Apr 27 19:22:08 MDT 2015
+| Date         : Fri May 01 23:13:15 2015
+| Host         : Igor running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_dma_ppkt2pcie_rdr_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_dma_ppkt2pcie_rdr_fifo (xilinx.com:ip:fifo_generator:12.0) from (Rev. 3) to (Rev. 4)
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading IP 'px_dma_ppkt2pcie_rdr_fifo'.
+
+
+-upgrade has added interface 'core_clk'
+-upgrade has added interface 'read_clk'
+-upgrade has added interface 'write_clk'
+

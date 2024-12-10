@@ -7,13 +7,14 @@ tools = Split("""
 boost_program_options
 cmigits
 lrose
-qt4
+qt5
+qtcore
+qtgui
 QFunctionWrapper
 QXmlRpcServerAbyss
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQtModules(['QtCore', 'QtGui'])
 
 sources = Split('''
 cmigitsDaemon.cpp

@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Tue Dec 17 17:09:59 2019
+# Process ID: 9672
+# Current directory: C:/Pentek/ip/2019.2/pentek/ip/px_gate_stat_core
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent1904 C:\Pentek\ip\2019.2\pentek\ip\px_gate_stat_core\px_gate_stat_core.xpr
+# Log file: C:/Pentek/ip/2019.2/pentek/ip/px_gate_stat_core/vivado.log
+# Journal file: C:/Pentek/ip/2019.2/pentek/ip/px_gate_stat_core\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/ip/2019.2/pentek/ip/px_gate_stat_core/px_gate_stat_core.xpr
+update_compile_order -fileset sources_1

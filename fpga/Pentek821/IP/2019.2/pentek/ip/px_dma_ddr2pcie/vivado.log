@@ -1,0 +1,41 @@
+#-----------------------------------------------------------
+# Vivado v2017.2 (64-bit)
+# SW Build 1909853 on Thu Jun 15 18:39:09 MDT 2017
+# IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
+# Start of session at: Mon Aug 14 08:22:56 2017
+# Process ID: 4764
+# Current directory: C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent2972 C:\Pentek\IP\2017.2\pentek\ip\px_dma_ddr2pcie\px_dma_ddr2pcie.xpr
+# Log file: C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie/vivado.log
+# Journal file: C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie/px_dma_ddr2pcie.xpr
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-3] IPUserFilesDir: Could not find the directory 'C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie/px_dma_ddr2pcie.ip_user_files'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.2/pentek'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Pentek/IP/2017.2/pentek' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.2/data/ip'.
+open_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:10 . Memory (MB): peak = 887.242 ; gain = 96.730
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+ipx::open_ipxact_file {C:\Pentek\IP\2017.2\pentek\ip\px_dma_ddr2pcie\component.xml}
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_testbench (Test Bench)': File 'test_parameters.txt' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+ipx::add_file_group -type product_guide {} [ipx::current_core]
+ipx::add_file C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie/px_dma_ddr2pcie.srcs/doc/px_dma_ddr2pcie.pdf [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]
+set_property type pdf [ipx::get_files C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie/px_dma_ddr2pcie.srcs/doc/px_dma_ddr2pcie.pdf -of_objects [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]]
+set_property name px_dma_ddr2pcie.srcs/doc/px_dma_ddr2pcie.pdf [ipx::get_files C:/Pentek/IP/2017.2/pentek/ip/px_dma_ddr2pcie/px_dma_ddr2pcie.srcs/doc/px_dma_ddr2pcie.pdf -of_objects [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]]
+set_property version 1.1 [ipx::current_core]
+set_property display_name px_dma_ddr2pcie_v1_1 [ipx::current_core]
+set_property core_revision 5 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2017.2/pentek
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Pentek/IP/2017.2/pentek'
+update_ip_catalog: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 1056.137 ; gain = 1.629
+close_project
+exit
+INFO: [Common 17-206] Exiting Vivado at Mon Aug 14 08:27:31 2017...

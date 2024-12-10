@@ -54,7 +54,6 @@
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
-#include "../HcrSharedResources.h"
 #include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
 
@@ -69,7 +68,7 @@ Cmigits * Cm = 0;
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
-    ILOG << "cmigitsDaemon (" << getpid() << ") stopping on signal " << signal;
+    ILOG << "cmigitsDaemon (" << getpid() << ") stopping on signal " << strsignal(signal);
     App->quit();
 }
 
@@ -82,9 +81,16 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Executing XML-RPC call to getStatus()";
-        // Get the latest status from the shared memory FMQ, and convert it to
-        // an xmlrpc_c::value_struct dictionary.
-        *retvalP = CmigitsStatus::StatusFromFmq(Cm->fmqUrl()).toXmlRpcValue();
+        if(Cm) {
+            // Get the latest status from the shared memory FMQ, and convert it to
+            // an xmlrpc_c::value_struct dictionary.
+            *retvalP = CmigitsStatus::StatusFromFmq(Cm->fmqUrl()).toXmlRpcValue();
+        }
+        else {
+            // Return empty status
+            CmigitsStatus c;
+            *retvalP = c.toXmlRpcValue();
+        }
     }
 };
 
@@ -144,7 +150,8 @@ main(int argc, char *argv[]) {
                               "the GPS antenna, in cm")
             ("1", "run as INS1")
             ("2", "run as INS2 (different XML-RPC port and FMQ URL)")
-            ("playback", "play back from listed file(s)");
+            ("playback", "play back from listed file(s)")
+            ("doNothing", "respond to status requests but take no further action");
 
     // All options includes the above, plus a "patharg" option which we
     // will hide when showing usage, but need for use as a marker for
@@ -193,6 +200,7 @@ main(int argc, char *argv[]) {
 
     // Are we running in playback mode?
     bool playback = vm.count("playback");
+    bool doNothing = vm.count("doNothing");
 
     // If not playback, we require --antennaOffset to provide antenna offset
     // in body coordinates from the INS to the GPS antenna, x,y,z in integer
@@ -200,7 +208,7 @@ main(int argc, char *argv[]) {
     int16_t antennaOffsetX = 0;
     int16_t antennaOffsetY = 0;
     int16_t antennaOffsetZ = 0;
-    if (! playback) {
+    if (!playback && !doNothing) {
         // Verify we got exactly one --antennaOffset argument
         if (vm.count("antennaOffset") != 1) {
             std::cerr << "If not playback, one '--antennaOffset <x,y,z>' is required!" << std::endl;
@@ -232,63 +240,40 @@ main(int argc, char *argv[]) {
         // Get paths from the command line as a vector of strings
         pathArgs = vm["patharg"].as<std::vector<std::string> >();
     }
-    if (! playback) {
-        if (pathArgs.size() != 1) {
-            std::cerr << "Exactly one TTY device file is required on the " <<
-                         "command line!" << std::endl;
-            std::cerr << std::endl;
-            usage(visible_opts);
-            exit(1);
-        }
-    } else {
-        if (pathArgs.size() == 0) {
-            std::cerr << "No files for playback were given on the " <<
-                         "command line!" << std::endl;
-            std::cerr << std::endl;
-            usage(visible_opts);
-            exit(1);
+
+    if (! doNothing) {
+        if (! playback) {
+            if (pathArgs.size() != 1) {
+                std::cerr << "Exactly one TTY device file is required on the " <<
+                             "command line!" << std::endl;
+                std::cerr << std::endl;
+                usage(visible_opts);
+                exit(1);
+            }
+        } else {
+            if (pathArgs.size() == 0) {
+                std::cerr << "No files for playback were given on the " <<
+                             "command line!" << std::endl;
+                std::cerr << std::endl;
+                usage(visible_opts);
+                exit(1);
+            }
         }
     }
 
     ILOG << "Started " << ((insNum == 1) ? "INS1" : "INS2") <<
             " cmigitsDaemon (" << getpid() << ")";
-    if (playback) {
-    } else {
-    }
 
     // set up registration with procmap if instance is specified
     PMU_auto_init("cmigitsDaemon", pmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
     ILOG << "procmap instance '" << pmuInstance << "'";
-
-    // Open connection to the C-MIGITS device (or a Ts2CmigitsFmqThread for
-    // time-series file playback)
-    Ts2CmigitsFmqThread * playbackThread = NULL;
-    if (playback) {
-        ILOG << "Playback mode";
-        PMU_auto_register("creating Ts2CmigitsShmThread for playback");
-        // Create the Ts2CmigitsFmqThread, which begins working immediately.
-        playbackThread = new Ts2CmigitsFmqThread(pathArgs, fmqUrl);
-
-        // Stop the application when the reader thread is done
-        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
-    } else {
-        PMU_auto_register("creating Cmigits instance");
-        std::string devName = pathArgs[0];
-        ILOG << "Communicating on device " << devName;
-        ILOG << "Using INS-to-antenna x,y,z offset (" <<
-                antennaOffsetX << " cm, " << antennaOffsetY << " cm, " <<
-                antennaOffsetZ << " cm)";
-        Cm = new Cmigits(devName,
-                         antennaOffsetX, antennaOffsetY, antennaOffsetZ,
-                         fmqUrl, csvFilePath);
-    }
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, xmlrpcPort);
-        
+
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // as well as a QTimer, and use them to cause a call to the function on
     // a periodic basis so that PMU knows we're still alive.
@@ -299,14 +284,59 @@ main(int argc, char *argv[]) {
             &registrationWrapper, SLOT(callFunction()));
     registrationTimer.start();
 
+    // We will instantiate one of these two threads to handle the heavy lifting
+    Ts2CmigitsFmqThread * playbackThread = NULL;
+    QThread* workThread(NULL);
+
+    // Open connection to the C-MIGITS device (or a Ts2CmigitsFmqThread for
+    // time-series file playback)
+    if (playback) {
+        ILOG << "Playback mode";
+        PMU_auto_register("creating Ts2CmigitsShmThread for playback");
+        // Create the Ts2CmigitsFmqThread, which begins working immediately.
+        playbackThread = new Ts2CmigitsFmqThread(pathArgs, fmqUrl);
+
+        // Stop the application when the reader thread is done
+        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
+    } else if (doNothing) {
+        // yep, do nothing
+    } else {
+        // Instantiate a Cmigits instance to actually communicate with a
+        // C-MIGITS device
+        PMU_auto_register("creating Cmigits instance");
+        std::string devName = pathArgs[0];
+        ILOG << "Communicating on device " << devName;
+        ILOG << "Using INS-to-antenna x,y,z offset (" <<
+                antennaOffsetX << " cm, " << antennaOffsetY << " cm, " <<
+                antennaOffsetZ << " cm)";
+
+        // Create a QThread in which a Cmigits instance can do its real work,
+        // instantiate the Cmigits, and start the thread.
+        workThread = new QThread();
+
+        Cm = new Cmigits(devName, workThread,
+                         antennaOffsetX, antennaOffsetY, antennaOffsetZ,
+                         fmqUrl, csvFilePath);
+
+        workThread->start();
+    }
+
     // Fire up the Qt event loop
     App->exec();
-    
+
+    if (workThread) {
+        workThread->quit();
+        if (! workThread->wait(1000)) {
+            ELOG << __PRETTY_FUNCTION__ << ": wait for workThread termination timed out!";
+        }
+    }
+
     // Tell procmap we're done
     PMU_auto_unregister();
     
     delete(Cm);
     delete(playbackThread);
+    delete(workThread);
 
     return 0;
 }

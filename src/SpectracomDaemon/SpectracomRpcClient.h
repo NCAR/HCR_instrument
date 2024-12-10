@@ -39,7 +39,7 @@
  * SpectracomRpcClient encapsulates an XML-RPC connection to a Spectracom
  * process.
  */
-class SpectracomRpcClient {
+class SpectracomRpcClient : private xmlrpc_c::clientSimple {
 public:
     /// Instantiate SpectracomRpcClient to communicate with a SpectracomDaemon 
     /// process running on host spectracomHost and using port spectracomPort.
@@ -73,7 +73,6 @@ private:
     std::string _daemonHost;
     int _daemonPort;
     std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* SPECTRACOMRPCCLIENT_H_ */
