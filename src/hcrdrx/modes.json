@@ -81,9 +81,85 @@
             ]
         },
 
-        "Mike's Alternating PRT": {
+        "C. Short pulse 256us": {
             "Enabled": true,
-            "Comment": "256/512 pulses",
+            "Comment": "Short pulse 256 us",
+            "Blocks": [
+                {
+                    "NumRxGates":"Default",
+                    "NumPulses":"Default",
+                    "PRT1":"Default",
+                    "PRT2":"Default",
+                    "BlockPostTime":"Default",
+                    "PhaseTableBegin":"Default",
+                    "PhaseTableEnd":"Default",
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
+                    "PolarizationMode": "V"
+                }
+            ]
+        },
+        
+        "D. Long pulse 512us": {
+            "Enabled": true,
+            "Comment": "Long pulse 512 us",
+            "Blocks": [
+                {
+                    "NumRxGates":"Default",
+                    "NumPulses":"Default",
+                    "PRT1":163.840e-6,
+                    "PRT2":"Default",
+                    "BlockPostTime":"Default",
+                    "PhaseTableBegin":"Default",
+                    "PhaseTableEnd":"Default",
+                    "TxPulseWidth": 512e-9,
+                    "FilterSelect": "512ns",
+                    "PolarizationMode": "V"
+                }
+            ]
+        },
+        
+        "E. Calibration-256": {
+            "Enabled": true,
+            "Comment": "Calibrate 256 us",
+            "Blocks": [
+                {
+                    "NumRxGates":"Default",
+                    "NumPulses":"Default",
+                    "PRT1":"Default",
+                    "PRT2":"Default",
+                    "BlockPostTime":"Default",
+                    "PhaseTableBegin":"Default",
+                    "PhaseTableEnd":"Default",
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
+                    "PolarizationMode": "V"
+                }
+            ]
+        },
+        
+        "F. Calibration-512": {
+            "Enabled": true,
+            "Comment": "Calibrate 512 us",
+            "Blocks": [
+                {
+                    "NumRxGates":"Default",
+                    "NumPulses":"Default",
+                    "PRT1":163.840e-6,
+                    "PRT2":"Default",
+                    "BlockPostTime":"Default",
+                    "PhaseTableBegin":"Default",
+                    "PhaseTableEnd":"Default",
+                    "TxPulseWidth": 512e-9,
+                    "FilterSelect": "512ns",
+                    "PolarizationMode": "V"
+                }
+            ]
+        },
+        
+        "A. Dual 15.2km range": {
+            "Enabled": true,
+            "Comment": "256/512 pulses, normal max range",
             "Blocks": [
                 {
                     "TxPulseWidth": 256e-9,
@@ -112,9 +188,9 @@
             ]
         },
 
-        "Mike's Alt. PRT +10%": {
+        "B. Dual 16.7km range": {
             "Enabled": true,
-            "Comment": "256/512 pulses, longer PRTs",
+            "Comment": "256/512 pulses, longer PRTs, extended range",
             "Blocks": [
                 {
                     "TxPulseWidth": 256e-9,
@@ -141,45 +217,8 @@
                     "PhaseTableEnd": 0
                 }
             ]
-        },
-
-        "Calibration-256": {
-            "Enabled": true,
-            "Comment": "Calibrate 256 us",
-            "Blocks": [
-                {
-                    "NumRxGates":"Default",
-                    "NumPulses":"Default",
-                    "PRT1":"Default",
-                    "PRT2":"Default",
-                    "BlockPostTime":"Default",
-                    "PhaseTableBegin":"Default",
-                    "PhaseTableEnd":"Default",
-                    "TxPulseWidth": 256e-9,
-                    "FilterSelect": "256ns",
-                    "PolarizationMode": "V"
-                }
-            ]
-        },
-        
-        "Calibration-512": {
-            "Enabled": true,
-            "Comment": "Calibrate 512 us",
-            "Blocks": [
-                {
-                    "NumRxGates":"Default",
-                    "NumPulses":"Default",
-                    "PRT1":163.840e-6,
-                    "PRT2":"Default",
-                    "BlockPostTime":"Default",
-                    "PhaseTableBegin":"Default",
-                    "PhaseTableEnd":"Default",
-                    "TxPulseWidth": 512e-9,
-                    "FilterSelect": "512ns",
-                    "PolarizationMode": "V"
-                }
-            ]
         }
+
     }
 
 }
