@@ -15,16 +15,16 @@
 
 /// @brief Enumerated type for the Health Monitor Card (HMC) 3-bit operation mode
 typedef enum {
-    RESET = 0,					///< reset the HMC
-    SPARE_1 = 1,				///< unused (1)
-    SPARE_2 = 2,				///< unused (2)
-    TRANSMIT = 3,				///< transmit according to drx scheduler, receive H and V
-    TRANSMIT_ATTENUATED = 4,	///< transmit according to drx scheduler, receive H and V (attenuated)
-    NOISE_SOURCE_CAL = 5,		///< noise source calibration
-    BENCH_TEST = 6,				///< bench test
-    V_HV_ISOL_NOISE = 7,		///< transmit V, receive H and V, enable noise source
-    HMC_NMODES = 8,				///< mode count
-    INVALID = HMC_NMODES		///< explicit invalid mode
+    RESET = 0,               ///< reset the HMC
+    SPARE_1 = 1,             ///< unused (1)
+    SPARE_2 = 2,             ///< unused (2)
+    TRANSMIT = 3,            ///< tx according to drx scheduler, rx H and V
+    TRANSMIT_ATTENUATED = 4, ///< tx according to drx scheduler, rx H and V (attenuated)
+    NOISE_SOURCE_CAL = 5,    ///< noise source calibration
+    BENCH_TEST = 6,          ///< bench test
+    V_HV_ISOL_NOISE = 7,     ///< tx V, rx H and V, enable noise source
+    HMC_NMODES = 8,          ///< mode count
+    INVALID = HMC_NMODES     ///< explicit invalid mode
 } HmcMode;
 
 /// @brief Function which returns a string representation of an HmcMode

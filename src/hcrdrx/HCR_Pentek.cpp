@@ -1549,7 +1549,7 @@ HCR_Pentek::_setupController()
 
             ILOG << "   Adding mode as blocks " << startIndex << ":" << endIndex;;
             _supportedOpsModes.push_back({HmcMode::TRANSMIT, startIndex, endIndex, modeName});
-            _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+            // _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
         }
         else
         {
